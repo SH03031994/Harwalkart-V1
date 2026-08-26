@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { ProductCard } from './ProductCard';
 import { CATEGORIES } from '../../data/mockData';
+import { checkProductServiceability } from '../../utils/location';
 import { Filter, SlidersHorizontal, ArrowUpDown, Store, Flame, Search } from 'lucide-react';
 
 export const ProductListingView: React.FC = () => {
   const {
     products,
+    sellers,
     selectedCategory,
     setSelectedCategory,
     searchQuery,
@@ -22,6 +24,13 @@ export const ProductListingView: React.FC = () => {
   // Filtering
   const filteredProducts = products.filter(product => {
     if (!product.approved) return false;
+
+    // Check serviceability for the customer location (enforces 10 KM limit for local sellers)
+    const seller = sellers.find(s => s.id === product.sellerId);
+    if (!checkProductServiceability(product, seller, currentLocation)) {
+      return false;
+    }
+
     if (selectedCategory !== 'all' && product.category !== selectedCategory) return false;
     if (searchQuery) {
       const q = searchQuery.toLowerCase();

@@ -4,6 +4,7 @@ import { ProductCard } from '../product/ProductCard';
 import { ShopCard } from '../shop/ShopCard';
 import { KitchenShaktiSection } from './KitchenShaktiSection';
 import { VideoShoppingSection } from '../video/VideoShoppingSection';
+import { checkSellerServiceability } from '../../utils/location';
 import {
   Search,
   MapPin,
@@ -86,7 +87,16 @@ export const HomeView: React.FC = () => {
     ),
   ].slice(0, 10);
 
-  const localSellers = sellers.filter(s => !s.isHarwalkartDirect);
+  const localSellers = sellers.filter(s => {
+    if (s.isHarwalkartDirect) return false;
+    if (s.status !== 'approved') return false;
+    const isLocalNonGst = s.sellerType === 'local_without_gst' || !s.isGstRegistered;
+    if (isLocalNonGst) {
+      const check = checkSellerServiceability(s, currentLocation);
+      if (!check.isServiceable) return false;
+    }
+    return true;
+  });
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto px-4 py-4 animate-in fade-in">

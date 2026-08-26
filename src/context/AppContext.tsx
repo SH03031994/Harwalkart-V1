@@ -2,6 +2,9 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import {
   LocationState,
   Seller,
+  SellerType,
+  KycStatus,
+  SellerKycDoc,
   Product,
   ProductVideoAd,
   CartItem,
@@ -62,6 +65,7 @@ export interface CustomerRegistrationPayload {
 }
 
 export interface SellerRegistrationPayload {
+  sellerType: SellerType;
   ownerName: string;
   shopName: string;
   phone: string;
@@ -73,10 +77,13 @@ export interface SellerRegistrationPayload {
   businessInfo: string;
   isGstRegistered: boolean;
   gstin?: string;
-  panNumber?: string;
-  kycDocType: 'Aadhaar Card' | 'PAN Card' | 'GST Certificate' | 'Shop Act License' | 'FSSAI Registration';
+  gstDocFileName?: string;
+  panNumber: string;
+  panDocFileName?: string;
+  kycDocType: 'GST Certificate' | 'PAN Card' | 'Aadhaar Card' | 'Shop Act License' | 'FSSAI Registration' | 'Bank Passbook' | 'Electricity Bill';
   kycDocNumber: string;
   kycFileName?: string;
+  kycDocuments?: SellerKycDoc[];
 }
 
 interface AppContextType {
@@ -258,6 +265,8 @@ interface AppContextType {
   // Admin Dashboard Actions
   approveSeller: (sellerId: string) => void;
   rejectSeller: (sellerId: string, reason?: string) => void;
+  requestSellerCorrection: (sellerId: string, notes: string) => void;
+  submitSellerKycCorrection: (sellerId: string, updates: Partial<Seller>) => void;
   toggleProductApproval: (productId: string) => void;
   approveProduct: (productId: string) => void;
   rejectProduct: (productId: string) => void;
@@ -1142,18 +1151,29 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const initiateSellerRegister = (data: SellerRegistrationPayload) => {
-    if (!data.ownerName.trim()) return { success: false, error: 'Please enter owner name.' };
-    if (!data.shopName.trim()) return { success: false, error: 'Please enter shop/business name.' };
+    if (!data.ownerName.trim()) return { success: false, error: 'Please enter owner full name.' };
+    if (!data.shopName.trim()) return { success: false, error: 'Please enter shop / business name.' };
     if (!data.phone.trim() || data.phone.trim().length < 10) return { success: false, error: 'Please enter valid 10-digit mobile number.' };
     if (!data.email.trim() || !data.email.includes('@')) return { success: false, error: 'Please enter valid email address.' };
     if (!data.password || data.password.length < 6) return { success: false, error: 'Password must be at least 6 characters.' };
-    if (!data.street.trim() || !data.city.trim()) return { success: false, error: 'Please enter full shop address and city.' };
-    if (!data.pincode.trim() || data.pincode.trim().length !== 6) return { success: false, error: 'Please enter 6-digit PIN code.' };
-    if (data.isGstRegistered && (!data.gstin || data.gstin.trim().length < 10)) {
-      return { success: false, error: 'Please enter valid 15-character GSTIN number.' };
+    if (!data.street.trim() || !data.city.trim()) return { success: false, error: 'Please enter complete shop street address and city.' };
+    if (!data.pincode.trim() || data.pincode.trim().length !== 6) return { success: false, error: 'Please enter valid 6-digit Indian PIN code.' };
+    
+    // PAN is mandatory for all legal commercial entities
+    if (!data.panNumber || data.panNumber.trim().length < 10) {
+      return { success: false, error: 'Valid 10-character Business Owner PAN is mandatory for onboarding.' };
     }
-    if (!data.kycDocNumber.trim()) {
-      return { success: false, error: `Please enter your ${data.kycDocType} number for KYC verification.` };
+
+    // Option 1: GST Registered Seller
+    if (data.sellerType === 'gst') {
+      if (!data.gstin || data.gstin.trim().length !== 15) {
+        return { success: false, error: 'Option 1 (GST Registered) requires a valid 15-character GSTIN number.' };
+      }
+    }
+
+    // Option 2 / KYC Doc verification
+    if (!data.kycDocNumber || !data.kycDocNumber.trim()) {
+      return { success: false, error: `Please provide your ${data.kycDocType || 'KYC Document'} registration/ID number.` };
     }
 
     // Check if seller already exists
@@ -1161,7 +1181,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       s => s.phone.trim() === data.phone.trim() || s.email.toLowerCase() === data.email.toLowerCase().trim()
     );
     if (existing) {
-      return { success: false, error: 'A seller account with this mobile or email already exists. Please login.' };
+      return { success: false, error: 'A seller account with this mobile or email already exists. Please login to your existing account.' };
     }
 
     const otp = '123456';
@@ -1184,7 +1204,61 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
 
     const data = pendingSellerRegistration;
+    const isGst = data.sellerType === 'gst';
     const cityCoords = INDIAN_CITY_COORDINATES[data.city.trim()] || { lat: 28.6139, lng: 77.209 };
+    
+    // Construct multi-document KYC package
+    const uploadedDocs: SellerKycDoc[] = [];
+    const today = new Date().toISOString().split('T')[0];
+
+    // Document 1: PAN Card
+    if (data.panNumber) {
+      uploadedDocs.push({
+        docType: 'PAN Card',
+        docNumber: data.panNumber.trim().toUpperCase(),
+        fileName: data.panDocFileName || `${data.shopName.replace(/\s+/g, '_')}_PAN_Card.pdf`,
+        fileSize: '1.2 MB',
+        verified: false,
+        uploadedAt: today,
+        notes: 'Proprietor / Entity Permanent Account Number',
+      });
+    }
+
+    // Document 2: GST Certificate if GST Registered
+    if (isGst && data.gstin) {
+      uploadedDocs.push({
+        docType: 'GST Certificate',
+        docNumber: data.gstin.trim().toUpperCase(),
+        fileName: data.gstDocFileName || `${data.shopName.replace(/\s+/g, '_')}_GST_Reg_Certificate.pdf`,
+        fileSize: '2.4 MB',
+        verified: false,
+        uploadedAt: today,
+        notes: 'Form GST REG-06 Certificate of Registration',
+      });
+    }
+
+    // Document 3: Primary KYC Document selected
+    if (data.kycDocType && data.kycDocNumber && data.kycDocType !== 'GST Certificate' && data.kycDocType !== 'PAN Card') {
+      uploadedDocs.push({
+        docType: data.kycDocType,
+        docNumber: data.kycDocNumber.trim(),
+        fileName: data.kycFileName || `${data.shopName.replace(/\s+/g, '_')}_${data.kycDocType.replace(/\s+/g, '_')}.pdf`,
+        fileSize: '1.8 MB',
+        verified: false,
+        uploadedAt: today,
+        notes: `${data.kycDocType} verified by merchant on submission`,
+      });
+    } else if (uploadedDocs.length === 0 || (data.kycDocType && data.kycDocNumber)) {
+      uploadedDocs.push({
+        docType: data.kycDocType || (isGst ? 'GST Certificate' : 'PAN Card'),
+        docNumber: data.kycDocNumber.trim() || data.gstin || data.panNumber,
+        fileName: data.kycFileName || `${data.shopName.replace(/\s+/g, '_')}_KYC_Document.pdf`,
+        fileSize: '1.5 MB',
+        verified: false,
+        uploadedAt: today,
+      });
+    }
+
     const newSeller: Seller = {
       id: `seller_${Date.now()}`,
       name: data.ownerName.trim(),
@@ -1198,26 +1272,26 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       isOpen: true,
       openingHours: '8:00 AM - 9:00 PM',
       distanceKm: 1.5,
-      serviceablePincodes: data.isGstRegistered ? ['*'] : [data.pincode.trim()],
-      serviceRadiusKm: data.isGstRegistered ? 5000 : 10,
+      sellerType: data.sellerType,
+      kycStatus: 'under_review',
+      isRadiusLocked: !isGst,
+      serviceablePincodes: isGst ? ['*'] : [data.pincode.trim()],
+      serviceRadiusKm: isGst ? 5000 : 10,
       isHarwalkartDirect: false,
-      isGstRegistered: data.isGstRegistered,
-      gstin: data.gstin?.trim(),
-      panNumber: data.panNumber?.trim(),
-      businessInfo: data.businessInfo.trim() || 'Local neighborhood retail store',
+      isGstRegistered: isGst,
+      gstin: isGst ? data.gstin?.trim().toUpperCase() : undefined,
+      gstDocFileName: isGst ? (data.gstDocFileName || `${data.shopName.replace(/\s+/g, '_')}_GST_Certificate.pdf`) : undefined,
+      panNumber: data.panNumber?.trim().toUpperCase(),
+      panDocFileName: data.panDocFileName || `${data.shopName.replace(/\s+/g, '_')}_PAN_Card.pdf`,
+      businessInfo: data.businessInfo.trim() || (isGst ? 'GST Registered Pan-India Merchant' : 'Local Neighborhood Store (10 KM Service Area)'),
       status: 'pending', // REQUIRED: Seller account remains PENDING until Admin approves it
       walletBalance: 0,
       totalEarnings: 0,
       password: data.password,
       latitude: cityCoords.lat,
       longitude: cityCoords.lng,
-      kycDoc: {
-        docType: data.kycDocType,
-        docNumber: data.kycDocNumber.trim(),
-        fileName: data.kycFileName || `${data.shopName.replace(/\s+/g, '_')}_KYC.pdf`,
-        verified: false,
-        uploadedAt: new Date().toISOString().split('T')[0],
-      },
+      kycDoc: uploadedDocs[0],
+      kycDocuments: uploadedDocs,
       address: {
         street: data.street.trim(),
         area: `${data.city.trim()} Market`,
@@ -1229,7 +1303,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       email: data.email.trim(),
       verified: false,
       productCount: 0,
-      joinedDate: new Date().toISOString().split('T')[0],
+      joinedDate: today,
       categories: ['Grocery', 'Local Essentials'],
     };
 
@@ -1245,7 +1319,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setCurrentRole('seller');
     setPendingSellerRegistration(null);
     clearActiveOtpNotice();
-    showToast(`Registration submitted! Shop "${newSeller.shopName}" status is PENDING admin review.`);
+    
+    if (isGst) {
+      showToast(`GST Seller Registration submitted! "${newSeller.shopName}" sent for Pan-India Admin Approval. ✅`);
+    } else {
+      showToast(`Local Seller Registration submitted! "${newSeller.shopName}" (Fixed 10 KM Radius) sent for Admin Approval. ✅`);
+    }
+    
     navigate('/seller/dashboard');
     return { success: true, seller: newSeller };
   };
@@ -1417,13 +1497,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       prev.map(s => {
         if (s.id === sellerId) {
           const updatedKYC = s.kycDoc ? { ...s.kycDoc, verified: true } : undefined;
+          const updatedDocs = s.kycDocuments?.map(d => ({ ...d, verified: true })) || (updatedKYC ? [updatedKYC] : []);
           return {
             ...s,
             status: 'approved' as SellerStatus,
+            kycStatus: 'approved' as KycStatus,
             verified: true,
             isOpen: true,
             rejectionReason: undefined,
+            correctionNotes: undefined,
             kycDoc: updatedKYC,
+            kycDocuments: updatedDocs,
           };
         }
         return s;
@@ -1432,7 +1516,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (authSession.seller?.id === sellerId) {
       setAuthSession(prev => ({
         ...prev,
-        seller: prev.seller ? { ...prev.seller, status: 'approved', verified: true, isOpen: true, rejectionReason: undefined } : null,
+        seller: prev.seller
+          ? {
+              ...prev.seller,
+              status: 'approved',
+              kycStatus: 'approved',
+              verified: true,
+              isOpen: true,
+              rejectionReason: undefined,
+              correctionNotes: undefined,
+            }
+          : null,
       }));
     }
     showToast(`Seller #${sellerId} has been APPROVED! Shop is now LIVE on Harwalkart marketplace. ✅`);
@@ -1448,6 +1542,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           return {
             ...s,
             status: 'rejected' as SellerStatus,
+            kycStatus: 'rejected' as KycStatus,
             verified: false,
             isOpen: false,
             rejectionReason: finalReason,
@@ -1464,6 +1559,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           ? {
               ...prev.seller,
               status: 'rejected',
+              kycStatus: 'rejected',
               verified: false,
               isOpen: false,
               rejectionReason: finalReason,
@@ -1472,6 +1568,69 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       }));
     }
     showToast(`Seller #${sellerId} application has been REJECTED: "${finalReason}"`);
+  };
+
+  const requestSellerCorrection = (sellerId: string, notes: string) => {
+    const noteText = notes.trim() || 'Please re-upload clear KYC documents.';
+    setSellers(prev =>
+      prev.map(s => {
+        if (s.id === sellerId) {
+          return {
+            ...s,
+            status: 'pending' as SellerStatus,
+            kycStatus: 'correction_requested' as KycStatus,
+            correctionNotes: noteText,
+          };
+        }
+        return s;
+      })
+    );
+    if (authSession.seller?.id === sellerId) {
+      setAuthSession(prev => ({
+        ...prev,
+        seller: prev.seller
+          ? {
+              ...prev.seller,
+              status: 'pending',
+              kycStatus: 'correction_requested',
+              correctionNotes: noteText,
+            }
+          : null,
+      }));
+    }
+    showToast(`Correction request sent to Seller #${sellerId}: "${noteText}"`);
+  };
+
+  const submitSellerKycCorrection = (sellerId: string, updates: Partial<Seller>) => {
+    setSellers(prev =>
+      prev.map(s => {
+        if (s.id === sellerId) {
+          return {
+            ...s,
+            ...updates,
+            kycStatus: 'under_review' as KycStatus,
+            status: 'pending' as SellerStatus,
+            correctionNotes: undefined,
+          };
+        }
+        return s;
+      })
+    );
+    if (authSession.seller?.id === sellerId) {
+      setAuthSession(prev => ({
+        ...prev,
+        seller: prev.seller
+          ? {
+              ...prev.seller,
+              ...updates,
+              kycStatus: 'under_review',
+              status: 'pending',
+              correctionNotes: undefined,
+            }
+          : null,
+      }));
+    }
+    showToast('Updated KYC documents submitted for Admin review! 📄');
   };
 
   const editSeller = (sellerId: string, updates: Partial<Seller>) => {
@@ -2295,16 +2454,24 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const updateServiceablePincodes = (sellerId: string, pincodes: string[], radiusKm: number) => {
+    const target = sellers.find(s => s.id === sellerId);
+    const isLocked = target?.isRadiusLocked || target?.sellerType === 'local_without_gst' || !target?.isGstRegistered;
+    const finalRadius = isLocked ? Math.min(radiusKm, 10) : radiusKm;
+
     setSellers(prev =>
-      prev.map(s => (s.id === sellerId ? { ...s, serviceablePincodes: pincodes, serviceRadiusKm: radiusKm } : s))
+      prev.map(s => (s.id === sellerId ? { ...s, serviceablePincodes: pincodes, serviceRadiusKm: finalRadius } : s))
     );
     if (authSession.seller?.id === sellerId) {
       setAuthSession(prev => ({
         ...prev,
-        seller: prev.seller ? { ...prev.seller, serviceablePincodes: pincodes, serviceRadiusKm: radiusKm } : null,
+        seller: prev.seller ? { ...prev.seller, serviceablePincodes: pincodes, serviceRadiusKm: finalRadius } : null,
       }));
     }
-    showToast(`Target delivery area updated: ${pincodes.length} PIN codes (${radiusKm} km radius).`);
+    if (isLocked && radiusKm > 10) {
+      showToast(`Notice: As a Non-GST Local Seller, delivery radius is fixed at 10 KM limit.`);
+    } else {
+      showToast(`Target delivery area updated: ${pincodes.length} PIN codes (${finalRadius} km radius).`);
+    }
   };
 
   // Support Tickets
@@ -2657,6 +2824,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         updateServiceablePincodes,
         approveSeller,
         rejectSeller,
+        requestSellerCorrection,
+        submitSellerKycCorrection,
         toggleProductApproval,
         toggleSellerVerification,
         toggleVideoAdStatus,

@@ -1,6 +1,10 @@
 export type Role = 'customer' | 'seller' | 'admin';
 
+export type SellerType = 'gst' | 'local_without_gst';
+
 export type SellerStatus = 'pending' | 'approved' | 'rejected' | 'suspended';
+
+export type KycStatus = 'pending_kyc' | 'kyc_submitted' | 'under_review' | 'approved' | 'rejected' | 'correction_requested';
 
 export interface LocationState {
   city: string;
@@ -16,11 +20,15 @@ export interface LocationState {
 }
 
 export interface SellerKycDoc {
-  docType: 'Aadhaar Card' | 'PAN Card' | 'GST Certificate' | 'Shop Act License' | 'FSSAI Registration';
+  id?: string;
+  docType: 'GST Certificate' | 'PAN Card' | 'Aadhaar Card' | 'Shop Act License' | 'FSSAI Registration' | 'Bank Passbook' | 'Electricity Bill' | 'Shop & Establishment Act' | 'FSSAI License' | 'Trade License' | 'Bank Passbook / Cheque' | string;
   docNumber: string;
   fileName?: string;
-  verified: boolean;
-  uploadedAt: string;
+  fileUrl?: string;
+  fileSize?: string;
+  verified?: boolean;
+  uploadedAt?: string;
+  notes?: string;
 }
 
 export interface Seller {
@@ -38,14 +46,22 @@ export interface Seller {
   distanceKm: number;
   serviceablePincodes: string[];
   serviceRadiusKm: number;
+  isRadiusLocked?: boolean;
+  sellerType: SellerType;
+  kycStatus: KycStatus;
   isHarwalkartDirect: boolean;
   isGstRegistered: boolean;
   gstin?: string;
+  gstDocFileName?: string;
   panNumber?: string;
+  panDocFileName?: string;
   businessInfo?: string;
   status: SellerStatus;
   rejectionReason?: string;
+  correctionNotes?: string;
+  adminNotes?: string;
   kycDoc?: SellerKycDoc;
+  kycDocuments?: SellerKycDoc[];
   walletBalance: number;
   totalEarnings: number;
   password?: string;
