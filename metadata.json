@@ -1,0 +1,6 @@
+{
+  "name": "HARWALKART",
+  "description": "Indian local + online shopping marketplace connecting local neighbourhood shops and Harwalkart direct products.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

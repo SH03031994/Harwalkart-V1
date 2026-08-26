@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300" width="100%" height="100%">
+  <defs>
+    <!-- Purple Gradient for dynamic swoosh -->
+    <linearGradient id="purpleSwoosh" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2D0A4E" />
+      <stop offset="100%" stop-color="#4A0E4E" />
+    </linearGradient>
+    
+    <!-- Yellow Gradient for rich golden luster -->
+    <linearGradient id="goldYellow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FFB800" />
+      <stop offset="100%" stop-color="#F59E0B" />
+    </linearGradient>
+  </defs>
+
+  <g id="harwalkart-logo-vector">
+    <!-- ==================== 1. LETTER 'H' ==================== -->
+    <!-- Left vertical bar of H (Rounded Capsule) -->
+    <rect 
+      x="30" 
+      y="80" 
+      width="45" 
+      height="130" 
+      rx="16" 
+      ry="16" 
+      fill="#FFFFFF" 
+      stroke="#E2E8F0" 
+      stroke-width="2.5" 
+    />
+
+    <!-- Right vertical bar of H (Solid Golden Yellow) -->
+    <rect 
+      x="110" 
+      y="80" 
+      width="44" 
+      height="130" 
+      rx="16" 
+      ry="16" 
+      fill="url(#goldYellow)" 
+    />
+
+    <!-- Purple Swoosh Crescent under the arch -->
+    <path 
+      d="M 12 170 C 40 145, 90 142, 153 198 C 120 162, 70 152, 28 174 Z" 
+      fill="url(#purpleSwoosh)" 
+    />
+
+    <!-- Dynamic Golden-Yellow Upward Swoosh / Arch -->
+    <path 
+      d="M 12 170 C 35 125, 90 120, 175 165 C 158 152, 130 135, 105 132 C 60 128, 25 152, 12 170 Z" 
+      fill="url(#goldYellow)" 
+    />
+
+    <!-- ==================== 2. TEXT 'arwal' ==================== -->
+    <!-- 'arwal' in crisp geometric typography with white fill & subtle border -->
+    <g id="text-arwal">
+      <!-- 'a' -->
+      <path 
+        d="M 195 135 C 175 135, 160 150, 160 175 C 160 198, 175 210, 195 210 C 208 210, 218 202, 222 195 L 222 208 L 244 208 L 244 138 L 222 138 L 222 150 C 218 142, 208 135, 195 135 Z M 202 154 C 214 154, 222 163, 222 175 C 222 187, 214 193, 202 193 C 190 193, 182 185, 182 175 C 182 163, 190 154, 202 154 Z" 
+        fill="#FFFFFF" 
+        stroke="#CBD5E1" 
+        stroke-width="2" 
+        stroke-linejoin="round"
+      />
+      <!-- 'r' -->
+      <path 
+        d="M 258 138 L 280 138 L 280 152 C 285 142, 296 135, 308 136 L 308 160 C 293 158, 280 168, 280 184 L 280 208 L 258 208 Z" 
+        fill="#FFFFFF" 
+        stroke="#CBD5E1" 
+        stroke-width="2" 
+        stroke-linejoin="round"
+      />
+      <!-- 'w' -->
+      <path 
+        d="M 318 138 L 338 208 L 358 152 L 378 208 L 398 138 L 376 138 L 366 182 L 348 138 L 328 138 Z" 
+        fill="#FFFFFF" 
+        stroke="#CBD5E1" 
+        stroke-width="2" 
+        stroke-linejoin="round"
+      />
+      <!-- 'a' -->
+      <path 
+        d="M 435 135 C 415 135, 400 150, 400 175 C 400 198, 415 210, 435 210 C 448 210, 458 202, 462 195 L 462 208 L 484 208 L 484 138 L 462 138 L 462 150 C 458 142, 448 135, 435 135 Z M 442 154 C 454 154, 462 163, 462 175 C 462 187, 454 193, 442 193 C 430 193, 422 185, 422 175 C 422 163, 430 154, 442 154 Z" 
+        fill="#FFFFFF" 
+        stroke="#CBD5E1" 
+        stroke-width="2" 
+        stroke-linejoin="round"
+      />
+      <!-- 'l' -->
+      <rect 
+        x="498" 
+        y="80" 
+        width="22" 
+        height="128" 
+        rx="10" 
+        ry="10" 
+        fill="#FFFFFF" 
+        stroke="#CBD5E1" 
+        stroke-width="2" 
+      />
+    </g>
+
+    <!-- ==================== 3. TEXT 'kart' ==================== -->
+    <g id="text-kart" fill="url(#goldYellow)">
+      <!-- 'k' -->
+      <path 
+        d="M 532 80 L 554 80 L 554 154 L 582 138 L 608 138 L 574 168 L 610 208 L 582 208 L 554 176 L 554 208 L 532 208 Z" 
+      />
+      <!-- 'a' -->
+      <path 
+        d="M 645 135 C 625 135, 610 150, 610 175 C 610 198, 625 210, 645 210 C 658 210, 668 202, 672 195 L 672 208 L 694 208 L 694 138 L 672 138 L 672 150 C 668 142, 658 135, 645 135 Z M 652 154 C 664 154, 672 163, 672 175 C 672 187, 664 193, 652 193 C 640 193, 632 185, 632 175 C 632 163, 640 154, 652 154 Z" 
+      />
+      <!-- 'r' -->
+      <path 
+        d="M 708 138 L 730 138 L 730 152 C 735 142, 746 135, 758 136 L 758 160 C 743 158, 730 168, 730 184 L 730 208 L 708 208 Z" 
+      />
+      <!-- 't' -->
+      <path 
+        d="M 770 110 L 792 110 L 792 138 L 812 138 L 812 156 L 792 156 L 792 192 C 792 196, 796 200, 802 200 L 812 200 L 812 208 C 804 210, 794 210, 786 208 C 775 204, 770 196, 770 186 L 770 156 L 760 156 L 760 138 L 770 138 Z" 
+      />
+    </g>
+
+    <!-- ==================== 4. SHOPPING CART WITH SPEED LINES ==================== -->
+    <g id="shopping-cart-icon">
+      <!-- Speed / Motion Lines (3 horizontal rounded dashes) -->
+      <line x1="822" y1="168" x2="856" y2="168" stroke="url(#goldYellow)" stroke-width="7" stroke-linecap="round" />
+      <line x1="816" y1="182" x2="864" y2="182" stroke="url(#goldYellow)" stroke-width="7" stroke-linecap="round" />
+      <line x1="828" y1="196" x2="854" y2="196" stroke="url(#goldYellow)" stroke-width="7" stroke-linecap="round" />
+
+      <!-- Cart Handle & Basket Body Outline -->
+      <path 
+        d="M 795 86 C 802 86, 808 92, 812 100 L 826 130 L 974 130 C 984 130, 990 138, 986 146 L 964 190 C 960 196, 952 200, 944 200 L 860 200" 
+        fill="none" 
+        stroke="url(#goldYellow)" 
+        stroke-width="9" 
+        stroke-linecap="round" 
+        stroke-linejoin="round" 
+      />
+
+      <!-- Cart Inner Wire Slats -->
+      <line x1="846" y1="154" x2="964" y2="154" stroke="url(#goldYellow)" stroke-width="6" stroke-linecap="round" />
+      <line x1="854" y1="176" x2="946" y2="176" stroke="url(#goldYellow)" stroke-width="6" stroke-linecap="round" />
+
+      <!-- Wheel 1 (Left) -->
+      <circle cx="890" cy="226" r="14" fill="url(#goldYellow)" />
+      <circle cx="890" cy="226" r="5.5" fill="#0F172A" />
+
+      <!-- Wheel 2 (Right) -->
+      <circle cx="936" cy="226" r="14" fill="url(#goldYellow)" />
+      <circle cx="936" cy="226" r="5.5" fill="#0F172A" />
+    </g>
+  </g>
+</svg>
