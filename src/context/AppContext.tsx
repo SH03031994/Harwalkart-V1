@@ -18,6 +18,8 @@ import {
   Advertisement,
   CityHub,
   WebsiteSettings,
+  CompanyBankAccount,
+  PaymentSettings,
   DeliveryPartner,
   PayoutStatus,
 } from '../types';
@@ -165,6 +167,13 @@ interface AppContextType {
   websiteSettings: WebsiteSettings;
   updateWebsiteSettings: (updates: Partial<WebsiteSettings>) => void;
   resetWebsiteSettings: () => void;
+
+  // Company Bank Account & Payment Settings (Admin Managed)
+  companyBankAccount: CompanyBankAccount | null;
+  saveCompanyBankAccount: (account: CompanyBankAccount) => void;
+  removeCompanyBankAccount: () => void;
+  paymentSettings: PaymentSettings;
+  updatePaymentSettings: (updates: Partial<PaymentSettings>) => void;
 
   // Core Data Lists
   sellers: Seller[];
@@ -726,6 +735,52 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const saved = localStorage.getItem('hk_website_settings');
     return saved ? JSON.parse(saved) : INITIAL_WEBSITE_SETTINGS;
   });
+
+  // Company Bank Account State (Admin Private)
+  const [companyBankAccount, setCompanyBankAccount] = useState<CompanyBankAccount | null>(() => {
+    const saved = localStorage.getItem('hk_company_bank_account');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    return null;
+  });
+
+  // Payment Settings State
+  const [paymentSettings, setPaymentSettings] = useState<PaymentSettings>(() => {
+    const saved = localStorage.getItem('hk_payment_settings');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    return {
+      companyBankAccount: null,
+      enableCod: true,
+      enableUpi: true,
+      enableCards: true,
+      enableNetbanking: true,
+      merchantName: 'HARWALKART ENTERPRISES',
+      gatewayMode: 'sandbox',
+    };
+  });
+
+  useEffect(() => {
+    if (companyBankAccount) {
+      localStorage.setItem('hk_company_bank_account', JSON.stringify(companyBankAccount));
+    } else {
+      localStorage.removeItem('hk_company_bank_account');
+    }
+  }, [companyBankAccount]);
+
+  useEffect(() => {
+    localStorage.setItem('hk_payment_settings', JSON.stringify(paymentSettings));
+  }, [paymentSettings]);
 
   // Sync to localStorage
   useEffect(() => {
@@ -2020,13 +2075,91 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Website Settings Management
   const updateWebsiteSettings = (updates: Partial<WebsiteSettings>) => {
-    setWebsiteSettings(prev => ({ ...prev, ...updates }));
+    setWebsiteSettings(prev => {
+      const merged = { ...prev, ...updates };
+      // Sync to server if admin token exists
+      const token = localStorage.getItem('hk_admin_auth_token');
+      if (token) {
+        fetch('/api/admin/settings', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(merged),
+        }).catch(err => console.warn('Server settings sync notice:', err));
+      }
+      return merged;
+    });
     showToast('HARWALKART Platform Settings saved and applied across marketplace! ⚙️');
   };
 
   const resetWebsiteSettings = () => {
     setWebsiteSettings(INITIAL_WEBSITE_SETTINGS);
+    const token = localStorage.getItem('hk_admin_auth_token');
+    if (token) {
+      fetch('/api/admin/settings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(INITIAL_WEBSITE_SETTINGS),
+      }).catch(err => console.warn('Server settings reset notice:', err));
+    }
     showToast('HARWALKART Platform Settings restored to default.');
+  };
+
+  // Company Bank Account Management (Admin Private)
+  const saveCompanyBankAccount = (account: CompanyBankAccount) => {
+    const updated: CompanyBankAccount = {
+      ...account,
+      accountNumber: account.accountNumber.trim(),
+      ifscCode: account.ifscCode.trim().toUpperCase(),
+      accountHolderName: account.accountHolderName.trim(),
+      bankName: account.bankName.trim(),
+      upiId: account.upiId ? account.upiId.trim() : undefined,
+      updatedAt: new Date().toISOString(),
+    };
+    setCompanyBankAccount(updated);
+    setPaymentSettings(prev => ({ ...prev, companyBankAccount: updated }));
+
+    // Send to server if admin token exists
+    const token = localStorage.getItem('hk_admin_auth_token');
+    if (token) {
+      fetch('/api/admin/company-bank-account', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updated),
+      }).catch(err => console.warn('Server sync notice:', err));
+    }
+
+    showToast('Company Bank Account saved successfully. 🏦');
+  };
+
+  const removeCompanyBankAccount = () => {
+    setCompanyBankAccount(null);
+    setPaymentSettings(prev => ({ ...prev, companyBankAccount: null }));
+
+    const token = localStorage.getItem('hk_admin_auth_token');
+    if (token) {
+      fetch('/api/admin/company-bank-account', {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }).catch(err => console.warn('Server sync notice:', err));
+    }
+
+    showToast('Company Bank Account removed.');
+  };
+
+  const updatePaymentSettings = (updates: Partial<PaymentSettings>) => {
+    setPaymentSettings(prev => ({ ...prev, ...updates }));
+    showToast('Payment Settings updated.');
   };
 
   // --- SELLER DASHBOARD ACTIONS ---
@@ -2546,6 +2679,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         websiteSettings,
         updateWebsiteSettings,
         resetWebsiteSettings,
+        companyBankAccount,
+        saveCompanyBankAccount,
+        removeCompanyBankAccount,
+        paymentSettings,
+        updatePaymentSettings,
         addCustomer,
         editCustomer,
         toggleCustomerBlock,

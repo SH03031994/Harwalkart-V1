@@ -1563,28 +1563,148 @@ export const INITIAL_CITY_HUBS: CityHub[] = CITIES_AND_PINCODES.map((c, idx) => 
 }));
 
 export const INITIAL_WEBSITE_SETTINGS: WebsiteSettings = {
+  // 1. Basic Information
   brandName: 'HARWALKART',
   tagline: 'Every One Local Shop',
-  flagshipBrand: 'KITCHEN SHAKTI',
-  flagshipTagline: 'Har Din Ka Hissa.',
+  description: 'India’s premier hyperlocal marketplace connecting buyers to verified local neighborhood stores and 100% pure Kitchen Shakti spices.',
+  logoUrl: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=200&auto=format&fit=crop&q=80',
+  faviconUrl: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=64&auto=format&fit=crop&q=80',
   helplinePhone: '+91 9372207811',
   supportEmail: 'harwalkart@gmail.com',
+  whatsappSupportNumber: '+91 9372207811',
   officialAddress: 'Harwalkart E-Commerce Technologies Pvt. Ltd., Central Plaza, Connaught Place, New Delhi - 110001',
-  defaultCommissionRate: 2.5,
-  minWithdrawalAmount: 500,
-  freeDeliveryThreshold: 499,
-  standardDeliveryFee: 40,
-  gstNumber: '07AAACH7409R1ZZ',
-  fssaiLicense: '10021011000452',
-  enableGpsLocation: true,
-  enableDirectKitchenShakti: true,
+  registeredAddress: 'Jai Shree Ram Enterprises, Commercial Tower B, Connaught Place, New Delhi, India 110001',
+
+  // In-House Flagship Brand
+  flagshipBrand: 'KITCHEN SHAKTI',
+  flagshipTagline: 'Har Din Ka Hissa.',
+
+  // 2. Appearance
+  theme: 'amber-modern',
+  primaryColor: '#f59e0b',
+  accentColor: '#0f172a',
+  heroBannerTitle: 'Connecting Bharat To Your Neighborhood Local Shops',
+  heroBannerSubtitle: 'Fast 15-45 minute hyperlocal delivery & 100% pure Agmark certified Kitchen Shakti spices direct from source.',
+  showHeroBanner: true,
+  showCategorySection: true,
+  showTrendingSection: true,
+  showKitchenShaktiSection: true,
   announcementBannerText: '🎉 Welcome to HARWALKART! Enjoy Flat ₹100 Off on orders above ₹499 with code HARWAL100.',
   isAnnouncementActive: true,
+  footerAboutText: 'HARWALKART is India’s fast-growing multi-vendor retail platform empowering local kirana merchants, artisans, and in-house pure kitchen spices.',
+  footerCopyrightText: '© 2026 HARWALKART (Jai Shree Ram Enterprises). All rights reserved.',
   socialLinks: {
     facebook: 'https://facebook.com/harwalkart',
     instagram: 'https://instagram.com/harwalkart_official',
     youtube: 'https://youtube.com/@harwalkart',
     twitter: 'https://twitter.com/harwalkart',
+    linkedin: 'https://linkedin.com/company/harwalkart',
   },
+
+  // 3. Marketplace
+  enableCustomerRegistration: true,
+  enableSellerRegistration: true,
+  requireSellerKycApproval: true,
+  requireProductApproval: true,
+  enableProductReviews: true,
+  defaultCommissionRate: 2.5,
+  enableDirectKitchenShakti: true,
+
+  // 4. Delivery
+  localDeliveryRadiusKm: 15,
+  standardDeliveryFee: 40,
+  expressDeliveryFee: 65,
+  freeDeliveryThreshold: 499,
+  localDeliveryTime: '15-45 mins',
+  enablePanIndiaDelivery: true,
+  panIndiaDeliveryTime: '3-5 business days',
+  panIndiaDeliveryFee: 70,
+  enableCodDelivery: true,
+
+  // 5. Payment
+  enableUpiPayment: true,
+  enableCardPayment: true,
+  enableNetBankingPayment: true,
+  enableCodPayment: true,
+  enableWalletPayment: true,
+  minWithdrawalAmount: 500,
+  payoutSchedule: 'daily',
+  settlementCycleDays: 1,
+  autoApprovePayoutsBelow: 5000,
+  companyBankAccount: null,
+
+  // 6. Orders
+  orderAutoCancelUnpaidMinutes: 30,
+  enableOrderLiveTracking: true,
+  allowCustomerOrderCancellation: true,
+  orderCancellationWindowMinutes: 15,
+  allowCustomerReturns: true,
+  returnWindowDays: 7,
+  refundProcessingDays: 3,
+
+  // 7. Users & Sellers
+  requireCustomerOtpVerification: true,
+  requireCustomerEmailVerification: false,
+  requireSellerGst: true,
+  requireSellerPan: true,
+  requireSellerBankProof: true,
+  requireSellerFssai: true,
+  gstNumber: '07AAACH7409R1ZZ',
+  defaultGstPercentage: 5,
+  fssaiLicense: '10021011000452',
+  autoSuspendSellerOnReports: true,
+  maxReportThreshold: 5,
+
+  // 8. Location
+  allowedPincodes: '110001, 110002, 110003, 110005, 110006, 110011, 110015, 110019, 110020, 110025, 110028, 110034, 110048, 110075, 110085, 302001, 302002, 302003, 302012, 302017, 302020, 400001, 400050, 560001',
+  enablePincodeCheck: true,
+  operationalCities: ['New Delhi', 'Jaipur', 'Mumbai', 'Bengaluru', 'Ahmedabad', 'Pune'],
+  defaultCity: 'New Delhi',
+  defaultState: 'Delhi NCR',
+  serviceableAreasLabel: 'Pan-India Delivery for Kitchen Shakti & Hyperlocal Delivery for Verified Shops',
+  enableGpsLocation: true,
+  requirePreciseLocation: false,
+
+  // 9. Notifications
+  enableEmailNotifications: true,
+  enableSmsNotifications: true,
+  enableWhatsAppNotifications: true,
+  smsGatewayProvider: 'Default Gateway',
+  notificationSenderEmail: 'notifications@harwalkart.com',
+  notifyCustomerOnOrderPlaced: true,
+  notifyCustomerOnOutForDelivery: true,
+  notifyCustomerOnDelivered: true,
+  notifySellerOnNewOrder: true,
+  notifyDeliveryPartnerOnDispatch: true,
+
+  // 10. Security
+  enableAdmin2FA: true,
+  admin2faMethod: 'email_otp',
+  adminSessionTimeoutMinutes: 60,
+  maxFailedLoginAttempts: 5,
+  lockoutDurationMinutes: 15,
+  enableActivityLogging: true,
+  logRetentionDays: 90,
+  allowSubAdminProductDelete: false,
+  allowSubAdminPayoutApproval: false,
+
+  // 11. Legal Pages
+  termsAndConditionsText: 'Welcome to HARWALKART. By accessing or using our marketplace platform, you agree to be bound by Indian e-commerce laws, fair consumer practices, and Harwalkart terms of service. All vendor listings must represent genuine products, and buyers receive authentic fulfillment.',
+  privacyPolicyText: 'HARWALKART and Jai Shree Ram Enterprises are dedicated to safeguarding your personal and transactional information under the Digital Personal Data Protection (DPDP) Act of India. We never sell your personal information to third parties.',
+  refundPolicyText: 'If you receive damaged, defective, or incorrect items, you can request an instant return within 7 days of delivery. Refunds are credited to the original payment method or Harwalkart Wallet within 3-5 business days upon pickup verification.',
+  cancellationPolicyText: 'Customers can cancel orders directly through their dashboard within 15 minutes of placing the order, prior to merchant dispatch. Once dispatched by local delivery partners, cancellations cannot be accepted.',
+  shippingDeliveryPolicyText: 'Hyperlocal orders are fulfilled within 15 to 45 minutes from local verified neighbourhood shops. Kitchen Shakti direct pantry packages are shipped pan-India via express surface courier within 3 to 5 business days.',
+  sellerTermsText: 'Sellers must maintain active GST and valid KYC documents. Payouts are settled within 1-2 business days post order delivery. Misleading pricing, adulterated goods, or counterfeit products result in immediate account termination.',
+
+  // 12. System
+  maintenanceModeEnabled: false,
+  maintenanceMessage: 'HARWALKART is undergoing scheduled server optimization. We will be back online shortly with improved speed and services!',
+  isWebsiteLive: true,
+  offlineNoticeMessage: 'Marketplace is currently in offline mode. Please check back later or contact customer support at +91 9372207811.',
+  autoBackupEnabled: true,
+  backupFrequency: 'daily',
+  lastBackupTimestamp: new Date().toISOString(),
+  enableDebugLogs: true,
+  logLevel: 'info',
 };
 

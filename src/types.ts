@@ -359,28 +359,169 @@ export interface CityHub {
 }
 
 export interface WebsiteSettings {
+  // 1. Basic Information
   brandName: string;
   tagline: string;
-  flagshipBrand: string;
-  flagshipTagline: string;
+  description: string;
+  logoUrl: string;
+  faviconUrl: string;
   helplinePhone: string;
   supportEmail: string;
+  whatsappSupportNumber: string;
   officialAddress: string;
-  defaultCommissionRate: number; // e.g. 2.5
-  minWithdrawalAmount: number; // e.g. 500
-  freeDeliveryThreshold: number; // e.g. 499
-  standardDeliveryFee: number; // e.g. 40
-  gstNumber: string;
-  fssaiLicense: string;
-  enableGpsLocation: boolean;
-  enableDirectKitchenShakti: boolean;
+  registeredAddress?: string;
+
+  // In-House Brand (Kitchen Shakti)
+  flagshipBrand: string;
+  flagshipTagline: string;
+
+  // 2. Appearance
+  theme: 'light' | 'dark' | 'system' | 'amber-modern';
+  primaryColor: string;
+  accentColor: string;
+  heroBannerTitle: string;
+  heroBannerSubtitle: string;
+  showHeroBanner: boolean;
+  showCategorySection: boolean;
+  showTrendingSection: boolean;
+  showKitchenShaktiSection: boolean;
   announcementBannerText: string;
   isAnnouncementActive: boolean;
+  footerAboutText: string;
+  footerCopyrightText: string;
   socialLinks: {
     facebook?: string;
     instagram?: string;
     youtube?: string;
     twitter?: string;
+    linkedin?: string;
   };
+
+  // 3. Marketplace
+  enableCustomerRegistration: boolean;
+  enableSellerRegistration: boolean;
+  requireSellerKycApproval: boolean;
+  requireProductApproval: boolean;
+  enableProductReviews: boolean;
+  defaultCommissionRate: number; // e.g. 2.5
+  enableDirectKitchenShakti: boolean;
+
+  // 4. Delivery
+  localDeliveryRadiusKm: number;
+  standardDeliveryFee: number;
+  expressDeliveryFee: number;
+  freeDeliveryThreshold: number;
+  localDeliveryTime: string;
+  enablePanIndiaDelivery: boolean;
+  panIndiaDeliveryTime: string;
+  panIndiaDeliveryFee: number;
+  enableCodDelivery: boolean;
+
+  // 5. Payment
+  enableUpiPayment: boolean;
+  enableCardPayment: boolean;
+  enableNetBankingPayment: boolean;
+  enableCodPayment: boolean;
+  enableWalletPayment: boolean;
+  minWithdrawalAmount: number;
+  payoutSchedule: 'instant' | 'daily' | 'weekly' | 'manual';
+  settlementCycleDays: number;
+  autoApprovePayoutsBelow: number;
+  companyBankAccount?: CompanyBankAccount | null;
+
+  // 6. Orders
+  orderAutoCancelUnpaidMinutes: number;
+  enableOrderLiveTracking: boolean;
+  allowCustomerOrderCancellation: boolean;
+  orderCancellationWindowMinutes: number;
+  allowCustomerReturns: boolean;
+  returnWindowDays: number;
+  refundProcessingDays: number;
+
+  // 7. Users & Sellers
+  requireCustomerOtpVerification: boolean;
+  requireCustomerEmailVerification: boolean;
+  requireSellerGst: boolean;
+  requireSellerPan: boolean;
+  requireSellerBankProof: boolean;
+  requireSellerFssai: boolean;
+  gstNumber: string;
+  defaultGstPercentage: number;
+  fssaiLicense: string;
+  autoSuspendSellerOnReports: boolean;
+  maxReportThreshold: number;
+
+  // 8. Location
+  allowedPincodes: string;
+  enablePincodeCheck: boolean;
+  operationalCities: string[];
+  defaultCity: string;
+  defaultState: string;
+  serviceableAreasLabel: string;
+  enableGpsLocation: boolean;
+  requirePreciseLocation: boolean;
+
+  // 9. Notifications
+  enableEmailNotifications: boolean;
+  enableSmsNotifications: boolean;
+  enableWhatsAppNotifications: boolean;
+  smsGatewayProvider: 'Fast2SMS' | 'Twilio' | 'MSG91' | 'Default Gateway';
+  notificationSenderEmail: string;
+  notifyCustomerOnOrderPlaced: boolean;
+  notifyCustomerOnOutForDelivery: boolean;
+  notifyCustomerOnDelivered: boolean;
+  notifySellerOnNewOrder: boolean;
+  notifyDeliveryPartnerOnDispatch: boolean;
+
+  // 10. Security
+  enableAdmin2FA: boolean;
+  admin2faMethod: 'email_otp' | 'sms_otp' | 'authenticator_app';
+  adminSessionTimeoutMinutes: number;
+  maxFailedLoginAttempts: number;
+  lockoutDurationMinutes: number;
+  enableActivityLogging: boolean;
+  logRetentionDays: number;
+  allowSubAdminProductDelete: boolean;
+  allowSubAdminPayoutApproval: boolean;
+
+  // 11. Legal Pages
+  termsAndConditionsText: string;
+  privacyPolicyText: string;
+  refundPolicyText: string;
+  cancellationPolicyText: string;
+  shippingDeliveryPolicyText: string;
+  sellerTermsText: string;
+
+  // 12. System
+  maintenanceModeEnabled: boolean;
+  maintenanceMessage: string;
+  isWebsiteLive: boolean;
+  offlineNoticeMessage: string;
+  autoBackupEnabled: boolean;
+  backupFrequency: 'hourly' | 'daily' | 'weekly';
+  lastBackupTimestamp: string;
+  enableDebugLogs: boolean;
+  logLevel: 'info' | 'warn' | 'error';
+}
+
+export interface CompanyBankAccount {
+  accountHolderName: string;
+  bankName: string;
+  accountNumber: string;
+  ifscCode: string;
+  upiId?: string;
+  accountType?: 'Current' | 'Savings' | 'Overdraft';
+  branchName?: string;
+  updatedAt?: string;
+}
+
+export interface PaymentSettings {
+  companyBankAccount: CompanyBankAccount | null;
+  enableCod: boolean;
+  enableUpi: boolean;
+  enableCards: boolean;
+  enableNetbanking: boolean;
+  merchantName?: string;
+  gatewayMode?: 'sandbox' | 'disabled' | 'live';
 }
 

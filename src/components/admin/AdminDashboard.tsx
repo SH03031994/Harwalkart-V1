@@ -251,6 +251,7 @@ export const AdminDashboard: React.FC = () => {
           </button>
 
           <button
+            id="admin-nav-payments"
             onClick={() => setActiveTab('payments')}
             className={`w-full flex items-center justify-between p-3 rounded-2xl transition-colors cursor-pointer ${
               activeTab === 'payments' ? 'bg-amber-500 text-slate-950 shadow-xs font-black' : 'text-slate-700 hover:bg-slate-100'
@@ -258,7 +259,7 @@ export const AdminDashboard: React.FC = () => {
           >
             <div className="flex items-center gap-2.5">
               <Wallet className="w-4 h-4" />
-              <span>Withdrawals & Payouts</span>
+              <span>Payment Settings & Bank</span>
             </div>
             {pendingWithdrawals.length > 0 ? (
               <span className="text-[10px] bg-red-500 text-white px-2 py-0.5 rounded-full font-black">
