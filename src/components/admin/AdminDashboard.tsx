@@ -46,6 +46,7 @@ export const AdminDashboard: React.FC = () => {
     categories,
     advertisements,
     cityHubs,
+    authSession,
     adminLogout,
   } = useApp();
 
@@ -90,7 +91,7 @@ export const AdminDashboard: React.FC = () => {
               </span>
             </div>
             <p className="text-xs text-slate-400 mt-0.5">
-              Platform Governance, KYC Verification, Settlement Approvals & PAN-India Operations
+              Authenticated: <span className="text-amber-400 font-bold">{authSession.admin?.name || 'Jai Shree Ram Enterprises (Admin)'}</span> ({authSession.admin?.email || 'jaishreeramenterprises24@gmail.com'})
             </p>
           </div>
         </div>

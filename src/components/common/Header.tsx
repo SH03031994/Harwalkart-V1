@@ -102,6 +102,20 @@ export const Header: React.FC = () => {
 
           {/* Right: Portal / Action Links */}
           <div className="flex items-center gap-3 text-xs font-medium text-slate-300">
+            {/* Admin Console Active Button in Top Bar (Shown ONLY to authenticated admin) */}
+            {authSession.role === 'admin' && authSession.isAuthenticated && (
+              <>
+                <button
+                  onClick={() => navigate('/admin/dashboard')}
+                  className="flex items-center gap-1.5 bg-red-600 hover:bg-red-500 text-white font-black px-3 py-1 rounded-full text-xs shadow-md transition-all cursor-pointer animate-pulse"
+                >
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  <span>Admin Console (Active)</span>
+                </button>
+                <span className="text-slate-700">|</span>
+              </>
+            )}
+
             {/* Become a Seller */}
             <button
               onClick={() => {
@@ -319,11 +333,18 @@ export const Header: React.FC = () => {
                     </p>
                     {authSession.isAuthenticated ? (
                       <div className="mt-1">
-                        <p className="text-sm font-black text-slate-900 truncate">
-                          {authSession.customer?.name || authSession.seller?.shopName || authSession.admin?.name}
-                        </p>
+                        <div className="flex items-center gap-1.5">
+                          <p className="text-sm font-black text-slate-900 truncate">
+                            {authSession.admin?.name || authSession.seller?.shopName || authSession.customer?.name}
+                          </p>
+                          {authSession.role === 'admin' && (
+                            <span className="bg-red-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded-sm">
+                              ADMIN
+                            </span>
+                          )}
+                        </div>
                         <p className="text-xs text-slate-500 truncate">
-                          {authSession.customer?.phone ? `+91 ${authSession.customer.phone}` : authSession.seller?.email || authSession.admin?.email}
+                          {authSession.admin?.email || authSession.seller?.email || (authSession.customer?.phone ? `+91 ${authSession.customer.phone}` : authSession.customer?.email)}
                         </p>
                       </div>
                     ) : (
@@ -334,57 +355,126 @@ export const Header: React.FC = () => {
                     )}
                   </div>
 
-                  {/* Customer Panel Access */}
-                  <div className="py-2 px-3">
-                    <div className="text-[10px] font-black uppercase text-amber-800 tracking-wider px-2 mb-1">
-                      Customer Panel
-                    </div>
-                    {authSession.role === 'customer' && authSession.isAuthenticated ? (
-                      <div className="space-y-1">
+                  {/* 1. ADMIN USER CONSOLE (If logged in as Admin) */}
+                  {authSession.role === 'admin' && authSession.isAuthenticated ? (
+                    <div className="py-2 px-3 border-b border-slate-100">
+                      <div className="text-[10px] font-black uppercase text-red-700 tracking-wider px-2 mb-1.5 flex items-center justify-between">
+                        <span>Administrator Master Hub</span>
+                        <span className="w-2 h-2 rounded-full bg-red-600 animate-ping"></span>
+                      </div>
+                      <div className="space-y-1.5">
                         <button
                           onClick={() => {
                             setIsUserMenuOpen(false);
-                            navigate('/customer/dashboard');
+                            navigate('/admin/dashboard');
                           }}
-                          className="w-full text-left px-3 py-2 text-xs font-bold text-slate-800 hover:bg-amber-50 hover:text-amber-900 rounded-xl flex items-center gap-2 cursor-pointer"
+                          className="w-full py-2.5 px-3 bg-red-600 hover:bg-red-700 text-white font-black text-xs rounded-xl flex items-center justify-center gap-2 cursor-pointer shadow-md transition-all"
                         >
-                          <User className="w-4 h-4 text-amber-600" />
-                          <span>Customer Dashboard (Orders & Profile)</span>
+                          <ShieldCheck className="w-4 h-4" />
+                          <span>Open Master Admin Console</span>
                         </button>
+
+                        <div className="grid grid-cols-2 gap-1 pt-1">
+                          <button
+                            onClick={() => {
+                              setIsUserMenuOpen(false);
+                              navigate('/admin/dashboard');
+                            }}
+                            className="text-left px-2 py-1.5 text-[11px] font-bold text-slate-700 hover:bg-slate-100 rounded-lg cursor-pointer truncate"
+                          >
+                            ✓ KYC Approvals
+                          </button>
+                          <button
+                            onClick={() => {
+                              setIsUserMenuOpen(false);
+                              navigate('/admin/dashboard');
+                            }}
+                            className="text-left px-2 py-1.5 text-[11px] font-bold text-slate-700 hover:bg-slate-100 rounded-lg cursor-pointer truncate"
+                          >
+                            💳 Settlements
+                          </button>
+                        </div>
+
                         <button
                           onClick={() => {
                             setIsUserMenuOpen(false);
-                            customerLogout();
+                            adminLogout();
                           }}
-                          className="w-full text-left px-3 py-1.5 text-xs font-bold text-rose-600 hover:bg-rose-50 rounded-xl flex items-center gap-2 cursor-pointer"
+                          className="w-full text-left px-3 py-1.5 text-xs font-bold text-rose-600 hover:bg-rose-50 rounded-xl flex items-center gap-2 cursor-pointer mt-1"
                         >
                           <LogOut className="w-4 h-4" />
-                          <span>Sign Out</span>
+                          <span>Sign Out of Admin Console</span>
                         </button>
                       </div>
-                    ) : (
-                      <div className="flex gap-2 p-1">
-                        <button
-                          onClick={() => {
-                            setIsUserMenuOpen(false);
-                            navigate('/customer/login');
-                          }}
-                          className="flex-1 py-2 px-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl text-center cursor-pointer shadow-xs"
-                        >
-                          Login
-                        </button>
-                        <button
-                          onClick={() => {
-                            setIsUserMenuOpen(false);
-                            navigate('/customer/register');
-                          }}
-                          className="flex-1 py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold text-xs rounded-xl text-center cursor-pointer"
-                        >
-                          Register
-                        </button>
+                    </div>
+                  ) : (
+                    /* Customer Panel Access */
+                    <div className="py-2 px-3">
+                      <div className="text-[10px] font-black uppercase text-amber-800 tracking-wider px-2 mb-1">
+                        Customer Panel
                       </div>
-                    )}
-                  </div>
+                      {authSession.role === 'customer' && authSession.isAuthenticated ? (
+                        <div className="space-y-1">
+                          <button
+                            onClick={() => {
+                              setIsUserMenuOpen(false);
+                              navigate('/customer/dashboard');
+                            }}
+                            className="w-full text-left px-3 py-2 text-xs font-bold text-slate-800 hover:bg-amber-50 hover:text-amber-900 rounded-xl flex items-center gap-2 cursor-pointer"
+                          >
+                            <User className="w-4 h-4 text-amber-600" />
+                            <span>Customer Dashboard (Orders & Profile)</span>
+                          </button>
+
+                          {/* Authorized Admin shortcut if customer is authorized */}
+                          {['jaishreeramenterprises24@gmail.com', 'admin@harwalkart.com', 'harwalkart@gmail.com'].includes(authSession.customer?.email?.toLowerCase() || '') && (
+                            <button
+                              onClick={() => {
+                                setIsUserMenuOpen(false);
+                                navigate('/admin/dashboard');
+                              }}
+                              className="w-full text-left px-3 py-1.5 text-xs font-bold text-red-600 hover:bg-red-50 rounded-xl flex items-center gap-2 cursor-pointer"
+                            >
+                              <ShieldCheck className="w-4 h-4 text-red-600" />
+                              <span>Switch to Admin Console</span>
+                            </button>
+                          )}
+
+                          <button
+                            onClick={() => {
+                              setIsUserMenuOpen(false);
+                              customerLogout();
+                            }}
+                            className="w-full text-left px-3 py-1.5 text-xs font-bold text-rose-600 hover:bg-rose-50 rounded-xl flex items-center gap-2 cursor-pointer"
+                          >
+                            <LogOut className="w-4 h-4" />
+                            <span>Sign Out</span>
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="flex gap-2 p-1">
+                          <button
+                            onClick={() => {
+                              setIsUserMenuOpen(false);
+                              navigate('/customer/login');
+                            }}
+                            className="flex-1 py-2 px-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl text-center cursor-pointer shadow-xs"
+                          >
+                            Login
+                          </button>
+                          <button
+                            onClick={() => {
+                              setIsUserMenuOpen(false);
+                              navigate('/customer/register');
+                            }}
+                            className="flex-1 py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold text-xs rounded-xl text-center cursor-pointer"
+                          >
+                            Register
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
 
                   {/* Seller & Business Links */}
                   <div className="border-t border-slate-100 pt-2 px-3">
@@ -403,22 +493,8 @@ export const Header: React.FC = () => {
                       className="w-full text-left px-3 py-1.5 text-xs font-bold text-slate-700 hover:bg-amber-50 hover:text-amber-900 rounded-xl flex items-center gap-2 cursor-pointer"
                     >
                       <Store className="w-4 h-4 text-amber-600" />
-                      <span>Seller Portal</span>
+                      <span>{authSession.role === 'seller' && authSession.isAuthenticated ? 'Seller Dashboard' : 'Seller Portal / Login'}</span>
                     </button>
-
-                    {/* Admin link shown ONLY if currently authenticated as admin */}
-                    {authSession.role === 'admin' && authSession.isAuthenticated && (
-                      <button
-                        onClick={() => {
-                          setIsUserMenuOpen(false);
-                          navigate('/admin/dashboard');
-                        }}
-                        className="w-full text-left px-3 py-1.5 text-xs font-bold text-red-600 hover:bg-red-50 rounded-xl flex items-center gap-2 cursor-pointer mt-1"
-                      >
-                        <ShieldCheck className="w-4 h-4 text-red-600" />
-                        <span>Admin Console</span>
-                      </button>
-                    )}
                   </div>
                 </div>
               </>
@@ -539,6 +615,24 @@ export const Header: React.FC = () => {
               >
                 New Arrivals
               </button>
+
+              {/* Admin Console Tab - Shown ONLY when authenticated as Admin */}
+              {authSession.role === 'admin' && authSession.isAuthenticated && (
+                <button
+                  onClick={() => navigate('/admin/dashboard')}
+                  className={`px-3 py-2 text-xs sm:text-sm font-black transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
+                    currentView === 'admin-dashboard'
+                      ? 'text-red-600 font-extrabold after:content-[""] after:absolute after:bottom-0 after:left-3 after:right-3 after:h-0.5 after:bg-red-600'
+                      : 'text-red-600 hover:text-red-700'
+                  }`}
+                >
+                  <ShieldCheck className="w-4 h-4 text-red-600" />
+                  <span>Admin Console</span>
+                  <span className="bg-red-600 text-white text-[9px] font-black uppercase px-1.5 py-0.5 rounded-sm">
+                    ACTIVE
+                  </span>
+                </button>
+              )}
             </div>
           </div>
         </div>

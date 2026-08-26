@@ -292,8 +292,36 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return '/';
   };
 
+  const getInitialView = () => {
+    const path = getInitialPath();
+    if (path === '/' || path === '/home') return 'home';
+    if (path === '/customer/dashboard') return 'customer-dashboard';
+    if (path === '/customer/login') return 'customer-login';
+    if (path === '/customer/register') return 'customer-register';
+    if (path === '/customer/forgot-password') return 'customer-forgot-password';
+    if (path === '/seller/dashboard') return 'seller-dashboard';
+    if (path === '/seller/login') return 'seller-login';
+    if (path === '/seller/register') return 'seller-register';
+    if (path === '/seller/forgot-password') return 'seller-forgot-password';
+    if (path === '/admin/dashboard' || path === '/admin/panel') return 'admin-dashboard';
+    if (path === '/admin/login') return 'admin-login';
+    if (path === '/admin/forgot-password') return 'admin-forgot-password';
+    if (path === '/products') return 'products';
+    if (path === '/shops') return 'shops';
+    if (path === '/kitchen-shakti') return 'kitchen-shakti';
+    if (path === '/video-shopping' || path === '/video-ads') return 'video-ads';
+    if (path === '/cart') return 'cart';
+    if (path === '/checkout') return 'checkout';
+    if (path === '/order-tracking') return 'order-tracking';
+    if (path === '/support') return 'support';
+    if (['/about-us', '/privacy-policy', '/terms-conditions', '/refund-policy', '/shipping-policy', '/cancellation-policy', '/gst-compliance'].includes(path)) {
+      return 'cms-page';
+    }
+    return 'home';
+  };
+
   const [currentPath, setCurrentPath] = useState<string>(getInitialPath);
-  const [currentView, setCurrentViewState] = useState<string>('home');
+  const [currentView, setCurrentViewState] = useState<string>(getInitialView);
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
   const [selectedShopId, setSelectedShopId] = useState<string | null>(null);
   const [selectedCmsPage, setSelectedCmsPage] = useState<string | null>(null);
@@ -825,7 +853,32 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   useEffect(() => {
     const handlePopState = () => {
       if (typeof window !== 'undefined') {
-        setCurrentPath(window.location.pathname || '/');
+        const path = window.location.pathname || '/';
+        setCurrentPath(path);
+        if (path === '/' || path === '/home') setCurrentViewState('home');
+        else if (path === '/customer/dashboard') setCurrentViewState('customer-dashboard');
+        else if (path === '/customer/login') setCurrentViewState('customer-login');
+        else if (path === '/customer/register') setCurrentViewState('customer-register');
+        else if (path === '/customer/forgot-password') setCurrentViewState('customer-forgot-password');
+        else if (path === '/seller/dashboard') setCurrentViewState('seller-dashboard');
+        else if (path === '/seller/login') setCurrentViewState('seller-login');
+        else if (path === '/seller/register') setCurrentViewState('seller-register');
+        else if (path === '/seller/forgot-password') setCurrentViewState('seller-forgot-password');
+        else if (path === '/admin/dashboard' || path === '/admin/panel') setCurrentViewState('admin-dashboard');
+        else if (path === '/admin/login') setCurrentViewState('admin-login');
+        else if (path === '/admin/forgot-password') setCurrentViewState('admin-forgot-password');
+        else if (path === '/products') setCurrentViewState('products');
+        else if (path === '/shops') setCurrentViewState('shops');
+        else if (path === '/kitchen-shakti') setCurrentViewState('kitchen-shakti');
+        else if (path === '/video-shopping' || path === '/video-ads') setCurrentViewState('video-ads');
+        else if (path === '/cart') setCurrentViewState('cart');
+        else if (path === '/checkout') setCurrentViewState('checkout');
+        else if (path === '/order-tracking') setCurrentViewState('order-tracking');
+        else if (path === '/support') setCurrentViewState('support');
+        else if (['/about-us', '/privacy-policy', '/terms-conditions', '/refund-policy', '/shipping-policy', '/cancellation-policy', '/gst-compliance'].includes(path)) {
+          setSelectedCmsPage(path.replace('/', ''));
+          setCurrentViewState('cms-page');
+        }
       }
     };
     window.addEventListener('popstate', handlePopState);

@@ -5,9 +5,9 @@ import { Shield, Lock, Mail, ArrowRight, ShieldCheck, KeyRound, AlertCircle, Spa
 
 export const AdminForgotPassword: React.FC = () => {
   const { initiateAdminForgotPassword, resetAdminPassword, navigate, showToast } = useApp();
-  const [email, setEmail] = useState('admin@harwalkart.com');
+  const [email, setEmail] = useState('');
   const [step, setStep] = useState<'request' | 'reset'>('request');
-  const [otp, setOtp] = useState('123456');
+  const [otp, setOtp] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -101,14 +101,10 @@ export const AdminForgotPassword: React.FC = () => {
                     required
                     value={email}
                     onChange={e => setEmail(e.target.value)}
-                    placeholder="admin@harwalkart.com"
+                    placeholder="e.g. admin@harwalkart.com"
                     className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-900 focus:bg-white focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-400/20"
                   />
                 </div>
-              </div>
-
-              <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-600">
-                💡 Authorized Admin Email: <strong>admin@harwalkart.com</strong>
               </div>
 
               <button
