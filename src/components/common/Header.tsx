@@ -386,37 +386,39 @@ export const Header: React.FC = () => {
                     )}
                   </div>
 
-                  {/* Seller & Admin Shortcuts */}
+                  {/* Seller & Business Links */}
                   <div className="border-t border-slate-100 pt-2 px-3">
                     <div className="text-[10px] font-black uppercase text-slate-400 tracking-wider px-2 mb-1">
-                      Business & Management
+                      Business & Seller Hub
                     </div>
                     <button
                       onClick={() => {
                         setIsUserMenuOpen(false);
-                        if (authSession.role !== 'seller' || !authSession.isAuthenticated) {
-                          sellerLogin('sharma.kirana@harwalkart.com', 'password123');
+                        if (authSession.role === 'seller' && authSession.isAuthenticated) {
+                          navigate('/seller/dashboard');
+                        } else {
+                          navigate('/seller/login');
                         }
-                        navigate('/seller/dashboard');
                       }}
                       className="w-full text-left px-3 py-1.5 text-xs font-bold text-slate-700 hover:bg-amber-50 hover:text-amber-900 rounded-xl flex items-center gap-2 cursor-pointer"
                     >
                       <Store className="w-4 h-4 text-amber-600" />
                       <span>Seller Portal</span>
                     </button>
-                    <button
-                      onClick={() => {
-                        setIsUserMenuOpen(false);
-                        if (authSession.role !== 'admin' || !authSession.isAuthenticated) {
-                          adminLogin('admin@harwalkart.com', 'AdminHarwal@2025');
-                        }
-                        navigate('/admin/dashboard');
-                      }}
-                      className="w-full text-left px-3 py-1.5 text-xs font-bold text-red-600 hover:bg-red-50 rounded-xl flex items-center gap-2 cursor-pointer"
-                    >
-                      <ShieldCheck className="w-4 h-4 text-red-600" />
-                      <span>Admin Panel</span>
-                    </button>
+
+                    {/* Admin link shown ONLY if currently authenticated as admin */}
+                    {authSession.role === 'admin' && authSession.isAuthenticated && (
+                      <button
+                        onClick={() => {
+                          setIsUserMenuOpen(false);
+                          navigate('/admin/dashboard');
+                        }}
+                        className="w-full text-left px-3 py-1.5 text-xs font-bold text-red-600 hover:bg-red-50 rounded-xl flex items-center gap-2 cursor-pointer mt-1"
+                      >
+                        <ShieldCheck className="w-4 h-4 text-red-600" />
+                        <span>Admin Console</span>
+                      </button>
+                    )}
                   </div>
                 </div>
               </>

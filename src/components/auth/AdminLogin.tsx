@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { Logo } from '../common/Logo';
-import { Shield, Lock, Mail, ArrowRight, ShieldCheck, KeyRound, Sparkles, AlertCircle } from 'lucide-react';
+import { Shield, Lock, Mail, ArrowRight, ShieldCheck, AlertCircle } from 'lucide-react';
 
 export const AdminLogin: React.FC = () => {
-  const { adminLogin, navigate, showToast } = useApp();
-  const [email, setEmail] = useState('admin@harwalkart.com');
-  const [password, setPassword] = useState('Harwal@Admin2026');
+  const { adminLogin, navigate } = useApp();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -19,16 +19,9 @@ export const AdminLogin: React.FC = () => {
       const res = adminLogin(email, password);
       setIsLoading(false);
       if (!res.success) {
-        setErrorMessage(res.error || 'Invalid administrative credentials.');
+        setErrorMessage(res.error || 'Access Denied: Unrecognized administrator credentials or unauthorized email.');
       }
     }, 400);
-  };
-
-  const handleQuickAdminDemo = () => {
-    setEmail('admin@harwalkart.com');
-    setPassword('Harwal@Admin2026');
-    setErrorMessage(null);
-    showToast('Loaded Central Admin credentials');
   };
 
   return (
@@ -55,7 +48,7 @@ export const AdminLogin: React.FC = () => {
           <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-900 flex items-start gap-2">
             <Shield className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
             <div>
-              <strong>Security Protocol:</strong> Access restricted to authorized HARWALKART operations personnel. All activities are audited and logged.
+              <strong>Restricted Access:</strong> Only authenticated and authorized HARWALKART administrator accounts can access this console. All attempts are monitored and recorded.
             </div>
           </div>
 
@@ -69,7 +62,7 @@ export const AdminLogin: React.FC = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                Admin Email ID
+                Authorized Admin Email ID
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -108,7 +101,7 @@ export const AdminLogin: React.FC = () => {
                   required
                   value={password}
                   onChange={e => setPassword(e.target.value)}
-                  placeholder="Enter admin password"
+                  placeholder="Enter administrator password"
                   className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-900 focus:bg-white focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-400/20"
                 />
               </div>
@@ -124,36 +117,17 @@ export const AdminLogin: React.FC = () => {
               ) : (
                 <>
                   <ShieldCheck className="w-4 h-4 text-amber-400" />
-                  <span>Authenticate & Enter Admin Panel</span>
+                  <span>Authenticate & Enter Admin Console</span>
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
             </button>
           </form>
-
-          {/* Quick 1-Click Demo Login button */}
-          <div className="p-3.5 bg-amber-50/70 border border-amber-200 rounded-2xl space-y-2">
-            <div className="flex items-center justify-between text-xs">
-              <span className="font-bold text-amber-950 flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-amber-600" /> Demo Admin Access
-              </span>
-              <button
-                type="button"
-                onClick={handleQuickAdminDemo}
-                className="text-[11px] font-bold text-amber-900 hover:underline cursor-pointer"
-              >
-                Auto-fill credentials
-              </button>
-            </div>
-            <p className="text-[11px] text-slate-600">
-              Email: <strong>admin@harwalkart.com</strong> | Password: <strong>Harwal@Admin2026</strong>
-            </p>
-          </div>
         </div>
 
         {/* Security Info */}
         <div className="text-center text-xs text-slate-500 space-y-2">
-          <p>Strictly No Public Registration for Central Administrative roles.</p>
+          <p>No public registration for Central Administrative roles.</p>
           <div className="flex justify-center gap-4 text-xs font-medium">
             <button onClick={() => navigate('/customer/login')} className="hover:text-slate-800 underline cursor-pointer">
               Customer Portal

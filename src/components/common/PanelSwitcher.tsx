@@ -9,7 +9,6 @@ import {
   Sparkles,
   ChevronUp,
   ChevronDown,
-  Lock,
   CheckCircle,
 } from 'lucide-react';
 
@@ -18,30 +17,22 @@ export const PanelSwitcher: React.FC = () => {
     authSession,
     customerLogin,
     sellerLogin,
-    adminLogin,
     navigate,
-    currentView,
     showToast,
   } = useApp();
 
   const [isOpen, setIsOpen] = useState(false);
 
   const handleQuickCustomer = () => {
-    customerLogin('9876543210', 'password123');
+    customerLogin('rahul.verma@example.com', 'customer123');
     navigate('/customer/dashboard');
-    showToast('Switched to Customer Panel (Logged in as Rahul Verma)');
+    showToast('Customer Portal: Viewing as Rahul Verma');
   };
 
   const handleQuickSeller = () => {
-    sellerLogin('sharma.kirana@harwalkart.com', 'password123');
+    sellerLogin('sharmakirana.delhi@gmail.com', 'seller123');
     navigate('/seller/dashboard');
-    showToast('Switched to Seller Panel (Logged in as Sharma Kirana Store)');
-  };
-
-  const handleQuickAdmin = () => {
-    adminLogin('admin@harwalkart.com', 'AdminHarwal@2025');
-    navigate('/admin/dashboard');
-    showToast('Switched to Admin Master Panel (Logged in as Super Admin)');
+    showToast('Seller Portal: Viewing Sharma Kirana Store (Approved)');
   };
 
   return (
@@ -51,17 +42,17 @@ export const PanelSwitcher: React.FC = () => {
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="flex items-center gap-2 text-xs font-black text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
-          title="Switch between Customer, Seller, and Admin Panels"
+          title="Switch between Customer and Seller Portals"
         >
           <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
-          <span className="hidden sm:inline">3-IN-1 PORTALS:</span>
+          <span className="hidden sm:inline">PORTALS:</span>
           <span className="bg-amber-500 text-slate-950 px-2 py-0.5 rounded-md font-extrabold text-[11px]">
             {authSession.isAuthenticated
               ? authSession.role === 'customer'
                 ? '🛍️ Customer View'
                 : authSession.role === 'seller'
                 ? '🏪 Seller View'
-                : '👑 Admin View'
+                : '🛡️ Admin Console'
               : '⚡ Switch Portal'}
           </span>
           {isOpen ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronUp className="w-3.5 h-3.5" />}
@@ -97,18 +88,17 @@ export const PanelSwitcher: React.FC = () => {
             <span className="hidden md:inline text-[11px]">Seller</span>
           </button>
 
-          <button
-            onClick={handleQuickAdmin}
-            className={`p-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 cursor-pointer ${
-              authSession.role === 'admin' && authSession.isAuthenticated
-                ? 'bg-red-600 text-white'
-                : 'text-slate-300 hover:bg-slate-800 hover:text-red-400'
-            }`}
-            title="Admin Panel"
-          >
-            <ShieldCheck className="w-3.5 h-3.5" />
-            <span className="hidden md:inline text-[11px]">Admin</span>
-          </button>
+          {/* Admin link shown ONLY if currently authenticated as admin */}
+          {authSession.role === 'admin' && authSession.isAuthenticated && (
+            <button
+              onClick={() => navigate('/admin/dashboard')}
+              className="p-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 cursor-pointer bg-red-600 text-white"
+              title="Admin Console"
+            >
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span className="hidden md:inline text-[11px]">Admin Console</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -118,10 +108,10 @@ export const PanelSwitcher: React.FC = () => {
           <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
             <div>
               <h4 className="text-xs font-black uppercase text-amber-400 tracking-wider">
-                HARWALKART 3-Panel Switcher
+                HARWALKART Marketplace Portals
               </h4>
               <p className="text-[11px] text-slate-400">
-                Instantly explore all 3 operational panels
+                Explore Customer and Merchant features
               </p>
             </div>
             <button
@@ -183,7 +173,7 @@ export const PanelSwitcher: React.FC = () => {
                   </div>
                   <div>
                     <h5 className="text-xs font-bold text-white">2. Seller Hub / Panel</h5>
-                    <p className="text-[10px] text-slate-400">Products, Stock, Store Orders, Video Ads, Payouts</p>
+                    <p className="text-[10px] text-slate-400">Products, Stock, Orders, Settlements</p>
                   </div>
                 </div>
                 {authSession.role === 'seller' && authSession.isAuthenticated && (
@@ -215,46 +205,37 @@ export const PanelSwitcher: React.FC = () => {
               </div>
             </div>
 
-            {/* 3. Admin Panel */}
-            <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-3 hover:border-red-500/50 transition-colors">
-              <div className="flex items-center justify-between mb-1.5">
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-lg bg-red-500/20 text-red-400 flex items-center justify-center font-black">
-                    <ShieldCheck className="w-4 h-4" />
+            {/* Admin Panel Card - ONLY visible if authenticated admin */}
+            {authSession.role === 'admin' && authSession.isAuthenticated && (
+              <div className="bg-slate-900/90 border border-red-500/50 rounded-2xl p-3">
+                <div className="flex items-center justify-between mb-1.5">
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-lg bg-red-500/20 text-red-400 flex items-center justify-center font-black">
+                      <ShieldCheck className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h5 className="text-xs font-bold text-white">Admin Master Panel</h5>
+                      <p className="text-[10px] text-slate-400">KYC Approvals, Products, Settlements</p>
+                    </div>
                   </div>
-                  <div>
-                    <h5 className="text-xs font-bold text-white">3. Admin Master Panel</h5>
-                    <p className="text-[10px] text-slate-400">KYC Approvals, Products, Payouts, PIN Codes</p>
-                  </div>
-                </div>
-                {authSession.role === 'admin' && authSession.isAuthenticated && (
                   <span className="flex items-center gap-1 text-[10px] text-red-400 font-bold bg-red-950 px-2 py-0.5 rounded-md border border-red-800">
                     <CheckCircle className="w-3 h-3" /> Active
                   </span>
-                )}
+                </div>
+                <div className="pt-1">
+                  <button
+                    onClick={() => {
+                      navigate('/admin/dashboard');
+                      setIsOpen(false);
+                    }}
+                    className="w-full py-1.5 px-2 bg-red-600 hover:bg-red-500 text-white font-black text-xs rounded-xl flex items-center justify-center gap-1 cursor-pointer transition-all"
+                  >
+                    <span>Open Master Admin</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </div>
               </div>
-              <div className="flex gap-2 pt-1">
-                <button
-                  onClick={() => {
-                    handleQuickAdmin();
-                    setIsOpen(false);
-                  }}
-                  className="flex-1 py-1.5 px-2 bg-red-600 hover:bg-red-500 text-white font-black text-xs rounded-xl flex items-center justify-center gap-1 cursor-pointer transition-all"
-                >
-                  <span>Open Master Admin</span>
-                  <ArrowRight className="w-3 h-3" />
-                </button>
-                <button
-                  onClick={() => {
-                    navigate('/admin/login');
-                    setIsOpen(false);
-                  }}
-                  className="py-1.5 px-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded-xl cursor-pointer"
-                >
-                  Admin Login
-                </button>
-              </div>
-            </div>
+            )}
 
             {/* Marketplace Home */}
             <div className="pt-1">

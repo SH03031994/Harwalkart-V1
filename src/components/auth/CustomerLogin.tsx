@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { Logo } from '../common/Logo';
-import { Mail, Lock, Smartphone, ArrowRight, ShieldCheck, UserCheck, KeyRound, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Mail, Lock, Smartphone, ArrowRight, ShieldCheck } from 'lucide-react';
 
 export const CustomerLogin: React.FC = () => {
-  const { customerLogin, navigate, showToast } = useApp();
-  const [identifier, setIdentifier] = useState('rahul.verma@example.com');
-  const [password, setPassword] = useState('customer123');
+  const { customerLogin, navigate } = useApp();
+  const [identifier, setIdentifier] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -19,16 +19,9 @@ export const CustomerLogin: React.FC = () => {
       const res = customerLogin(identifier, password);
       setIsLoading(false);
       if (!res.success) {
-        setErrorMessage(res.error || 'Authentication failed. Please check credentials.');
+        setErrorMessage(res.error || 'Authentication failed. Please check your mobile or email and password.');
       }
-    }, 400);
-  };
-
-  const handleDemoFill = (email: string) => {
-    setIdentifier(email);
-    setPassword('customer123');
-    setErrorMessage(null);
-    showToast(`Filled demo credentials for ${email}`);
+    }, 300);
   };
 
   return (
@@ -123,36 +116,6 @@ export const CustomerLogin: React.FC = () => {
             </button>
           </form>
 
-          {/* Quick Demo Login Preset Helper */}
-          <div className="p-4 bg-amber-50/70 border border-amber-200/80 rounded-2xl space-y-2.5">
-            <div className="flex items-center gap-1.5 text-xs font-bold text-amber-950">
-              <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-              <span>1-Click Demo Customer Fill:</span>
-            </div>
-            <div className="grid grid-cols-2 gap-2 text-xs">
-              <button
-                type="button"
-                onClick={() => handleDemoFill('rahul.verma@example.com')}
-                className="p-2 bg-white border border-amber-300 hover:border-amber-500 rounded-xl text-left font-medium text-slate-800 hover:bg-amber-100/50 transition-all cursor-pointer"
-              >
-                <div className="font-bold text-[11px] text-amber-900 flex items-center gap-1">
-                  <UserCheck className="w-3 h-3" /> Rahul Verma
-                </div>
-                <div className="text-[10px] text-slate-500 truncate">Delhi (110001)</div>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleDemoFill('priya.sharma@example.com')}
-                className="p-2 bg-white border border-amber-300 hover:border-amber-500 rounded-xl text-left font-medium text-slate-800 hover:bg-amber-100/50 transition-all cursor-pointer"
-              >
-                <div className="font-bold text-[11px] text-amber-900 flex items-center gap-1">
-                  <UserCheck className="w-3 h-3" /> Priya Sharma
-                </div>
-                <div className="text-[10px] text-slate-500 truncate">Jaipur (302003)</div>
-              </button>
-            </div>
-          </div>
-
           {/* Registration link */}
           <div className="text-center pt-2 border-t border-slate-100 text-xs text-slate-600">
             Don't have a Harwalkart Customer account yet?{' '}
@@ -169,21 +132,21 @@ export const CustomerLogin: React.FC = () => {
         <div className="flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2 px-2">
           <div className="flex items-center gap-1.5">
             <ShieldCheck className="w-4 h-4 text-emerald-600" />
-            <span>256-Bit Encrypted Indian Marketplace</span>
+            <span>256-Bit Encrypted Secure Sign-in</span>
           </div>
           <div className="flex items-center gap-3">
             <button
               onClick={() => navigate('/seller/login')}
               className="hover:text-slate-900 font-semibold cursor-pointer underline"
             >
-              Seller Login
+              Seller Hub
             </button>
             <span>•</span>
             <button
-              onClick={() => navigate('/admin/login')}
+              onClick={() => navigate('/')}
               className="hover:text-slate-900 font-semibold cursor-pointer underline"
             >
-              Admin Portal
+              Storefront
             </button>
           </div>
         </div>

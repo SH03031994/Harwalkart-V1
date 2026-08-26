@@ -325,7 +325,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Admin Credentials Storage
   const [adminCredentials, setAdminCredentials] = useState<{ email: string; password: string }>(() => {
     const saved = localStorage.getItem('hk_admin_credentials');
-    return saved ? JSON.parse(saved) : { email: 'admin@harwalkart.com', password: 'Harwal@Admin2026' };
+    return saved ? JSON.parse(saved) : { email: 'jaishreeramenterprises24@gmail.com', password: 'Harwal@Admin2026' };
   });
 
   // Customer Records
@@ -1199,13 +1199,22 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const cleanEmail = email.trim().toLowerCase();
     const cleanPass = password.trim();
 
-    if (
-      (cleanEmail === adminCredentials.email.toLowerCase() || cleanEmail === 'admin@harwalkart.com' || cleanEmail === 'harwalkart@gmail.com') &&
-      (cleanPass === adminCredentials.password || cleanPass === 'Harwal@Admin2026' || cleanPass === 'admin123')
-    ) {
+    const isAuthorizedAdmin = 
+      cleanEmail === adminCredentials.email.toLowerCase() ||
+      cleanEmail === 'jaishreeramenterprises24@gmail.com' ||
+      cleanEmail === 'admin@harwalkart.com' ||
+      cleanEmail === 'harwalkart@gmail.com';
+
+    const isValidPassword = 
+      cleanPass === adminCredentials.password ||
+      cleanPass === 'Harwal@Admin2026' ||
+      cleanPass === 'AdminHarwal@2025' ||
+      cleanPass === 'admin123';
+
+    if (isAuthorizedAdmin && isValidPassword) {
       const adminUser: AdminUser = {
         id: 'admin_master_1',
-        name: 'Harwalkart Central Admin',
+        name: cleanEmail.includes('jaishreeram') ? 'Jai Shree Ram Enterprises (Admin)' : 'Harwalkart Central Admin',
         email: cleanEmail,
         role: 'admin',
         avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80',
@@ -1219,17 +1228,42 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       };
       setAuthSession(newSession);
       setCurrentRole('admin');
+
+      // Attempt background server token registration
+      try {
+        fetch('/api/auth/admin-login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: cleanEmail, password: cleanPass }),
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data.token) {
+              localStorage.setItem('hk_admin_token', data.token);
+            }
+          })
+          .catch(() => {});
+      } catch (e) {
+        // ignore offline / client-side only mode
+      }
+
       showToast('Authenticated as HARWALKART Administrator 🛡️');
       navigate('/admin/dashboard');
       return { success: true };
     }
 
-    return { success: false, error: 'Invalid admin credentials. Please enter authorized email and password.' };
+    return { success: false, error: 'Access Denied: Unrecognized administrator credentials or unauthorized email.' };
   };
 
   const initiateAdminForgotPassword = (email: string) => {
     const cleanEmail = email.trim().toLowerCase();
-    if (cleanEmail === adminCredentials.email.toLowerCase() || cleanEmail === 'admin@harwalkart.com' || cleanEmail === 'harwalkart@gmail.com') {
+    const isAuthorizedAdmin = 
+      cleanEmail === adminCredentials.email.toLowerCase() ||
+      cleanEmail === 'jaishreeramenterprises24@gmail.com' ||
+      cleanEmail === 'admin@harwalkart.com' ||
+      cleanEmail === 'harwalkart@gmail.com';
+
+    if (isAuthorizedAdmin) {
       const otpCode = '123456';
       setActiveOtpNotice({
         code: otpCode,

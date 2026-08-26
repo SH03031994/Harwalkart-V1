@@ -152,15 +152,15 @@ export const Footer: React.FC = () => {
           </ul>
         </div>
 
-        {/* 3 Independent Portals */}
+        {/* Dedicated User & Merchant Portals */}
         <div>
           <h5 className="text-white font-bold text-sm mb-3 uppercase tracking-wider border-b border-slate-800 pb-2">
-            3 Dedicated Panels
+            Portals & Access
           </h5>
-          <ul className="space-y-2.5 text-xs">
+          <ul className="space-y-3 text-xs">
             {/* Customer Panel */}
             <li className="space-y-1">
-              <span className="font-bold text-amber-400 text-[11px] block">1. Customer Portal:</span>
+              <span className="font-bold text-amber-400 text-[11px] block">Customer Portal:</span>
               <div className="flex gap-2">
                 <button
                   onClick={() => navigate('/customer/login')}
@@ -180,14 +180,14 @@ export const Footer: React.FC = () => {
                   onClick={() => navigate('/customer/dashboard')}
                   className="hover:text-white transition-colors cursor-pointer text-slate-400"
                 >
-                  Dashboard
+                  My Orders
                 </button>
               </div>
             </li>
 
             {/* Seller Panel */}
             <li className="space-y-1 pt-1">
-              <span className="font-bold text-amber-400 text-[11px] block">2. Seller Portal:</span>
+              <span className="font-bold text-amber-400 text-[11px] block">Seller Portal:</span>
               <div className="flex gap-2">
                 <button
                   onClick={() => navigate('/seller/login')}
@@ -200,38 +200,30 @@ export const Footer: React.FC = () => {
                   onClick={() => navigate('/seller/register')}
                   className="hover:text-white transition-colors cursor-pointer text-slate-400"
                 >
-                  Register Shop
+                  Register Shop (KYC)
                 </button>
                 <span className="text-slate-700">•</span>
                 <button
                   onClick={() => navigate('/seller/dashboard')}
                   className="hover:text-white transition-colors cursor-pointer text-slate-400"
                 >
-                  Dashboard
+                  Seller Hub
                 </button>
               </div>
             </li>
 
-            {/* Admin Panel */}
-            <li className="space-y-1 pt-1">
-              <span className="font-bold text-red-400 text-[11px] block">3. Admin Portal:</span>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => navigate('/admin/login')}
-                  className="hover:text-white transition-colors cursor-pointer text-slate-400"
-                >
-                  Admin Login
-                </button>
-                <span className="text-slate-700">•</span>
+            {/* Admin Console Link ONLY if already authenticated as Admin */}
+            {authSession.role === 'admin' && authSession.isAuthenticated && (
+              <li className="space-y-1 pt-1">
+                <span className="font-bold text-red-400 text-[11px] block">Admin Console:</span>
                 <button
                   onClick={() => navigate('/admin/dashboard')}
-                  className="hover:text-white transition-colors cursor-pointer text-slate-400"
+                  className="hover:text-white transition-colors cursor-pointer text-red-400 font-semibold"
                 >
-                  Master Dashboard
+                  Open Master Dashboard
                 </button>
-              </div>
-              <span className="text-[10px] text-slate-600 block">(No public admin registration)</span>
-            </li>
+              </li>
+            )}
           </ul>
         </div>
 

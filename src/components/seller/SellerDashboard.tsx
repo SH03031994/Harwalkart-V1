@@ -186,10 +186,22 @@ export const SellerDashboard: React.FC = () => {
                   <span className="bg-amber-500/20 text-amber-300 font-black text-[10px] uppercase px-2 py-0.5 rounded-md border border-amber-500/30">
                     SELLER HUB
                   </span>
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-500/20 text-emerald-300 rounded-md text-[10px] font-bold border border-emerald-500/30">
-                    <ShieldCheck className="w-3 h-3" />
-                    Verified Store
-                  </span>
+                  {activeSeller.status === 'approved' ? (
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-500/20 text-emerald-300 rounded-md text-[10px] font-bold border border-emerald-500/30">
+                      <ShieldCheck className="w-3 h-3" />
+                      Verified Store
+                    </span>
+                  ) : activeSeller.status === 'rejected' ? (
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-rose-500/20 text-rose-300 rounded-md text-[10px] font-bold border border-rose-500/30">
+                      <AlertCircle className="w-3 h-3" />
+                      KYC Rejected
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-amber-500/20 text-amber-300 rounded-md text-[10px] font-bold border border-amber-500/30">
+                      <Clock className="w-3 h-3" />
+                      Approval Pending
+                    </span>
+                  )}
                 </div>
                 <p className="text-[11px] text-slate-400 truncate max-w-xs sm:max-w-md">
                   {activeSeller.shopName} • ID: {activeSeller.id}
@@ -361,6 +373,65 @@ export const SellerDashboard: React.FC = () => {
 
         {/* Content Area */}
         <main className="flex-1 min-w-0">
+          {/* KYC Pending Notice Banner */}
+          {activeSeller.status === 'pending' && (
+            <div className="mb-6 bg-amber-500/10 border-2 border-amber-500/40 rounded-3xl p-6 shadow-sm animate-in fade-in">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-start gap-3.5">
+                  <div className="w-10 h-10 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center font-black shrink-0 shadow-md">
+                    <Clock className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                      <span>KYC Verification & Admin Approval In Progress</span>
+                      <span className="px-2 py-0.5 bg-amber-500/20 text-amber-800 text-[10px] uppercase font-black rounded-md border border-amber-500/30">
+                        Pending
+                      </span>
+                    </h3>
+                    <p className="text-xs text-slate-600 mt-1 max-w-2xl leading-relaxed">
+                      Your store registration for <strong>{activeSeller.shopName}</strong> has been submitted and is currently being verified by the Harwalkart Central Administration team.
+                      {activeSeller.kycDoc && (
+                        <span className="block mt-1 text-slate-700 font-semibold">
+                          Submitted Document: {activeSeller.kycDoc.docType} ({activeSeller.kycDoc.docNumber}) • File: {activeSeller.kycDoc.fileName}
+                        </span>
+                      )}
+                    </p>
+                  </div>
+                </div>
+                <div className="shrink-0 flex items-center gap-2">
+                  <span className="text-[11px] text-amber-900 font-bold bg-amber-100 px-3 py-1.5 rounded-xl border border-amber-300">
+                    Est. Approval: 2-4 Hours
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* KYC Rejected Notice Banner */}
+          {activeSeller.status === 'rejected' && (
+            <div className="mb-6 bg-rose-50 border-2 border-rose-300 rounded-3xl p-6 shadow-sm animate-in fade-in">
+              <div className="flex items-start gap-3.5">
+                <div className="w-10 h-10 rounded-2xl bg-rose-600 text-white flex items-center justify-center font-black shrink-0 shadow-md">
+                  <AlertCircle className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-extrabold text-rose-950 flex items-center gap-2">
+                    <span>Seller KYC Application Rejected</span>
+                    <span className="px-2 py-0.5 bg-rose-100 text-rose-800 text-[10px] uppercase font-black rounded-md border border-rose-300">
+                      Action Required
+                    </span>
+                  </h3>
+                  <p className="text-xs text-rose-800 mt-1 max-w-2xl leading-relaxed">
+                    Reason: <strong>{activeSeller.rejectionReason || 'Uploaded documents could not be verified against government registries.'}</strong>
+                  </p>
+                  <p className="text-xs text-slate-600 mt-2">
+                    Please navigate to the <strong>Profile</strong> tab to update your business details or contact Harwalkart Support at <span className="font-bold text-slate-900">harwalkart@gmail.com</span> / <span className="font-bold text-slate-900">+91 9372207811</span>.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* TAB 1: OVERVIEW / DASHBOARD */}
           {activeTab === 'overview' && (
             <div className="space-y-6 animate-in fade-in">
@@ -370,7 +441,7 @@ export const SellerDashboard: React.FC = () => {
                   <div className="space-y-2">
                     <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-400/20 text-amber-300 rounded-full text-xs font-bold border border-amber-400/30">
                       <Store className="w-3.5 h-3.5" />
-                      Live Storefront Active
+                      {activeSeller.status === 'approved' ? 'Live Storefront Active' : 'Store Under KYC Review'}
                     </div>
                     <h1 className="text-2xl md:text-3xl font-black text-white">
                       Welcome back, {activeSeller.ownerName || activeSeller.name}

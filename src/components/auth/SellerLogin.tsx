@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { Logo } from '../common/Logo';
-import { Store, Lock, Mail, Smartphone, ArrowRight, ShieldCheck, CheckCircle2, AlertCircle, Sparkles, Building2 } from 'lucide-react';
+import { Store, Lock, Mail, ArrowRight, ShieldCheck, AlertCircle } from 'lucide-react';
 
 export const SellerLogin: React.FC = () => {
-  const { sellerLogin, navigate, showToast } = useApp();
-  const [identifier, setIdentifier] = useState('sharmakirana.delhi@gmail.com');
-  const [password, setPassword] = useState('seller123');
+  const { sellerLogin, navigate } = useApp();
+  const [identifier, setIdentifier] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -21,14 +21,7 @@ export const SellerLogin: React.FC = () => {
       if (!res.success) {
         setErrorMessage(res.error || 'Seller authentication failed. Please check credentials.');
       }
-    }, 400);
-  };
-
-  const handleDemoFill = (email: string, shopName: string) => {
-    setIdentifier(email);
-    setPassword('seller123');
-    setErrorMessage(null);
-    showToast(`Loaded credentials for ${shopName}`);
+    }, 300);
   };
 
   return (
@@ -46,7 +39,7 @@ export const SellerLogin: React.FC = () => {
             Seller Dashboard Sign In
           </h2>
           <p className="text-sm text-slate-600">
-            Manage your shop inventory, orders, video ads, PIN codes, and earnings
+            Manage your shop inventory, orders, video ads, PIN codes, and settlements
           </p>
         </div>
 
@@ -73,7 +66,7 @@ export const SellerLogin: React.FC = () => {
                   required
                   value={identifier}
                   onChange={e => setIdentifier(e.target.value)}
-                  placeholder="e.g. sharmakirana.delhi@gmail.com"
+                  placeholder="e.g. shopname@gmail.com or mobile"
                   className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium text-slate-900 focus:bg-white focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-400/20 transition-all"
                 />
               </div>
@@ -124,37 +117,6 @@ export const SellerLogin: React.FC = () => {
             </button>
           </form>
 
-          {/* Quick Demo Login Presets */}
-          <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2.5">
-            <div className="flex items-center gap-1.5 text-xs font-bold text-slate-800">
-              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-              <span>1-Click Demo Seller Fill:</span>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-              <button
-                type="button"
-                onClick={() => handleDemoFill('sharmakirana.delhi@gmail.com', 'Sharma Kirana Store')}
-                className="p-2.5 bg-white border border-slate-200 hover:border-amber-400 rounded-xl text-left font-medium text-slate-800 hover:bg-amber-50/50 transition-all cursor-pointer"
-              >
-                <div className="font-bold text-[11px] text-slate-900 flex items-center gap-1">
-                  <Building2 className="w-3 h-3 text-amber-600" /> Sharma Kirana (Delhi)
-                </div>
-                <div className="text-[10px] text-emerald-600 font-semibold mt-0.5">Status: Approved</div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleDemoFill('jaipurorganic.shop@gmail.com', 'Jaipur Organic Kirana')}
-                className="p-2.5 bg-white border border-slate-200 hover:border-amber-400 rounded-xl text-left font-medium text-slate-800 hover:bg-amber-50/50 transition-all cursor-pointer"
-              >
-                <div className="font-bold text-[11px] text-slate-900 flex items-center gap-1">
-                  <Building2 className="w-3 h-3 text-amber-600" /> Jaipur Organic (Jaipur)
-                </div>
-                <div className="text-[10px] text-amber-600 font-semibold mt-0.5">Status: Pending Approval</div>
-              </button>
-            </div>
-          </div>
-
           {/* Registration link */}
           <div className="text-center pt-2 border-t border-slate-100 text-xs text-slate-600">
             Want to register your retail shop on HARWALKART?{' '}
@@ -182,10 +144,10 @@ export const SellerLogin: React.FC = () => {
             </button>
             <span>•</span>
             <button
-              onClick={() => navigate('/admin/login')}
+              onClick={() => navigate('/')}
               className="hover:text-slate-900 font-semibold cursor-pointer underline"
             >
-              Admin Panel
+              Storefront
             </button>
           </div>
         </div>
