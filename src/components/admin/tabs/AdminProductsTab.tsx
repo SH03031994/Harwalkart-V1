@@ -20,6 +20,7 @@ export const AdminProductsTab: React.FC = () => {
   const {
     products,
     categories,
+    brands,
     sellers,
     addProduct,
     updateProduct,
@@ -39,6 +40,8 @@ export const AdminProductsTab: React.FC = () => {
     hindiName: '',
     category: categories[0]?.name || 'Kitchen Shakti Range',
     brand: 'Kitchen Shakti',
+    brandId: 'brand_kitchen_shakti',
+    brandSlug: 'kitchen-shakti',
     price: 120,
     mrp: 150,
     unit: '500g Pack',
@@ -62,20 +65,23 @@ export const AdminProductsTab: React.FC = () => {
   });
 
   const handleOpenAdd = () => {
+    const defaultBrand = brands[0] || { name: 'Kitchen Shakti', id: 'brand_kitchen_shakti', slug: 'kitchen-shakti' };
     setFormData({
       name: '',
       hindiName: '',
       category: categories[0]?.name || 'Kitchen Shakti Range',
-      brand: 'Kitchen Shakti',
+      brand: defaultBrand.name,
+      brandId: defaultBrand.id,
+      brandSlug: defaultBrand.slug,
       price: 120,
       mrp: 150,
       unit: '500g Pack',
       stockQuantity: 50,
-      description: '100% pure authentic spices manufactured directly.',
+      description: '100% pure authentic products manufactured under Harwalkart parent marketplace.',
       sellerId: 'seller-hk-direct',
       isHarwalkartDirect: true,
       image: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=500&auto=format&fit=crop&q=60',
-      tags: 'kitchen shakti, pure, masala, cooking',
+      tags: 'pure, authentic, harwalkart',
     });
     setIsAddModalOpen(true);
   };
@@ -87,6 +93,8 @@ export const AdminProductsTab: React.FC = () => {
       hindiName: prod.hindiName || '',
       category: prod.category,
       brand: prod.brand,
+      brandId: prod.brandId || '',
+      brandSlug: prod.brandSlug || '',
       price: prod.price,
       mrp: prod.mrp || Math.round(prod.price * 1.25),
       unit: prod.unit,
@@ -105,11 +113,16 @@ export const AdminProductsTab: React.FC = () => {
     const sel = sellers.find(s => s.id === formData.sellerId) || sellers[0];
     const discount = Math.max(0, Math.round(((formData.mrp - formData.price) / formData.mrp) * 100));
 
+    // Match brand slug from brands list
+    const matchedBrand = brands.find(b => b.name.toLowerCase() === formData.brand.toLowerCase() || b.id === formData.brandId);
+
     addProduct({
       name: formData.name,
       hindiName: formData.hindiName,
       slug: formData.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
       brand: formData.brand,
+      brandId: matchedBrand?.id || formData.brandId,
+      brandSlug: matchedBrand?.slug || formData.brandSlug,
       sellerId: sel.id,
       sellerName: sel.shopName,
       isHarwalkartDirect: formData.isHarwalkartDirect,
@@ -134,10 +147,14 @@ export const AdminProductsTab: React.FC = () => {
     if (!selectedProduct) return;
     const discount = Math.max(0, Math.round(((formData.mrp - formData.price) / formData.mrp) * 100));
 
+    const matchedBrand = brands.find(b => b.name.toLowerCase() === formData.brand.toLowerCase() || b.id === formData.brandId);
+
     updateProduct(selectedProduct.id, {
       name: formData.name,
       hindiName: formData.hindiName,
       brand: formData.brand,
+      brandId: matchedBrand?.id || formData.brandId,
+      brandSlug: matchedBrand?.slug || formData.brandSlug,
       category: formData.category,
       price: Number(formData.price),
       mrp: Number(formData.mrp),
@@ -331,13 +348,50 @@ export const AdminProductsTab: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="font-bold text-slate-700">Brand Name</label>
-                  <input
-                    type="text"
+                  <div className="flex items-center justify-between">
+                    <label className="font-bold text-slate-700">Brand *</label>
+                    <span className="text-[10px] text-amber-800 font-extrabold">Harwalkart Brand</span>
+                  </div>
+                  <select
                     value={formData.brand}
-                    onChange={e => setFormData({ ...formData, brand: e.target.value })}
-                    className="w-full p-2.5 border border-slate-200 rounded-xl"
-                  />
+                    onChange={e => {
+                      const selectedB = brands.find(b => b.name === e.target.value);
+                      if (selectedB) {
+                        setFormData({
+                          ...formData,
+                          brand: selectedB.name,
+                          brandId: selectedB.id,
+                          brandSlug: selectedB.slug,
+                          category: selectedB.category,
+                          isHarwalkartDirect: true,
+                        });
+                      } else {
+                        setFormData({
+                          ...formData,
+                          brand: e.target.value,
+                          brandId: '',
+                          brandSlug: '',
+                        });
+                      }
+                    }}
+                    className="w-full p-2.5 border border-slate-200 rounded-xl bg-amber-50/50 font-bold text-slate-900"
+                  >
+                    <optgroup label="Official Harwalkart Brands">
+                      {brands.map(b => (
+                        <option key={b.id} value={b.name}>
+                          {b.name} ({b.category})
+                        </option>
+                      ))}
+                    </optgroup>
+                    <optgroup label="Other / Local Merchant">
+                      <option value="Local Merchant Brand">Local Merchant Brand</option>
+                      <option value="Amul">Amul</option>
+                      <option value="Tata">Tata</option>
+                      <option value="India Gate">India Gate</option>
+                      <option value="Patanjali">Patanjali</option>
+                      <option value="Fortune">Fortune</option>
+                    </optgroup>
+                  </select>
                 </div>
               </div>
 

@@ -9,10 +9,12 @@ import {
   Clock,
   ShieldCheck,
   CheckCircle2,
+  Building2,
+  MapPin,
 } from 'lucide-react';
 
 export const CustomerSupportView: React.FC = () => {
-  const { customerUser, addSupportTicket, showToast } = useApp();
+  const { customerUser, addSupportTicket, showToast, websiteSettings } = useApp();
 
   const [name, setName] = useState(customerUser.name || '');
   const [email, setEmail] = useState(customerUser.email || '');
@@ -55,8 +57,8 @@ export const CustomerSupportView: React.FC = () => {
         </p>
       </div>
 
-      {/* Direct Contact Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {/* Direct Contact & Head Office Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <a
           href="tel:9372207811"
           className="p-5 rounded-2xl bg-white border border-slate-200 hover:border-amber-400 hover:shadow-md transition-all flex items-center gap-4"
@@ -84,6 +86,19 @@ export const CustomerSupportView: React.FC = () => {
             <p className="text-xs text-slate-500">Fast email response within 2 hours</p>
           </div>
         </a>
+
+        <div className="p-5 rounded-2xl bg-white border border-slate-200 flex items-start gap-4">
+          <div className="w-12 h-12 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-bold mt-0.5">
+            <Building2 className="w-6 h-6" />
+          </div>
+          <div>
+            <span className="text-[11px] font-bold uppercase text-slate-400">Official Head Office</span>
+            <div className="text-xs font-black text-slate-900 mt-0.5">Harwalkart</div>
+            <p className="text-xs text-slate-600 leading-snug mt-0.5 font-medium">
+              {websiteSettings?.officialAddress || 'Harwalkart, Yah In, Chuk Karegaon, Pune MIDC, Maharashtra, India – 412220'}
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Message Form */}

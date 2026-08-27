@@ -227,12 +227,20 @@ export const AdminOrdersTab: React.FC = () => {
           <div className="bg-white rounded-3xl p-6 max-w-lg w-full space-y-4 animate-in zoom-in-95 text-xs">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div>
-                <h3 className="text-base font-black text-slate-950">Harwalkart Order Invoice</h3>
-                <p className="text-slate-500">Order #{selectedOrder.id} • {selectedOrder.date}</p>
+                <h3 className="text-base font-black text-slate-950">HARWALKART GST Tax Invoice</h3>
+                <p className="text-slate-600 text-[11px] font-semibold mt-0.5">
+                  Harwalkart (Jai Shree Ram Enterprises)
+                </p>
+                <p className="text-slate-500 text-[10px] leading-tight">
+                  Head Office: Yah In, Chuk Karegaon, Pune MIDC, Maharashtra, India – 412220
+                </p>
+                <p className="text-amber-700 font-mono text-[10px] font-bold mt-1">
+                  Order #{selectedOrder.id} • Date: {selectedOrder.date}
+                </p>
               </div>
               <button
                 onClick={() => setIsViewModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600 text-sm font-bold"
+                className="text-slate-400 hover:text-slate-600 text-sm font-bold p-1 rounded-lg hover:bg-slate-100"
               >
                 ✕
               </button>

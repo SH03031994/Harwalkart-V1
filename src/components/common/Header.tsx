@@ -31,6 +31,9 @@ export const Header: React.FC = () => {
     setSearchQuery,
     selectedCategory,
     setSelectedCategory,
+    brands,
+    selectedBrandSlug,
+    setSelectedBrandSlug,
     cartCount,
     wishlist,
     authSession,
@@ -47,6 +50,7 @@ export const Header: React.FC = () => {
 
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
+  const [isBrandMenuOpen, setIsBrandMenuOpen] = useState(false);
   const [isSearchCategoryOpen, setIsSearchCategoryOpen] = useState(false);
   const [activeSearchCategoryName, setActiveSearchCategoryName] = useState('All Categories');
 
@@ -575,6 +579,67 @@ export const Header: React.FC = () => {
               >
                 Explore Shops
               </button>
+
+              {/* Our 4 Independent Brands Dropdown */}
+              <div className="relative shrink-0">
+                <button
+                  onClick={() => setIsBrandMenuOpen(!isBrandMenuOpen)}
+                  className={`px-3 py-2 text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
+                    currentView === 'brand-detail' || isBrandMenuOpen
+                      ? 'text-amber-600 font-extrabold'
+                      : 'text-slate-700 hover:text-slate-950'
+                  }`}
+                >
+                  <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                  <span>Our Brands</span>
+                  <span className="bg-slate-900 text-amber-400 text-[10px] font-black uppercase px-2 py-0.5 rounded-full">
+                    4 BRANDS
+                  </span>
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isBrandMenuOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {isBrandMenuOpen && (
+                  <>
+                    <div
+                      className="fixed inset-0 z-30"
+                      onClick={() => setIsBrandMenuOpen(false)}
+                    />
+                    <div className="absolute left-0 mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-slate-200 py-2 z-40 animate-in fade-in zoom-in-95">
+                      <div className="px-4 py-2 text-xs font-black uppercase text-amber-800 tracking-wider border-b border-slate-100 flex items-center justify-between">
+                        <span>Harwalkart Product Brands</span>
+                        <span className="text-[10px] bg-amber-100 text-amber-900 px-1.5 py-0.5 rounded font-black">Official</span>
+                      </div>
+                      {brands.map(brand => (
+                        <button
+                          key={brand.id}
+                          onClick={() => {
+                            setSelectedBrandSlug(brand.slug);
+                            setCurrentView('brand-detail');
+                            setIsBrandMenuOpen(false);
+                          }}
+                          className="w-full text-left px-4 py-2.5 hover:bg-amber-50 flex items-center gap-3 transition-colors cursor-pointer group"
+                        >
+                          <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 p-1 flex items-center justify-center shadow-2xs group-hover:border-amber-400 shrink-0">
+                            <img
+                              src={brand.logoUrl}
+                              alt={brand.name}
+                              className="max-h-full max-w-full object-contain"
+                            />
+                          </div>
+                          <div className="min-w-0">
+                            <div className="text-xs font-black text-slate-900 group-hover:text-amber-800 truncate">
+                              {brand.name}
+                            </div>
+                            <div className="text-[10px] text-slate-500 truncate">
+                              {brand.category}
+                            </div>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
 
               {/* Kitchen Shakti Range with PAN-INDIA badge */}
               <button

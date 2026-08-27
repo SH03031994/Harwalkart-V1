@@ -3,6 +3,7 @@ import { useApp } from '../../context/AppContext';
 import { ProductCard } from '../product/ProductCard';
 import { ShopCard } from '../shop/ShopCard';
 import { KitchenShaktiSection } from './KitchenShaktiSection';
+import { BrandShowcaseSection } from './BrandShowcaseSection';
 import { VideoShoppingSection } from '../video/VideoShoppingSection';
 import { checkSellerServiceability } from '../../utils/location';
 import {
@@ -38,6 +39,7 @@ export const HomeView: React.FC = () => {
   const {
     products,
     sellers,
+    heroBanners,
     currentLocation,
     setIsLocationModalOpen,
     searchQuery,
@@ -511,6 +513,9 @@ export const HomeView: React.FC = () => {
           </button>
         </div>
       </section>
+
+      {/* ================= 2.5. HARWALKART 4 INDEPENDENT FLAGSHIP BRANDS ================= */}
+      <BrandShowcaseSection />
 
       {/* ================= 3. VALUE PROPOSITION STRIP (5 COLUMNS CREAM CARD) ================= */}
       <section className="bg-[#FFF9F0] border border-amber-100 rounded-3xl p-4 sm:p-5 shadow-xs">

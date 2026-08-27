@@ -4,6 +4,7 @@ import { Header } from './components/common/Header';
 import { Footer } from './components/common/Footer';
 import { HomeView } from './components/home/HomeView';
 import { KitchenShaktiSection } from './components/home/KitchenShaktiSection';
+import { BrandDetailView } from './components/brand/BrandDetailView';
 import { ProductListingView } from './components/product/ProductListingView';
 import { ProductDetailView } from './components/product/ProductDetailView';
 import { ShopListingView } from './components/shop/ShopListingView';
@@ -58,11 +59,8 @@ const AppContent: React.FC = () => {
       <main className="flex-1 pb-12">
         {/* Marketplace Consumer Views */}
         {currentView === 'home' && <HomeView />}
-        {currentView === 'kitchen-shakti' && (
-          <div className="max-w-7xl mx-auto px-4 py-6">
-            <KitchenShaktiSection />
-          </div>
-        )}
+        {currentView === 'brand-detail' && <BrandDetailView />}
+        {currentView === 'kitchen-shakti' && <BrandDetailView />}
         {currentView === 'products' && <ProductListingView />}
         {currentView === 'product-detail' && <ProductDetailView />}
         {currentView === 'shops' && <ShopListingView />}

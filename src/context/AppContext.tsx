@@ -25,6 +25,8 @@ import {
   PaymentSettings,
   DeliveryPartner,
   PayoutStatus,
+  Brand,
+  HeroBanner,
 } from '../types';
 import {
   CITIES_AND_PINCODES,
@@ -39,6 +41,8 @@ import {
   INITIAL_ADVERTISEMENTS,
   INITIAL_CITY_HUBS,
   INITIAL_WEBSITE_SETTINGS,
+  INITIAL_BRANDS,
+  INITIAL_HERO_BANNERS,
 } from '../data/mockData';
 import {
   calculateDistanceKm,
@@ -98,6 +102,23 @@ interface AppContextType {
   setSelectedShopId: (id: string | null) => void;
   selectedCmsPage: string | null;
   setSelectedCmsPage: (page: string | null) => void;
+  selectedBrandSlug: string | null;
+  setSelectedBrandSlug: (slug: string | null) => void;
+  navigateToBrand: (slug: string) => void;
+
+  // Brand Management
+  brands: Brand[];
+  addBrand: (brand: Omit<Brand, 'id'>) => Brand;
+  updateBrand: (id: string, updates: Partial<Brand>) => boolean;
+  deleteBrand: (id: string) => boolean;
+  toggleBrandStatus: (id: string) => void;
+
+  // Hero Banner Management
+  heroBanners: HeroBanner[];
+  addHeroBanner: (banner: Omit<HeroBanner, 'id'>) => HeroBanner;
+  updateHeroBanner: (id: string, updates: Partial<HeroBanner>) => boolean;
+  deleteHeroBanner: (id: string) => boolean;
+  toggleHeroBannerStatus: (id: string) => void;
 
   // Authentication & Session
   authSession: AuthSession;
@@ -327,6 +348,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (path === '/products') return 'products';
     if (path === '/shops') return 'shops';
     if (path === '/kitchen-shakti') return 'kitchen-shakti';
+    if (path.startsWith('/brand/')) return 'brand-detail';
     if (path === '/video-shopping' || path === '/video-ads') return 'video-ads';
     if (path === '/cart') return 'cart';
     if (path === '/checkout') return 'checkout';
@@ -344,6 +366,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [selectedShopId, setSelectedShopId] = useState<string | null>(null);
   const [selectedCmsPage, setSelectedCmsPage] = useState<string | null>(null);
   const [selectedTrackingOrderId, setSelectedTrackingOrderId] = useState<string | null>(null);
+  const [selectedBrandSlug, setSelectedBrandSlug] = useState<string | null>(() => {
+    const p = getInitialPath();
+    if (p.startsWith('/brand/')) return p.replace('/brand/', '');
+    return null;
+  });
 
   // Authentication State
   const [authSession, setAuthSession] = useState<AuthSession>(() => {
@@ -727,6 +754,34 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return saved ? JSON.parse(saved) : INITIAL_CATEGORIES;
   });
 
+  // Brands State (4 Independent Flagship Brands under Harwalkart Marketplace)
+  const [brands, setBrands] = useState<Brand[]>(() => {
+    const saved = localStorage.getItem('hk_brands');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    return INITIAL_BRANDS;
+  });
+
+  // Hero Banners State (Dynamic Homepage Transparent Packaging & Brand Hero Banners)
+  const [heroBanners, setHeroBanners] = useState<HeroBanner[]>(() => {
+    const saved = localStorage.getItem('hk_hero_banners');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    return INITIAL_HERO_BANNERS;
+  });
+
   // Advertisements State
   const [advertisements, setAdvertisements] = useState<Advertisement[]>(() => {
     const saved = localStorage.getItem('hk_advertisements');
@@ -742,7 +797,25 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Website Settings State
   const [websiteSettings, setWebsiteSettings] = useState<WebsiteSettings>(() => {
     const saved = localStorage.getItem('hk_website_settings');
-    return saved ? JSON.parse(saved) : INITIAL_WEBSITE_SETTINGS;
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        // Ensure official Head Office address is always updated to official Pune MIDC address
+        if (
+          !parsed.officialAddress ||
+          parsed.officialAddress.includes('Delhi') ||
+          parsed.officialAddress.includes('Connaught') ||
+          parsed.officialAddress.includes('413216')
+        ) {
+          parsed.officialAddress = INITIAL_WEBSITE_SETTINGS.officialAddress;
+          parsed.registeredAddress = INITIAL_WEBSITE_SETTINGS.registeredAddress;
+        }
+        return { ...INITIAL_WEBSITE_SETTINGS, ...parsed };
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    return INITIAL_WEBSITE_SETTINGS;
   });
 
   // Company Bank Account State (Admin Private)
@@ -841,6 +914,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, [categories]);
 
   useEffect(() => {
+    localStorage.setItem('hk_brands', JSON.stringify(brands));
+  }, [brands]);
+
+  useEffect(() => {
+    localStorage.setItem('hk_hero_banners', JSON.stringify(heroBanners));
+  }, [heroBanners]);
+
+  useEffect(() => {
     localStorage.setItem('hk_advertisements', JSON.stringify(advertisements));
   }, [advertisements]);
 
@@ -878,7 +959,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     else if (path === '/admin/forgot-password') setCurrentViewState('admin-forgot-password');
     else if (path === '/products') setCurrentViewState('products');
     else if (path === '/shops') setCurrentViewState('shops');
-    else if (path === '/kitchen-shakti') setCurrentViewState('kitchen-shakti');
+    else if (path === '/kitchen-shakti') {
+      setSelectedBrandSlug('kitchen-shakti');
+      setCurrentViewState('brand-detail');
+    }
+    else if (path.startsWith('/brand/')) {
+      const slug = path.replace('/brand/', '');
+      setSelectedBrandSlug(slug);
+      setCurrentViewState('brand-detail');
+    }
     else if (path === '/video-shopping' || path === '/video-ads') setCurrentViewState('video-ads');
     else if (path === '/cart') setCurrentViewState('cart');
     else if (path === '/checkout') setCurrentViewState('checkout');
@@ -892,6 +981,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const navigateToBrand = (slug: string) => {
+    setSelectedBrandSlug(slug);
+    setCurrentViewState('brand-detail');
+    navigate(`/brand/${slug}`);
+  };
+
   const setCurrentView = (view: string) => {
     setCurrentViewState(view);
     // Sync view with path
@@ -901,7 +996,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     else if (view === 'admin-panel') navigate('/admin/dashboard');
     else if (view === 'products') navigate('/products');
     else if (view === 'shops') navigate('/shops');
-    else if (view === 'kitchen-shakti') navigate('/kitchen-shakti');
+    else if (view === 'kitchen-shakti') navigateToBrand('kitchen-shakti');
+    else if (view === 'brand-detail' && selectedBrandSlug) navigate(`/brand/${selectedBrandSlug}`);
     else if (view === 'video-ads') navigate('/video-shopping');
     else if (view === 'cart') navigate('/cart');
     else if (view === 'checkout') navigate('/checkout');
@@ -1799,6 +1895,66 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setCategories(prev => prev.filter(c => c.id !== id));
     showToast('Category removed.');
     return true;
+  };
+
+  // Brands CRUD (4 Independent Product Brands under Harwalkart Marketplace)
+  const addBrand = (brandData: Omit<Brand, 'id'>) => {
+    const newBrand: Brand = {
+      ...brandData,
+      id: `brand_${brandData.slug || Date.now()}`,
+    };
+    setBrands(prev => [...prev, newBrand]);
+    showToast(`Brand "${newBrand.name}" registered successfully.`);
+    return newBrand;
+  };
+
+  const updateBrand = (id: string, updates: Partial<Brand>) => {
+    setBrands(prev => prev.map(b => (b.id === id ? { ...b, ...updates } : b)));
+    showToast('Brand details updated successfully.');
+    return true;
+  };
+
+  const deleteBrand = (id: string) => {
+    setBrands(prev => prev.filter(b => b.id !== id));
+    showToast('Brand removed from marketplace.');
+    return true;
+  };
+
+  const toggleBrandStatus = (id: string) => {
+    setBrands(prev =>
+      prev.map(b => (b.id === id ? { ...b, isActive: !b.isActive } : b))
+    );
+    showToast('Brand active status updated.');
+  };
+
+  // Hero Banners CRUD (Homepage Dynamic Visuals & Admin Banners Control)
+  const addHeroBanner = (bannerData: Omit<HeroBanner, 'id'>) => {
+    const newBanner: HeroBanner = {
+      ...bannerData,
+      id: `banner_${Date.now()}`,
+    };
+    setHeroBanners(prev => [...prev, newBanner]);
+    showToast(`Hero banner "${newBanner.title}" created successfully! 🎨`);
+    return newBanner;
+  };
+
+  const updateHeroBanner = (id: string, updates: Partial<HeroBanner>) => {
+    setHeroBanners(prev => prev.map(b => (b.id === id ? { ...b, ...updates } : b)));
+    showToast('Hero banner updated successfully.');
+    return true;
+  };
+
+  const deleteHeroBanner = (id: string) => {
+    setHeroBanners(prev => prev.filter(b => b.id !== id));
+    showToast('Hero banner removed.');
+    return true;
+  };
+
+  const toggleHeroBannerStatus = (id: string) => {
+    setHeroBanners(prev =>
+      prev.map(b => (b.id === id ? { ...b, isActive: !b.isActive } : b))
+    );
+    showToast('Hero banner active status toggled.');
   };
 
   // Order deletion
@@ -2740,6 +2896,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setSelectedShopId,
         selectedCmsPage,
         setSelectedCmsPage,
+        selectedBrandSlug,
+        setSelectedBrandSlug,
+        navigateToBrand,
+        brands,
+        addBrand,
+        updateBrand,
+        deleteBrand,
+        toggleBrandStatus,
+        heroBanners,
+        addHeroBanner,
+        updateHeroBanner,
+        deleteHeroBanner,
+        toggleHeroBannerStatus,
         authSession,
         currentRole,
         setCurrentRole,

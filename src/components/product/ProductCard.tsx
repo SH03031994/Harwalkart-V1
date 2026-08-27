@@ -2,6 +2,7 @@ import React from 'react';
 import { Product } from '../../types';
 import { useApp } from '../../context/AppContext';
 import { Star, ShoppingCart, Share2, Heart, Zap, CheckCircle2, Shield } from 'lucide-react';
+import { TransparentPackagingVisual } from '../common/TransparentPackagingVisual';
 
 interface ProductCardProps {
   product: Product;
@@ -101,16 +102,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </button>
       </div>
 
-      {/* Product Image Container */}
-      <div className="relative aspect-square w-full bg-slate-50 overflow-hidden flex items-center justify-center p-3">
-        <img
-          src={product.images[0]}
-          alt={product.name}
-          className="w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-300"
-          loading="lazy"
-        />
+      {/* Product Image Container with Transparent Packaging Visual */}
+      <div className="relative aspect-square w-full bg-gradient-to-b from-amber-50/50 via-slate-50 to-slate-100 overflow-hidden flex items-center justify-center p-3">
+        <div className="w-full h-full flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+          <TransparentPackagingVisual product={product} size="md" />
+        </div>
         {!product.inStock && (
-          <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-2xs flex items-center justify-center">
+          <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-2xs flex items-center justify-center z-10">
             <span className="bg-rose-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase">
               Out of Stock
             </span>

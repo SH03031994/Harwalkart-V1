@@ -1,9 +1,11 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
-import { ShieldCheck, Truck, RotateCcw, FileText, ArrowLeft, HeartHandshake } from 'lucide-react';
+import { ShieldCheck, Truck, RotateCcw, FileText, ArrowLeft, HeartHandshake, Building2, MapPin, Mail, Phone } from 'lucide-react';
 
 export const CmsPageView: React.FC = () => {
-  const { currentView, setCurrentView } = useApp();
+  const { currentView, setCurrentView, websiteSettings } = useApp();
+
+  const officialAddress = websiteSettings?.officialAddress || 'Harwalkart, Yah In, Chuk Karegaon, Pune MIDC, Maharashtra, India – 412220';
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 space-y-6 animate-in fade-in">
@@ -40,6 +42,38 @@ export const CmsPageView: React.FC = () => {
                 <li><strong>Uncompromising Purity:</strong> Delivering authentic, pesticide-tested, cold-processed Kitchen Shakti spices nationwide.</li>
                 <li><strong>Empowerment of Micro-Merchants:</strong> Giving transparent digital tools, video ad capabilities, and fair marketplace terms to local Indian entrepreneurs.</li>
               </ul>
+
+              {/* Official Company & Head Office Box */}
+              <div className="mt-6 p-5 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+                <h4 className="text-xs font-black uppercase text-slate-900 tracking-wider flex items-center gap-2">
+                  <Building2 className="w-4 h-4 text-amber-600" />
+                  <span>Official Company & Head Office Details</span>
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-slate-700">
+                  <div className="space-y-2">
+                    <div>
+                      <span className="font-bold text-slate-900 block">Registered Entity:</span>
+                      <p>HARWALKART (Jai Shree Ram Enterprises)</p>
+                    </div>
+                    <div>
+                      <span className="font-bold text-slate-900 block">In-House Spice Brand:</span>
+                      <p>Kitchen Shakti (100% Pure Agmark Spices)</p>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <div>
+                      <span className="font-bold text-slate-900 block">Official Head Office:</span>
+                      <p className="font-medium text-slate-900 leading-snug">
+                        {officialAddress}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="font-bold text-slate-900 block">Helpline & Support:</span>
+                      <p>+91 9372207811 • harwalkart@gmail.com</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </>
         )}
@@ -59,6 +93,8 @@ export const CmsPageView: React.FC = () => {
               <p>HARWALKART values the trust you place in us. We ensure strict end-to-end data security for customer phone numbers, delivery coordinates, and transaction history.</p>
               <h4 className="font-bold text-slate-900">1. Information Collection & Usage</h4>
               <p>We collect location coordinates and PIN codes exclusively to determine local shop serviceability and route orders to the nearest delivery hub. Payment credentials are handled strictly through RBI-authorized payment gateways and never stored on HARWALKART servers.</p>
+              <h4 className="font-bold text-slate-900">2. Grievance Officer & Official Communications</h4>
+              <p>For data privacy queries or official notices, contact our Grievance Officer at <strong>harwalkart@gmail.com</strong> or write to our Head Office: <strong>{officialAddress}</strong>.</p>
             </div>
           </>
         )}
@@ -78,6 +114,8 @@ export const CmsPageView: React.FC = () => {
               <p>Welcome to HARWALKART. By accessing or using our marketplace platform, you agree to comply with Indian e-commerce consumer protection regulations.</p>
               <h4 className="font-bold text-slate-900">1. Marketplace Intermediary Role</h4>
               <p>HARWALKART operates as an intermediary marketplace connecting buyers with verified local merchants, as well as a direct seller for Kitchen Shakti products.</p>
+              <h4 className="font-bold text-slate-900">2. Official Company Address & Jurisdiction</h4>
+              <p>This platform is operated by HARWALKART (Jai Shree Ram Enterprises), with official Head Office located at <strong>{officialAddress}</strong>. All contractual transactions are governed by the laws of India under applicable Maharashtra jurisdiction.</p>
             </div>
           </>
         )}

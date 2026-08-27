@@ -17,6 +17,8 @@ import {
   MessageSquare,
   Sliders,
   LogOut,
+  Sparkles,
+  Image as ImageIcon,
 } from 'lucide-react';
 
 import { AdminOverviewTab } from './tabs/AdminOverviewTab';
@@ -26,6 +28,8 @@ import { AdminCustomersTab } from './tabs/AdminCustomersTab';
 import { AdminProductsTab } from './tabs/AdminProductsTab';
 import { AdminProductApprovalsTab } from './tabs/AdminProductApprovalsTab';
 import { AdminCategoriesTab } from './tabs/AdminCategoriesTab';
+import { AdminBrandsTab } from './tabs/AdminBrandsTab';
+import { AdminBannersTab } from './tabs/AdminBannersTab';
 import { AdminOrdersTab } from './tabs/AdminOrdersTab';
 import { AdminPaymentsTab } from './tabs/AdminPaymentsTab';
 import { AdminPincodesTab } from './tabs/AdminPincodesTab';
@@ -44,6 +48,8 @@ export const AdminDashboard: React.FC = () => {
     withdrawalRequests,
     supportTickets,
     categories,
+    brands,
+    heroBanners,
     advertisements,
     cityHubs,
     authSession,
@@ -58,6 +64,8 @@ export const AdminDashboard: React.FC = () => {
     | 'products'
     | 'product_approvals'
     | 'categories'
+    | 'brands'
+    | 'banners'
     | 'orders'
     | 'payments'
     | 'pincodes'
@@ -238,6 +246,34 @@ export const AdminDashboard: React.FC = () => {
           </button>
 
           <button
+            id="admin-nav-brands"
+            onClick={() => setActiveTab('brands')}
+            className={`w-full flex items-center justify-between p-3 rounded-2xl transition-colors cursor-pointer ${
+              activeTab === 'brands' ? 'bg-amber-500 text-slate-950 shadow-xs font-black' : 'text-slate-700 hover:bg-slate-100'
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              <Sparkles className="w-4 h-4 text-amber-500" />
+              <span>Brand Management</span>
+            </div>
+            <span className="text-[10px] bg-amber-100 text-amber-950 font-black px-2 py-0.5 rounded-full">{brands.length} Brands</span>
+          </button>
+
+          <button
+            id="admin-nav-banners"
+            onClick={() => setActiveTab('banners')}
+            className={`w-full flex items-center justify-between p-3 rounded-2xl transition-colors cursor-pointer ${
+              activeTab === 'banners' ? 'bg-amber-500 text-slate-950 shadow-xs font-black' : 'text-slate-700 hover:bg-slate-100'
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              <ImageIcon className="w-4 h-4 text-sky-500" />
+              <span>Hero Banners</span>
+            </div>
+            <span className="text-[10px] bg-sky-100 text-sky-950 font-black px-2 py-0.5 rounded-full">{heroBanners.length} Banners</span>
+          </button>
+
+          <button
             onClick={() => setActiveTab('orders')}
             className={`w-full flex items-center justify-between p-3 rounded-2xl transition-colors cursor-pointer ${
               activeTab === 'orders' ? 'bg-amber-500 text-slate-950 shadow-xs font-black' : 'text-slate-700 hover:bg-slate-100'
@@ -357,6 +393,8 @@ export const AdminDashboard: React.FC = () => {
           {activeTab === 'products' && <AdminProductsTab />}
           {activeTab === 'product_approvals' && <AdminProductApprovalsTab />}
           {activeTab === 'categories' && <AdminCategoriesTab />}
+          {activeTab === 'brands' && <AdminBrandsTab />}
+          {activeTab === 'banners' && <AdminBannersTab />}
           {activeTab === 'orders' && <AdminOrdersTab />}
           {activeTab === 'payments' && <AdminPaymentsTab />}
           {activeTab === 'pincodes' && <AdminPincodesTab />}

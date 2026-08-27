@@ -317,6 +317,7 @@ export function checkProductServiceability(
   customerLoc: LocationState
 ): boolean {
   if (!product.approved) return false;
+  if (product.isActive === false) return false;
 
   // Harwalkart Official Direct products are always available PAN-India
   if (product.isHarwalkartDirect) {

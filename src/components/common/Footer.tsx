@@ -1,10 +1,17 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { Logo } from './Logo';
-import { Phone, Mail, MapPin, ShieldCheck, Truck, RefreshCw, Award, Heart, Store, ShieldAlert, UserCheck } from 'lucide-react';
+import { Phone, Mail, MapPin, Building2, ShieldCheck, Truck, RefreshCw, Award, Heart, Store, ShieldAlert, UserCheck } from 'lucide-react';
 
 export const Footer: React.FC = () => {
-  const { setCurrentView, setSelectedCmsPage, navigate, authSession } = useApp();
+  const {
+    setCurrentView,
+    setSelectedCmsPage,
+    setSelectedBrandSlug,
+    navigate,
+    authSession,
+    websiteSettings,
+  } = useApp();
 
   const handleCmsClick = (pageSlug: string) => {
     setSelectedCmsPage(pageSlug);
@@ -72,7 +79,7 @@ export const Footer: React.FC = () => {
             India's premier local + online shopping marketplace. Discover trusted products from your neighborhood retailers and order authentic Harwalkart Kitchen Shakti essentials directly to your doorstep.
           </p>
 
-          <div className="space-y-2 text-xs text-slate-300 pt-2">
+          <div className="space-y-2.5 text-xs text-slate-300 pt-2">
             <div className="flex items-center gap-2">
               <Phone className="w-4 h-4 text-amber-400 shrink-0" />
               <span>Customer Helpline: <strong>+91 9372207811</strong> (9 AM - 9 PM)</span>
@@ -81,9 +88,14 @@ export const Footer: React.FC = () => {
               <Mail className="w-4 h-4 text-amber-400 shrink-0" />
               <span>Official Support: <strong>harwalkart@gmail.com</strong></span>
             </div>
-            <div className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-amber-400 shrink-0" />
-              <span>HQ: New Delhi, India • Operational across Tier 1 & 2 cities</span>
+            <div className="flex items-start gap-2">
+              <Building2 className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+              <div>
+                <span className="font-bold text-white block">Official Head Office:</span>
+                <span className="text-slate-300">
+                  {websiteSettings?.officialAddress || 'Harwalkart, Yah In, Chuk Karegaon, Pune MIDC, Maharashtra, India – 412220'}
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -91,62 +103,67 @@ export const Footer: React.FC = () => {
         {/* Quick Links */}
         <div>
           <h5 className="text-white font-bold text-sm mb-3 uppercase tracking-wider border-b border-slate-800 pb-2">
-            Marketplace
+            Harwalkart Brands
           </h5>
           <ul className="space-y-2 text-xs">
             <li>
               <button
                 onClick={() => {
-                  navigate('/');
+                  setSelectedBrandSlug('kitchen-shakti');
+                  setCurrentView('brand-detail');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="hover:text-amber-400 transition-colors cursor-pointer"
+                className="text-amber-300 font-semibold hover:text-amber-400 transition-colors cursor-pointer flex items-center gap-1.5"
               >
-                Home Page
+                <span>KitchenShakti Range</span>
+                <span className="text-[9px] bg-amber-500/20 text-amber-300 px-1.5 py-0.2 rounded">Direct</span>
               </button>
             </li>
             <li>
               <button
                 onClick={() => {
-                  setCurrentView('kitchen-shakti');
+                  setSelectedBrandSlug('nutriflow');
+                  setCurrentView('brand-detail');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="text-amber-300 font-semibold hover:text-amber-400 transition-colors cursor-pointer"
+                className="text-slate-300 hover:text-amber-400 transition-colors cursor-pointer"
               >
-                Kitchen Shakti Direct Range
+                NutriFlow (Food & Nutrition)
               </button>
             </li>
             <li>
+              <button
+                onClick={() => {
+                  setSelectedBrandSlug('rupabhoom');
+                  setCurrentView('brand-detail');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="text-slate-300 hover:text-amber-400 transition-colors cursor-pointer"
+              >
+                Rupabhoom™ (Beauty & Care)
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => {
+                  setSelectedBrandSlug('grahshorya');
+                  setCurrentView('brand-detail');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="text-slate-300 hover:text-amber-400 transition-colors cursor-pointer"
+              >
+                GrahShorya™ (Home & Cleaning)
+              </button>
+            </li>
+            <li className="pt-1 border-t border-slate-900">
               <button
                 onClick={() => {
                   setCurrentView('shops');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="hover:text-amber-400 transition-colors cursor-pointer"
+                className="text-slate-400 hover:text-white transition-colors cursor-pointer"
               >
-                Explore Local Shops
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => {
-                  setCurrentView('video-shopping');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
-                className="hover:text-amber-400 transition-colors cursor-pointer"
-              >
-                Discover in Video Ads
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => {
-                  setCurrentView('products');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
-                className="hover:text-amber-400 transition-colors cursor-pointer"
-              >
-                All Categories & Deals
+                Explore Local Verified Shops
               </button>
             </li>
           </ul>
@@ -298,7 +315,12 @@ export const Footer: React.FC = () => {
 
       {/* Bottom Bar */}
       <div className="max-w-7xl mx-auto px-4 pt-6 mt-4 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-3">
-        <p>© {new Date().getFullYear()} HARWALKART India Technologies Pvt. Ltd. All rights reserved.</p>
+        <div>
+          <p>© {new Date().getFullYear()} HARWALKART (Jai Shree Ram Enterprises). All rights reserved.</p>
+          <p className="text-[11px] text-slate-500 mt-0.5">
+            Head Office: Yah In, Chuk Karegaon, Pune MIDC, Maharashtra, India – 412220
+          </p>
+        </div>
         <p className="flex items-center gap-1">
           Crafted with <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500 inline" /> for Local Bharat Commerce
         </p>

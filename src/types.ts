@@ -199,12 +199,36 @@ export interface AuthSession {
   admin: AdminUser | null;
 }
 
+export interface Brand {
+  id: string;
+  name: string; // 'KitchenShakti' | 'NutriFlow' | 'Rupabhoom™' | 'GrahShorya™' | string
+  slug: string; // 'kitchen-shakti' | 'nutriflow' | 'rupabhoom' | 'grahshorya' | string
+  hindiName?: string;
+  category: string;
+  categoryName?: string;
+  tagline: string;
+  description: string;
+  logoUrl: string; // file_00000000...png or asset URL
+  bannerUrl?: string;
+  themeColor: string;
+  accentColor: string;
+  isOwned: boolean; // Harwalkart owned / flagship brand
+  isFeatured: boolean;
+  status: 'active' | 'inactive';
+  isActive?: boolean;
+  story?: string;
+  uspBadges: string[];
+  productCount?: number;
+}
+
 export interface Product {
   id: string;
   name: string;
   hindiName?: string;
   slug: string;
   brand: string;
+  brandId?: string;
+  brandSlug?: string;
   sellerId: string;
   sellerName: string;
   isHarwalkartDirect: boolean;
@@ -220,15 +244,36 @@ export interface Product {
   images: string[];
   videoUrl?: string;
   unit: string;
+  packagingType?: string; // 'Transparent Stand-up Pouch' | 'Transparent Food-Grade Pouch' | 'Clear Premium Jar' | 'Frosted Beauty Bottle' | 'Transparent Trigger Spray' | string
+  weightOrQuantity?: string;
   description: string;
   ingredients?: string[];
   benefits?: string[];
   fssaiNumber?: string;
   serviceablePincodes: string[]; // empty or ['*'] means PAN-India
   approved: boolean;
+  isActive?: boolean;
+  displayOrder?: number;
   featured?: boolean;
   isBestSeller?: boolean;
   tags: string[];
+}
+
+export interface HeroBanner {
+  id: string;
+  title: string;
+  subtitle: string;
+  badgeText?: string;
+  imageUrl: string;
+  mobileImageUrl?: string;
+  buttonText: string;
+  buttonLink: string; // e.g. '/brand/kitchen-shakti', '/brand/nutriflow', '/products'
+  brandTag?: string;
+  priority: number;
+  isActive: boolean;
+  startDate?: string;
+  endDate?: string;
+  createdAt: string;
 }
 
 export interface ProductVideoAd {

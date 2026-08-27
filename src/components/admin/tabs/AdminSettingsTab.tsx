@@ -424,23 +424,36 @@ export const AdminSettingsTab: React.FC = () => {
                     />
                   </div>
 
-                  <div className="space-y-1 col-span-1 sm:col-span-2">
-                    <label className="font-bold text-slate-700">Head Office Physical Address *</label>
+                  <div className="space-y-1.5 col-span-1 sm:col-span-2">
+                    <div className="flex items-center justify-between">
+                      <label className="font-bold text-slate-700 flex items-center gap-1.5">
+                        <span>Head Office Physical Address *</span>
+                        <span className="px-2 py-0.5 bg-amber-100 text-amber-900 rounded text-[10px] font-bold">
+                          Admin Editable Only
+                        </span>
+                      </label>
+                      <span className="text-[11px] text-slate-400">Single Official Company HQ</span>
+                    </div>
                     <input
                       type="text"
                       required
                       value={formData.officialAddress}
                       onChange={e => handleChange('officialAddress', e.target.value)}
-                      className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:bg-white"
+                      placeholder="Harwalkart, Yah In, Chuk Karegaon, Pune MIDC, Maharashtra, India – 412220"
+                      className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:bg-white font-medium"
                     />
+                    <p className="text-[11px] text-slate-500">
+                      Official company Head Office used universally across Website Footer, Invoices, Contact Us, and Legal terms. Does not change with customer GPS.
+                    </p>
                   </div>
 
-                  <div className="space-y-1 col-span-1 sm:col-span-2">
+                  <div className="space-y-1.5 col-span-1 sm:col-span-2">
                     <label className="font-bold text-slate-700">Registered Corporate Entity Address</label>
                     <input
                       type="text"
                       value={formData.registeredAddress || ''}
                       onChange={e => handleChange('registeredAddress', e.target.value)}
+                      placeholder="Harwalkart (Jai Shree Ram Enterprises), Yah In, Chuk Karegaon, Pune MIDC, Maharashtra, India – 412220"
                       className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:bg-white"
                     />
                   </div>
