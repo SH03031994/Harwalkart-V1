@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useApp } from '../../../context/AppContext';
 import { Product } from '../../../types';
 import {
@@ -14,7 +14,13 @@ import {
   Tag,
   AlertCircle,
   Sparkles,
+  Layers,
+  Image as ImageIcon,
+  Loader2,
+  RefreshCw,
 } from 'lucide-react';
+import { ImageUploadField } from '../../common/ImageUploadField';
+import { uploadImageFile } from '../../../utils/imageUpload';
 
 export const AdminProductsTab: React.FC = () => {
   const {
@@ -26,6 +32,8 @@ export const AdminProductsTab: React.FC = () => {
     updateProduct,
     deleteProduct,
     toggleProductApproval,
+    toggleProductPublish,
+    toggleProductActive,
     showToast,
   } = useApp();
 
@@ -50,8 +58,13 @@ export const AdminProductsTab: React.FC = () => {
     sellerId: sellers[0]?.id || 'seller-hk-direct',
     isHarwalkartDirect: true,
     image: '',
+    transparentPackagingImage: '',
+    additionalImages: [] as string[],
     tags: 'spices, pure, grocery',
   });
+
+  const [isUploadingAdditional, setIsUploadingAdditional] = useState(false);
+  const additionalFileInputRef = useRef<HTMLInputElement>(null);
 
   const filteredProducts = products.filter(p => {
     const matchesSearch =
@@ -81,6 +94,8 @@ export const AdminProductsTab: React.FC = () => {
       sellerId: 'seller-hk-direct',
       isHarwalkartDirect: true,
       image: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=500&auto=format&fit=crop&q=60',
+      transparentPackagingImage: '',
+      additionalImages: [],
       tags: 'pure, authentic, harwalkart',
     });
     setIsAddModalOpen(true);
@@ -88,6 +103,12 @@ export const AdminProductsTab: React.FC = () => {
 
   const handleOpenEdit = (prod: Product) => {
     setSelectedProduct(prod);
+    const extraImgs = prod.additionalImages && prod.additionalImages.length > 0
+      ? prod.additionalImages
+      : prod.images && prod.images.length > 1
+      ? prod.images.slice(1)
+      : [];
+
     setFormData({
       name: prod.name,
       hindiName: prod.hindiName || '',
@@ -102,19 +123,74 @@ export const AdminProductsTab: React.FC = () => {
       description: prod.description,
       sellerId: prod.sellerId,
       isHarwalkartDirect: prod.isHarwalkartDirect,
-      image: prod.images[0] || '',
+      image: prod.productImage || prod.images[0] || '',
+      transparentPackagingImage: prod.transparentPackagingImage || prod.packagingImage || '',
+      additionalImages: extraImgs,
       tags: prod.tags?.join(', ') || '',
     });
     setIsEditModalOpen(true);
   };
 
+  const handleUploadAdditional = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploadingAdditional(true);
+    const res = await uploadImageFile(file, {
+      role: 'admin',
+      imageType: 'additional',
+      folder: 'products',
+    });
+    setIsUploadingAdditional(false);
+
+    if (res.success && res.url) {
+      setFormData(prev => ({
+        ...prev,
+        additionalImages: [...prev.additionalImages, res.url],
+      }));
+      showToast('Additional image added to gallery.');
+    } else {
+      showToast(res.error || 'Failed to upload additional image.');
+    }
+
+    if (additionalFileInputRef.current) {
+      additionalFileInputRef.current.value = '';
+    }
+  };
+
+  const handleRemoveAdditionalImage = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      additionalImages: prev.additionalImages.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleMakePrimaryAdditional = (index: number) => {
+    const chosen = formData.additionalImages[index];
+    const prevPrimary = formData.image;
+    const rest = formData.additionalImages.filter((_, i) => i !== index);
+    setFormData(prev => ({
+      ...prev,
+      image: chosen,
+      additionalImages: prevPrimary ? [prevPrimary, ...rest] : rest,
+    }));
+    showToast('Main product image updated.');
+  };
+
   const handleSaveAdd = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.image.trim()) {
+      showToast('Please upload or select a main product image.');
+      return;
+    }
+
     const sel = sellers.find(s => s.id === formData.sellerId) || sellers[0];
     const discount = Math.max(0, Math.round(((formData.mrp - formData.price) / formData.mrp) * 100));
 
     // Match brand slug from brands list
     const matchedBrand = brands.find(b => b.name.toLowerCase() === formData.brand.toLowerCase() || b.id === formData.brandId);
+
+    const allImages = [formData.image, ...(formData.additionalImages || [])].filter(Boolean);
 
     addProduct({
       name: formData.name,
@@ -132,7 +208,11 @@ export const AdminProductsTab: React.FC = () => {
       discountPercent: discount,
       inStock: Number(formData.stockQuantity) > 0,
       stockQuantity: Number(formData.stockQuantity),
-      images: [formData.image],
+      images: allImages.length > 0 ? allImages : [formData.image],
+      productImage: formData.image,
+      transparentPackagingImage: formData.transparentPackagingImage.trim() || undefined,
+      packagingImage: formData.transparentPackagingImage.trim() || undefined,
+      additionalImages: formData.additionalImages,
       unit: formData.unit,
       description: formData.description,
       serviceablePincodes: ['*'],
@@ -145,9 +225,14 @@ export const AdminProductsTab: React.FC = () => {
   const handleSaveEdit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedProduct) return;
-    const discount = Math.max(0, Math.round(((formData.mrp - formData.price) / formData.mrp) * 100));
+    if (!formData.image.trim()) {
+      showToast('Please upload or select a main product image.');
+      return;
+    }
 
+    const discount = Math.max(0, Math.round(((formData.mrp - formData.price) / formData.mrp) * 100));
     const matchedBrand = brands.find(b => b.name.toLowerCase() === formData.brand.toLowerCase() || b.id === formData.brandId);
+    const allImages = [formData.image, ...(formData.additionalImages || [])].filter(Boolean);
 
     updateProduct(selectedProduct.id, {
       name: formData.name,
@@ -163,7 +248,11 @@ export const AdminProductsTab: React.FC = () => {
       stockQuantity: Number(formData.stockQuantity),
       inStock: Number(formData.stockQuantity) > 0,
       description: formData.description,
-      images: [formData.image],
+      images: allImages.length > 0 ? allImages : [formData.image],
+      productImage: formData.image,
+      transparentPackagingImage: formData.transparentPackagingImage.trim() || undefined,
+      packagingImage: formData.transparentPackagingImage.trim() || undefined,
+      additionalImages: formData.additionalImages,
       tags: formData.tags.split(',').map(t => t.trim()).filter(Boolean),
     });
     setIsEditModalOpen(false);
@@ -239,13 +328,24 @@ export const AdminProductsTab: React.FC = () => {
                 <div className="space-y-0.5 flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-1">
                     <span className="text-[10px] font-bold text-amber-700 uppercase">{prod.category}</span>
-                    <span
-                      className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-md shrink-0 ${
-                        prod.approved ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
-                      }`}
-                    >
-                      {prod.approved ? 'Live' : 'Pending'}
-                    </span>
+                    <div className="flex items-center gap-1">
+                      <span
+                        className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-md shrink-0 ${
+                          !prod.isDraft && prod.isPublished !== false && prod.approved
+                            ? 'bg-emerald-100 text-emerald-800'
+                            : 'bg-amber-100 text-amber-800'
+                        }`}
+                      >
+                        {!prod.isDraft && prod.isPublished !== false ? 'Live' : 'Draft'}
+                      </span>
+                      <span
+                        className={`text-[10px] font-bold px-1.5 py-0.5 rounded shrink-0 ${
+                          prod.isActive !== false ? 'bg-slate-200 text-slate-700' : 'bg-rose-100 text-rose-700'
+                        }`}
+                      >
+                        {prod.isActive !== false ? 'Active' : 'Off'}
+                      </span>
+                    </div>
                   </div>
                   <h4 className="font-bold text-slate-900 truncate text-xs">{prod.name}</h4>
                   <p className="text-slate-500 text-[11px] truncate">Store: {prod.sellerName}</p>
@@ -262,19 +362,29 @@ export const AdminProductsTab: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-between pt-2 border-t border-slate-200">
-              <button
-                onClick={() => toggleProductApproval(prod.id)}
-                className={`px-3 py-1 rounded-lg font-bold text-xs cursor-pointer ${
-                  prod.approved
-                    ? 'bg-slate-200 hover:bg-slate-300 text-slate-700'
-                    : 'bg-emerald-600 hover:bg-emerald-500 text-white'
-                }`}
-              >
-                {prod.approved ? 'Unpublish' : 'Approve'}
-              </button>
-
+            <div className="flex items-center justify-between pt-2 border-t border-slate-200 gap-2">
               <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => toggleProductPublish(prod.id, prod.isDraft || prod.isPublished === false)}
+                  className={`px-2.5 py-1 rounded-lg font-bold text-[11px] cursor-pointer transition-colors ${
+                    !prod.isDraft && prod.isPublished !== false
+                      ? 'bg-slate-200 hover:bg-slate-300 text-slate-700'
+                      : 'bg-emerald-600 hover:bg-emerald-500 text-white'
+                  }`}
+                >
+                  {!prod.isDraft && prod.isPublished !== false ? 'Unpublish' : 'Publish'}
+                </button>
+                <button
+                  onClick={() => toggleProductActive(prod.id, !(prod.isActive !== false))}
+                  className={`px-2 py-1 rounded-lg font-bold text-[10px] cursor-pointer ${
+                    prod.isActive !== false ? 'bg-slate-100 text-slate-600 hover:bg-slate-200' : 'bg-rose-100 text-rose-700'
+                  }`}
+                >
+                  {prod.isActive !== false ? 'Disable' : 'Enable'}
+                </button>
+              </div>
+
+              <div className="flex items-center gap-1">
                 <button
                   onClick={() => handleOpenEdit(prod)}
                   className="p-1.5 hover:bg-slate-200 rounded-lg text-slate-700 cursor-pointer"
@@ -485,15 +595,119 @@ export const AdminProductsTab: React.FC = () => {
                 </div>
               </div>
 
-              <div className="space-y-1">
-                <label className="font-bold text-slate-700">Product Image URL *</label>
-                <input
-                  type="url"
-                  required
+              {/* Image Upload Section */}
+              <div className="space-y-4 pt-2 border-t border-slate-100">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xs font-black uppercase text-slate-900 tracking-wider flex items-center gap-1.5">
+                    <ImageIcon className="w-3.5 h-3.5 text-amber-500" />
+                    <span>Product Images & Transparent Packaging</span>
+                  </h4>
+                  <span className="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                    Persistent Storage Active
+                  </span>
+                </div>
+
+                {/* 1. Main Product Image */}
+                <ImageUploadField
+                  label="1. Main Product Image"
+                  sublabel="Primary photo displayed on search results and product listings"
                   value={formData.image}
-                  onChange={e => setFormData({ ...formData, image: e.target.value })}
-                  className="w-full p-2.5 border border-slate-200 rounded-xl"
+                  onChange={url => setFormData({ ...formData, image: url })}
+                  role="admin"
+                  imageType="main"
+                  folder="products"
+                  required
                 />
+
+                {/* 2. Transparent Packaging Image */}
+                <ImageUploadField
+                  label="2. Transparent Packaging Image"
+                  sublabel="Direct photo showing clear stand-up pouch / see-through packaging for 100% customer trust"
+                  value={formData.transparentPackagingImage}
+                  onChange={url => setFormData({ ...formData, transparentPackagingImage: url })}
+                  role="admin"
+                  imageType="packaging"
+                  folder="products"
+                  helpNote="Recommended: Clear packaging view showing actual food/grain purity inside."
+                />
+
+                {/* 3. Additional Gallery Images */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <label className="text-xs font-bold text-slate-800">
+                        3. Additional Product Images ({formData.additionalImages.length})
+                      </label>
+                      <p className="text-[11px] text-slate-500">
+                        Upload extra photos (nutrition table, back of pouch, FSSAI seal, certificates)
+                      </p>
+                    </div>
+
+                    <div>
+                      <input
+                        ref={additionalFileInputRef}
+                        type="file"
+                        accept="image/jpeg,image/jpg,image/png,image/webp"
+                        onChange={handleUploadAdditional}
+                        className="hidden"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => additionalFileInputRef.current?.click()}
+                        disabled={isUploadingAdditional}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-amber-400 font-bold text-xs rounded-xl cursor-pointer transition disabled:opacity-50"
+                      >
+                        {isUploadingAdditional ? (
+                          <>
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                            <span>Uploading...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Plus className="w-3.5 h-3.5" />
+                            <span>+ Upload Extra Image</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  {formData.additionalImages.length > 0 && (
+                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-2 pt-1">
+                      {formData.additionalImages.map((imgUrl, idx) => (
+                        <div
+                          key={idx}
+                          className="relative group aspect-square rounded-xl overflow-hidden border border-slate-200 bg-slate-100"
+                        >
+                          <img
+                            src={imgUrl}
+                            alt={`Gallery ${idx + 1}`}
+                            className="w-full h-full object-cover"
+                            referrerPolicy="no-referrer"
+                          />
+                          <div className="absolute inset-0 bg-slate-950/70 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-1 p-1">
+                            <button
+                              type="button"
+                              onClick={() => handleMakePrimaryAdditional(idx)}
+                              className="px-1.5 py-0.5 bg-amber-400 text-slate-950 font-bold text-[9px] rounded cursor-pointer"
+                              title="Make this the primary image"
+                            >
+                              Make Main
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveAdditionalImage(idx)}
+                              className="p-1 bg-rose-600 text-white rounded cursor-pointer hover:bg-rose-500"
+                              title="Remove photo"
+                            >
+                              <Trash2 className="w-3 h-3" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="space-y-1">
@@ -505,6 +719,7 @@ export const AdminProductsTab: React.FC = () => {
                   className="w-full p-2.5 border border-slate-200 rounded-xl"
                 />
               </div>
+
             </div>
 
             <div className="flex gap-2 pt-3 border-t border-slate-100">

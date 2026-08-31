@@ -318,6 +318,8 @@ export function checkProductServiceability(
 ): boolean {
   if (!product.approved) return false;
   if (product.isActive === false) return false;
+  if (product.isDraft) return false;
+  if (product.isPublished === false) return false;
 
   // Harwalkart Official Direct products are always available PAN-India
   if (product.isHarwalkartDirect) {

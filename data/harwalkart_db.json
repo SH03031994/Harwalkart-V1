@@ -1,0 +1,2839 @@
+{
+  "version": 3,
+  "lastUpdated": "2026-08-29T01:37:52.219Z",
+  "products": [
+    {
+      "id": "hk_ks_lal_mirch",
+      "name": "Kitchen Shakti Lal Mirch Powder (Pure Red Chilli)",
+      "hindiName": "किचन शक्ति शुद्ध लाल मिर्च पाउडर",
+      "slug": "kitchen-shakti-lal-mirch-powder",
+      "brand": "KITCHEN SHAKTI (Harwalkart)",
+      "sellerId": "seller_harwalkart_direct",
+      "sellerName": "Harwalkart Official Store",
+      "isHarwalkartDirect": true,
+      "category": "Masala & Food",
+      "price": 85,
+      "mrp": 110,
+      "discountPercent": 23,
+      "rating": 4.9,
+      "reviewCount": 840,
+      "inStock": true,
+      "stockQuantity": 450,
+      "images": [
+        "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=800&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1509358271058-acd22cc93898?w=800&auto=format&fit=crop&q=80"
+      ],
+      "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-seasoning-food-with-spices-41551-large.mp4",
+      "unit": "200g Pack",
+      "description": "100% pure authentic Guntur chilli ground at low temperature to preserve natural red color and essential oils. No artificial color, no preservatives. Direct from certified Harwalkart spice farm processing units.",
+      "ingredients": [
+        "100% Pure Sun-Dried Red Chillies (Stemless Guntur Grade A)"
+      ],
+      "benefits": [
+        "Natural rich red color without artificial dyes",
+        "High capsaicin content for authentic heat and aroma",
+        "Aged and sorted carefully to eliminate dust and impurities",
+        "FSSAI Certified Agmark Grade Spices"
+      ],
+      "fssaiNumber": "10022011000456",
+      "serviceablePincodes": [
+        "*"
+      ],
+      "approved": true,
+      "featured": true,
+      "isBestSeller": true,
+      "tags": [
+        "Harwalkart Direct",
+        "Kitchen Shakti",
+        "Spices",
+        "Pure Masala",
+        "Lal Mirch",
+        "FSSAI"
+      ]
+    },
+    {
+      "id": "hk_ks_haldi",
+      "name": "Kitchen Shakti Turmeric Powder",
+      "hindiName": "किचन शक्ति शुद्ध हल्दी पाउडर",
+      "slug": "kitchen-shakti-turmeric-powder-200g",
+      "brand": "KITCHEN SHAKTI",
+      "sellerId": "seller_harwalkart_direct",
+      "sellerName": "Harwalkart Official Store",
+      "isHarwalkartDirect": true,
+      "category": "Masala & Food",
+      "price": 85,
+      "mrp": 110,
+      "discountPercent": 23,
+      "rating": 4.9,
+      "reviewCount": 920,
+      "inStock": true,
+      "stockQuantity": 580,
+      "images": [
+        "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=800&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=800&auto=format&fit=crop&q=80"
+      ],
+      "unit": "200g",
+      "description": "Golden Salem turmeric known for high active curcumin (>3.2%). Provides exceptional aroma, golden color, and immunity benefits to Indian cooking and warm milk.",
+      "ingredients": [
+        "100% High-Curcumin Salem Whole Turmeric Fingers"
+      ],
+      "benefits": [
+        "Rich in Curcumin for natural antioxidant & immunity support",
+        "Stone ground to lock in authentic fragrance",
+        "Zero lead chromate or chemical polish",
+        "Vacuum-sealed moisture barrier pouch"
+      ],
+      "fssaiNumber": "10022011000456",
+      "serviceablePincodes": [
+        "*"
+      ],
+      "approved": true,
+      "featured": true,
+      "isBestSeller": true,
+      "tags": [
+        "Harwalkart Direct",
+        "Kitchen Shakti",
+        "Haldi",
+        "Immunity",
+        "Turmeric",
+        "Top Picks"
+      ]
+    },
+    {
+      "id": "hk_ks_dhaniya",
+      "name": "Kitchen Shakti Dhaniya Powder (Fragrant Coriander)",
+      "hindiName": "किचन शक्ति खुशबूदार धनिया पाउडर",
+      "slug": "kitchen-shakti-dhaniya-powder",
+      "brand": "KITCHEN SHAKTI (Harwalkart)",
+      "sellerId": "seller_harwalkart_direct",
+      "sellerName": "Harwalkart Official Store",
+      "isHarwalkartDirect": true,
+      "category": "Masala & Food",
+      "price": 65,
+      "mrp": 85,
+      "discountPercent": 24,
+      "rating": 4.8,
+      "reviewCount": 650,
+      "inStock": true,
+      "stockQuantity": 410,
+      "images": [
+        "https://images.unsplash.com/photo-1599940824399-b87987ceb72a?w=800&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=800&auto=format&fit=crop&q=80"
+      ],
+      "unit": "200g Pack",
+      "description": "Sourced from Rajasthan Ramganj Mandi, slow-roasted coriander seeds ground to fine texture. Gives rich gravy texture and fresh herbal aroma to every curry.",
+      "ingredients": [
+        "100% Whole Roasted Coriander Seeds (Ramganj Grade 1)"
+      ],
+      "benefits": [
+        "Intense herbal aroma and thick curry base texture",
+        "Naturally aids digestion",
+        "No added starch or husk fillers"
+      ],
+      "fssaiNumber": "10022011000456",
+      "serviceablePincodes": [
+        "*"
+      ],
+      "approved": true,
+      "featured": true,
+      "tags": [
+        "Harwalkart Direct",
+        "Kitchen Shakti",
+        "Dhaniya",
+        "Coriander"
+      ]
+    },
+    {
+      "id": "hk_ks_garam_masala",
+      "name": "Kitchen Shakti Royal Garam Masala (16 Whole Spices)",
+      "hindiName": "किचन शक्ति शाही गरम मसाला (16 साबुत मसाले)",
+      "slug": "kitchen-shakti-royal-garam-masala",
+      "brand": "KITCHEN SHAKTI (Harwalkart)",
+      "sellerId": "seller_harwalkart_direct",
+      "sellerName": "Harwalkart Official Store",
+      "isHarwalkartDirect": true,
+      "category": "Masala & Food",
+      "price": 130,
+      "mrp": 175,
+      "discountPercent": 26,
+      "rating": 4.9,
+      "reviewCount": 1120,
+      "inStock": true,
+      "stockQuantity": 390,
+      "images": [
+        "https://images.unsplash.com/photo-1532336414038-cf19250c5757?w=800&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=800&auto=format&fit=crop&q=80"
+      ],
+      "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-cooking-fresh-curry-in-a-pan-43093-large.mp4",
+      "unit": "100g Pack",
+      "description": "Authentic royal recipe crafted with 16 handpicked whole spices including Black Cardamom, Cloves, Mace, Cinnamon, Star Anise, and Kerala Green Cardamom.",
+      "ingredients": [
+        "Black Cardamom",
+        "Green Cardamom",
+        "Cloves",
+        "Cinnamon",
+        "Mace",
+        "Nutmeg",
+        "Star Anise",
+        "Black Pepper",
+        "Cumin",
+        "Bay Leaf"
+      ],
+      "benefits": [
+        "Just 1/2 teaspoon transforms everyday sabzi into restaurant-style dish",
+        "Authentic slow-roasted blend",
+        "No added MSG, synthetic aromas or salt"
+      ],
+      "fssaiNumber": "10022011000456",
+      "serviceablePincodes": [
+        "*"
+      ],
+      "approved": true,
+      "featured": true,
+      "isBestSeller": true,
+      "tags": [
+        "Harwalkart Direct",
+        "Kitchen Shakti",
+        "Garam Masala",
+        "Royal Recipe"
+      ]
+    },
+    {
+      "id": "hk_ks_chaat_masala",
+      "name": "Kitchen Shakti Chatpata Chaat Masala (Tangy & Zingy)",
+      "hindiName": "किचन शक्ति चटपटा चाट मसाला",
+      "slug": "kitchen-shakti-chatpata-chaat-masala",
+      "brand": "KITCHEN SHAKTI (Harwalkart)",
+      "sellerId": "seller_harwalkart_direct",
+      "sellerName": "Harwalkart Official Store",
+      "isHarwalkartDirect": true,
+      "category": "Masala & Food",
+      "price": 60,
+      "mrp": 80,
+      "discountPercent": 25,
+      "rating": 4.8,
+      "reviewCount": 470,
+      "inStock": true,
+      "stockQuantity": 280,
+      "images": [
+        "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=800&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=800&auto=format&fit=crop&q=80"
+      ],
+      "unit": "100g Sprinkler Jar",
+      "description": "The ultimate zing for fruits, salads, pakoras, chaat, raita, and drinks. Blended with sun-dried Amchur (mango powder), rock salt, and roasted cumin.",
+      "ingredients": [
+        "Dry Mango Powder (Amchur)",
+        "Black Salt",
+        "Cumin",
+        "Pomegranate Seed Powder",
+        "Asafoetida",
+        "Mint Powder"
+      ],
+      "benefits": [
+        "Sprinkler top packaging for easy daily use",
+        "Tangy taste with digestive rock salt"
+      ],
+      "fssaiNumber": "10022011000456",
+      "serviceablePincodes": [
+        "*"
+      ],
+      "approved": true,
+      "featured": false,
+      "tags": [
+        "Harwalkart Direct",
+        "Kitchen Shakti",
+        "Chaat Masala",
+        "Sprinkler"
+      ]
+    },
+    {
+      "id": "hk_ks_biryani_masala",
+      "name": "Kitchen Shakti Shahi Dum Biryani Masala",
+      "hindiName": "किचन शक्ति शाही दम बिरयानी मसाला",
+      "slug": "kitchen-shakti-shahi-dum-biryani-masala",
+      "brand": "KitchenShakti",
+      "brandId": "brand_kitchen_shakti",
+      "brandSlug": "kitchen-shakti",
+      "sellerId": "seller_harwalkart_direct",
+      "sellerName": "Harwalkart Official Store",
+      "isHarwalkartDirect": true,
+      "category": "Kitchen & Household Essentials",
+      "price": 95,
+      "mrp": 125,
+      "discountPercent": 24,
+      "rating": 4.9,
+      "reviewCount": 680,
+      "inStock": true,
+      "stockQuantity": 310,
+      "images": [
+        "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=800&auto=format&fit=crop&q=80"
+      ],
+      "unit": "100g Box",
+      "description": "Hyderabadi & Awadhi royal dum preparation spice mix. Infused with kewra extract notes, saffron strings, and whole crushed spices.",
+      "ingredients": [
+        "Cardamom",
+        "Cinnamon",
+        "Mace",
+        "Saffron",
+        "Cumin",
+        "Fennel",
+        "Kashmiri Chilli",
+        "Cloves",
+        "Dried Rose Petals"
+      ],
+      "benefits": [
+        "Brings authentic royal restaurant aroma to home-cooked biryani",
+        "Includes whole spice pouch inside"
+      ],
+      "fssaiNumber": "10022011000456",
+      "serviceablePincodes": [
+        "*"
+      ],
+      "approved": true,
+      "featured": true,
+      "tags": [
+        "Harwalkart Direct",
+        "KitchenShakti",
+        "Biryani Masala"
+      ]
+    },
+    {
+      "id": "hk_nf_toor_dal",
+      "name": "NutriFlow Organic Unpolished Toor Dal",
+      "hindiName": "न्यूट्रिफ्लो शुद्ध अनपॉलिश्ड तुअर दाल",
+      "slug": "nutriflow-organic-unpolished-toor-dal-1kg",
+      "brand": "NutriFlow",
+      "brandId": "brand_nutriflow",
+      "brandSlug": "nutriflow",
+      "sellerId": "seller_harwalkart_direct",
+      "sellerName": "Harwalkart Official Store",
+      "isHarwalkartDirect": true,
+      "category": "Food, Grocery & Nutrition Products",
+      "price": 185,
+      "mrp": 230,
+      "discountPercent": 20,
+      "rating": 4.9,
+      "reviewCount": 310,
+      "inStock": true,
+      "stockQuantity": 350,
+      "images": [
+        "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=800&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?w=800&auto=format&fit=crop&q=80"
+      ],
+      "unit": "1kg Pouch",
+      "description": "Farm-fresh unpolished Toor Dal naturally high in plant protein and dietary fibre. Free from artificial colour, mineral water polish, or chemicals.",
+      "ingredients": [
+        "100% Raw Unpolished Pigeon Peas (Toor Dal)"
+      ],
+      "benefits": [
+        "High protein for muscle energy",
+        "Easier digestion without water polish",
+        "Rich natural nutty flavour"
+      ],
+      "fssaiNumber": "10022011000456",
+      "serviceablePincodes": [
+        "*"
+      ],
+      "approved": true,
+      "featured": true,
+      "isBestSeller": true,
+      "tags": [
+        "Harwalkart Direct",
+        "NutriFlow",
+        "Unpolished Dal",
+        "Protein",
+        "Organic"
+      ]
+    },
+    {
+      "id": "hk_nf_coldpressed_oil",
+      "name": "NutriFlow Cold Pressed Wood Churned Groundnut Oil",
+      "hindiName": "न्यूट्रिफ्लो लकड़ी घाना शुद्ध मूंगफली तेल",
+      "slug": "nutriflow-cold-pressed-groundnut-oil-1l",
+      "brand": "NutriFlow",
+      "brandId": "brand_nutriflow",
+      "brandSlug": "nutriflow",
+      "sellerId": "seller_harwalkart_direct",
+      "sellerName": "Harwalkart Official Store",
+      "isHarwalkartDirect": true,
+      "category": "Food, Grocery & Nutrition Products",
+      "price": 295,
+      "mrp": 360,
+      "discountPercent": 18,
+      "rating": 4.85,
+      "reviewCount": 240,
+      "inStock": true,
+      "stockQuantity": 280,
+      "images": [
+        "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=800&auto=format&fit=crop&q=80"
+      ],
+      "unit": "1 Litre Glass Bottle",
+      "description": "Extracted using traditional wooden Ghani at slow speeds to preserve natural vitamin E, heart-healthy MUFA, and authentic nutty aroma.",
+      "ingredients": [
+        "100% Cold Pressed Premium Groundnut Seeds"
+      ],
+      "benefits": [
+        "Good for cardiovascular wellness",
+        "Zero trans-fats and unrefined",
+        "High smoke point for traditional Indian tadka"
+      ],
+      "fssaiNumber": "10022011000456",
+      "serviceablePincodes": [
+        "*"
+      ],
+      "approved": true,
+      "featured": true,
+      "tags": [
+        "Harwalkart Direct",
+        "NutriFlow",
+        "Kacchi Ghani",
+        "Cold Pressed Oil"
+      ]
+    },
+    {
+      "id": "hk_rb_kumkumadi_serum",
+      "name": "Rupabhoom™ Kumkumadi Golden Face Glow Oil",
+      "hindiName": "रूपाभूम कुमकुमादि गोल्डन ग्लो फेस ऑइल",
+      "slug": "rupabhoom-kumkumadi-golden-face-oil-30ml",
+      "brand": "Rupabhoom™",
+      "brandId": "brand_rupabhoom",
+      "brandSlug": "rupabhoom",
+      "sellerId": "seller_harwalkart_direct",
+      "sellerName": "Harwalkart Official Store",
+      "isHarwalkartDirect": true,
+      "category": "Beauty, Personal Care & Wellness Products",
+      "price": 449,
+      "mrp": 699,
+      "discountPercent": 36,
+      "rating": 4.95,
+      "reviewCount": 520,
+      "inStock": true,
+      "stockQuantity": 210,
+      "images": [
+        "https://images.unsplash.com/photo-1608248597359-bbad20a4ceb5?w=800&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=80"
+      ],
+      "unit": "30ml Dropper",
+      "description": "Infused with authentic Kashmiri saffron strands, sandalwood, lotus extract, and 24 Ayurvedic herbs. Light non-sticky formula that enhances skin radiance and evens skin tone.",
+      "ingredients": [
+        "Kashmiri Saffron (Kesar)",
+        "Red Sandalwood",
+        "Lotus Pollen",
+        "Licorice",
+        "Cold Pressed Sesame Oil"
+      ],
+      "benefits": [
+        "Youthful golden glow",
+        "Reduces dark spots & hyperpigmentation",
+        "100% Ayurvedic herbal infusion"
+      ],
+      "serviceablePincodes": [
+        "*"
+      ],
+      "approved": true,
+      "featured": true,
+      "isBestSeller": true,
+      "tags": [
+        "Harwalkart Direct",
+        "Rupabhoom",
+        "Kumkumadi",
+        "Face Glow",
+        "Ayurveda"
+      ]
+    },
+    {
+      "id": "hk_rb_herbal_shampoo",
+      "name": "Rupabhoom™ Bhringraj & Onion Hair Fall Defense Shampoo",
+      "hindiName": "रूपाभूम भृंगराज एवं प्याज हेयर शैम्पू",
+      "slug": "rupabhoom-bhringraj-onion-hair-shampoo-300ml",
+      "brand": "Rupabhoom™",
+      "brandId": "brand_rupabhoom",
+      "brandSlug": "rupabhoom",
+      "sellerId": "seller_harwalkart_direct",
+      "sellerName": "Harwalkart Official Store",
+      "isHarwalkartDirect": true,
+      "category": "Beauty, Personal Care & Wellness Products",
+      "price": 279,
+      "mrp": 399,
+      "discountPercent": 30,
+      "rating": 4.8,
+      "reviewCount": 195,
+      "inStock": true,
+      "stockQuantity": 320,
+      "images": [
+        "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?w=800&auto=format&fit=crop&q=80"
+      ],
+      "unit": "300ml Bottle",
+      "description": "Sulphate and paraben-free natural shampoo enriched with wild Bhringraj, red onion seed oil, and amla to strengthen hair roots and reduce hair fall.",
+      "ingredients": [
+        "Bhringraj Extract",
+        "Red Onion Seed Oil",
+        "Amla",
+        "Aloe Vera Juice",
+        "Vitamin B5"
+      ],
+      "benefits": [
+        "Deep hair root nourishment",
+        "Zero harsh sulphates or silicones",
+        "Leaves hair silky and shiny"
+      ],
+      "serviceablePincodes": [
+        "*"
+      ],
+      "approved": true,
+      "featured": true,
+      "tags": [
+        "Harwalkart Direct",
+        "Rupabhoom",
+        "Hair Care",
+        "Bhringraj",
+        "Herbal Shampoo"
+      ]
+    },
+    {
+      "id": "hk_gs_dishwash_gel",
+      "name": "GrahShorya™ Lemon & Neem Power Dishwash Gel",
+      "hindiName": "गृहशौर्य नींबू एवं नीम पॉवर डिशवॉश जेल",
+      "slug": "grahshorya-lemon-neem-power-dishwash-gel-1l",
+      "brand": "GrahShorya™",
+      "brandId": "brand_grahshorya",
+      "brandSlug": "grahshorya",
+      "sellerId": "seller_harwalkart_direct",
+      "sellerName": "Harwalkart Official Store",
+      "isHarwalkartDirect": true,
+      "category": "Home, Cleaning & Household Products",
+      "price": 149,
+      "mrp": 199,
+      "discountPercent": 25,
+      "rating": 4.9,
+      "reviewCount": 440,
+      "inStock": true,
+      "stockQuantity": 600,
+      "images": [
+        "https://images.unsplash.com/photo-1585670270606-b33df06e8b4e?w=800&auto=format&fit=crop&q=80"
+      ],
+      "unit": "1 Litre Bottle with Free Scrubber",
+      "description": "Thick degreasing dishwash gel formulated with real lemon power and anti-bacterial neem. Cuts through stubborn oil, ghee, and burnt grease on pots with a single drop.",
+      "ingredients": [
+        "Bio-enzymatic cleaning agents",
+        "Real Lemon Extract",
+        "Neem Oil",
+        "Skin-gentle conditioners"
+      ],
+      "benefits": [
+        "Cuts grease in 1 swipe",
+        "Prevents food odour on utensils",
+        "Safe and soft on hands with balanced pH"
+      ],
+      "serviceablePincodes": [
+        "*"
+      ],
+      "approved": true,
+      "featured": true,
+      "isBestSeller": true,
+      "tags": [
+        "Harwalkart Direct",
+        "GrahShorya",
+        "Dishwash",
+        "Lemon Power",
+        "Home Hygiene"
+      ]
+    },
+    {
+      "id": "hk_gs_floor_cleaner",
+      "name": "GrahShorya™ Citrus Pine Disinfectant Floor Cleaner",
+      "hindiName": "गृहशौर्य सिट्रस पाइन डिसइन्फेक्टेंट फ्लोर क्लीनर",
+      "slug": "grahshorya-citrus-pine-floor-cleaner-2l",
+      "brand": "GrahShorya™",
+      "brandId": "brand_grahshorya",
+      "brandSlug": "grahshorya",
+      "sellerId": "seller_harwalkart_direct",
+      "sellerName": "Harwalkart Official Store",
+      "isHarwalkartDirect": true,
+      "category": "Home, Cleaning & Household Products",
+      "price": 219,
+      "mrp": 299,
+      "discountPercent": 27,
+      "rating": 4.85,
+      "reviewCount": 360,
+      "inStock": true,
+      "stockQuantity": 450,
+      "images": [
+        "https://images.unsplash.com/photo-1584813470613-5b1c1cad3d69?w=800&auto=format&fit=crop&q=80"
+      ],
+      "unit": "2 Litre Jumbo Economy Pack",
+      "description": "Triple-action disinfectant formula kills 99.9% germs, leaves spotless shine on marble, tiles, and wooden flooring with a refreshing all-day pine aroma.",
+      "ingredients": [
+        "Quaternary Disinfectant Complex",
+        "Pine Oil Extract",
+        "Fragrance Micro-Capsules"
+      ],
+      "benefits": [
+        "99.9% Germ & Virus Protection",
+        "Repels flies and insects naturally",
+        "Streak-free glossy shine on all surfaces"
+      ],
+      "serviceablePincodes": [
+        "*"
+      ],
+      "approved": true,
+      "featured": true,
+      "tags": [
+        "Harwalkart Direct",
+        "GrahShorya",
+        "Floor Cleaner",
+        "Disinfectant",
+        "Home Care"
+      ]
+    },
+    {
+      "id": "prod_india_gate_classic",
+      "name": "India Gate Basmati Rice Classic",
+      "hindiName": "इंडिया गेट बासमती राइस क्लासिक",
+      "slug": "india-gate-basmati-rice-classic-5kg",
+      "brand": "India Gate",
+      "sellerId": "seller_sharma_kirana",
+      "sellerName": "Sharma Kirana & General Store",
+      "isHarwalkartDirect": false,
+      "category": "Grocery",
+      "price": 549,
+      "mrp": 620,
+      "discountPercent": 11,
+      "rating": 4.8,
+      "reviewCount": 412,
+      "inStock": true,
+      "stockQuantity": 50,
+      "images": [
+        "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=800&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?w=800&auto=format&fit=crop&q=80"
+      ],
+      "unit": "5kg",
+      "description": "India Gate Basmati Rice Classic 5kg bag. Premium aged grain with distinct aroma and pearl white long slender grains.",
+      "ingredients": [
+        "100% Aged Royal Basmati Rice"
+      ],
+      "serviceablePincodes": [
+        "*"
+      ],
+      "approved": true,
+      "featured": true,
+      "isBestSeller": true,
+      "tags": [
+        "Rice",
+        "Basmati",
+        "India Gate",
+        "Top Picks",
+        "Grocery"
+      ]
+    },
+    {
+      "id": "prod_amul_cow_ghee",
+      "name": "Amul Cow Ghee",
+      "hindiName": "अमुल गाय का शुद्ध घी",
+      "slug": "amul-cow-ghee-1l",
+      "brand": "Amul",
+      "sellerId": "seller_ganesh_fresh",
+      "sellerName": "Shree Ganesh Fresh Mart",
+      "isHarwalkartDirect": false,
+      "category": "Dairy",
+      "price": 615,
+      "mrp": 685,
+      "discountPercent": 10,
+      "rating": 4.9,
+      "reviewCount": 780,
+      "inStock": true,
+      "stockQuantity": 65,
+      "images": [
+        "https://images.unsplash.com/photo-1589927986089-35812388d1f4?w=800&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=800&auto=format&fit=crop&q=80"
+      ],
+      "unit": "1L",
+      "description": "Amul Pure Cow Ghee 1L Tin. Rich aroma, golden granular texture made from fresh cow milk cream.",
+      "ingredients": [
+        "100% Pure Cow Milk Fat"
+      ],
+      "serviceablePincodes": [
+        "*"
+      ],
+      "approved": true,
+      "featured": true,
+      "isBestSeller": true,
+      "tags": [
+        "Ghee",
+        "Amul",
+        "Cow Ghee",
+        "Dairy",
+        "Top Picks"
+      ]
+    },
+    {
+      "id": "prod_tata_salt_iodised",
+      "name": "Tata Salt",
+      "hindiName": "टाटा नमक देश का नमक",
+      "slug": "tata-salt-vacuum-evaporated-1kg",
+      "brand": "Tata Salt",
+      "sellerId": "seller_sharma_kirana",
+      "sellerName": "Sharma Kirana & General Store",
+      "isHarwalkartDirect": false,
+      "category": "Grocery",
+      "price": 20,
+      "mrp": 24,
+      "discountPercent": 17,
+      "rating": 4.9,
+      "reviewCount": 1450,
+      "inStock": true,
+      "stockQuantity": 200,
+      "images": [
+        "https://images.unsplash.com/photo-1518110925495-5fe2fda0442c?w=800&auto=format&fit=crop&q=80"
+      ],
+      "unit": "1kg",
+      "description": "Tata Salt Vacuum Evaporated Iodised Salt 1kg. Desh Ka Namak with guaranteed purity and iodine.",
+      "ingredients": [
+        "Edible Common Salt, Potassium Iodate"
+      ],
+      "serviceablePincodes": [
+        "*"
+      ],
+      "approved": true,
+      "featured": true,
+      "isBestSeller": true,
+      "tags": [
+        "Salt",
+        "Tata Salt",
+        "Grocery",
+        "Top Picks",
+        "Daily Essentials"
+      ]
+    },
+    {
+      "id": "prod_tata_tea_premium_pkg",
+      "name": "Tata Tea Premium",
+      "hindiName": "टाटा टी प्रीमियम चाय",
+      "slug": "tata-tea-premium-1kg",
+      "brand": "Tata Tea",
+      "sellerId": "seller_sharma_kirana",
+      "sellerName": "Sharma Kirana & General Store",
+      "isHarwalkartDirect": false,
+      "category": "Grocery",
+      "price": 225,
+      "mrp": 285,
+      "discountPercent": 12,
+      "rating": 4.8,
+      "reviewCount": 620,
+      "inStock": true,
+      "stockQuantity": 80,
+      "images": [
+        "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=800&auto=format&fit=crop&q=80"
+      ],
+      "unit": "1kg",
+      "description": "Tata Tea Premium Desh Ki Chai 1kg pack. Unique blend of badi patti for swaad and choti patti for kadakpan.",
+      "ingredients": [
+        "100% CTC Tea Leaves"
+      ],
+      "serviceablePincodes": [
+        "*"
+      ],
+      "approved": true,
+      "featured": true,
+      "isBestSeller": true,
+      "tags": [
+        "Tea",
+        "Tata Tea",
+        "Chai",
+        "Top Picks",
+        "Beverages"
+      ]
+    },
+    {
+      "id": "prod_basmati_rice",
+      "name": "Fortune Super Basmati Rice (Aged 2 Years)",
+      "hindiName": "फॉर्च्यून सुपर बासमती चावल",
+      "slug": "fortune-super-basmati-rice-5kg",
+      "brand": "Fortune",
+      "sellerId": "seller_sharma_kirana",
+      "sellerName": "Sharma Kirana & General Store",
+      "isHarwalkartDirect": false,
+      "category": "Grocery",
+      "price": 499,
+      "mrp": 650,
+      "discountPercent": 23,
+      "rating": 4.7,
+      "reviewCount": 340,
+      "inStock": true,
+      "stockQuantity": 45,
+      "images": [
+        "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=800&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?w=800&auto=format&fit=crop&q=80"
+      ],
+      "unit": "5 kg Bag",
+      "description": "Fluffy long grain basmati rice, naturally aged for exceptional aroma. Sourced and delivered by your trusted local Sharma Kirana.",
+      "ingredients": [
+        "100% Aged Basmati Rice"
+      ],
+      "serviceablePincodes": [
+        "110001",
+        "110005",
+        "110006",
+        "110024"
+      ],
+      "approved": true,
+      "featured": true,
+      "isBestSeller": true,
+      "tags": [
+        "Rice",
+        "Basmati",
+        "Sharma Kirana",
+        "Local Delhi"
+      ]
+    },
+    {
+      "id": "prod_aashirvaad_atta",
+      "name": "Aashirvaad Shudh Chakki Atta (100% Whole Wheat)",
+      "hindiName": "आशीर्वाद शुद्ध चक्की आटा",
+      "slug": "aashirvaad-shudh-chakki-atta-10kg",
+      "brand": "Aashirvaad",
+      "sellerId": "seller_sharma_kirana",
+      "sellerName": "Sharma Kirana & General Store",
+      "isHarwalkartDirect": false,
+      "category": "Grocery",
+      "price": 410,
+      "mrp": 460,
+      "discountPercent": 11,
+      "rating": 4.8,
+      "reviewCount": 520,
+      "inStock": true,
+      "stockQuantity": 60,
+      "images": [
+        "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&auto=format&fit=crop&q=80"
+      ],
+      "unit": "10 kg Pack",
+      "description": "Whole wheat flour ground by traditional 4-step process. Soft rotis guaranteed.",
+      "serviceablePincodes": [
+        "110001",
+        "110005",
+        "110006",
+        "110024"
+      ],
+      "approved": true,
+      "featured": false,
+      "tags": [
+        "Atta",
+        "Flour",
+        "Wheat",
+        "Sharma Kirana"
+      ]
+    },
+    {
+      "id": "prod_tata_tea_gold",
+      "name": "Tata Tea Gold (Exquisite Assam Leaves with Long Leaves)",
+      "hindiName": "टाटा टी गोल्ड चाय",
+      "slug": "tata-tea-gold-1kg",
+      "brand": "Tata Tea",
+      "sellerId": "seller_sharma_kirana",
+      "sellerName": "Sharma Kirana & General Store",
+      "isHarwalkartDirect": false,
+      "category": "Grocery",
+      "price": 520,
+      "mrp": 610,
+      "discountPercent": 15,
+      "rating": 4.8,
+      "reviewCount": 380,
+      "inStock": true,
+      "stockQuantity": 35,
+      "images": [
+        "https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=800&auto=format&fit=crop&q=80"
+      ],
+      "unit": "1 kg Pouch",
+      "description": "A blend of fine Assam CTC teas with 15% gently rolled long leaves for rich taste and irresistible aroma.",
+      "serviceablePincodes": [
+        "110001",
+        "110005",
+        "110006",
+        "110024"
+      ],
+      "approved": true,
+      "featured": false,
+      "tags": [
+        "Tea",
+        "Chai",
+        "Assam Tea"
+      ]
+    },
+    {
+      "id": "prod_kashmiri_saffron",
+      "name": "Pure Kashmiri Mongra Kesar / Saffron (Grade A1)",
+      "hindiName": "कश्मीरी मोंगरा केसर शुद्ध",
+      "slug": "pure-kashmiri-mongra-kesar-1g",
+      "brand": "Gupta Royal Spices",
+      "sellerId": "seller_gupta_masala",
+      "sellerName": "Gupta Masala & Dryfruits Bhandar",
+      "isHarwalkartDirect": false,
+      "category": "Masala & Food",
+      "price": 340,
+      "mrp": 450,
+      "discountPercent": 24,
+      "rating": 4.9,
+      "reviewCount": 188,
+      "inStock": true,
+      "stockQuantity": 50,
+      "images": [
+        "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=800&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=800&auto=format&fit=crop&q=80"
+      ],
+      "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-herbs-and-spices-on-spoons-41549-large.mp4",
+      "unit": "1 Gram Sealed Acrylic Box",
+      "description": "100% authentic deep crimson stigmas sourced directly from Pampore, Kashmir. Highest crocin content for deep golden color and regal flavor.",
+      "serviceablePincodes": [
+        "110001",
+        "110006",
+        "302003",
+        "302004",
+        "302017",
+        "302021",
+        "226001"
+      ],
+      "approved": true,
+      "featured": true,
+      "tags": [
+        "Kesar",
+        "Saffron",
+        "Dry Fruits",
+        "Gupta Masala"
+      ]
+    },
+    {
+      "id": "prod_california_almonds",
+      "name": "Premium California Jumbo Badam / Almonds (Crisp & Sweet)",
+      "hindiName": "कैलिफोर्निया बादाम गिरी 500g",
+      "slug": "premium-california-almonds-500g",
+      "brand": "Gupta Dryfruits",
+      "sellerId": "seller_gupta_masala",
+      "sellerName": "Gupta Masala & Dryfruits Bhandar",
+      "isHarwalkartDirect": false,
+      "category": "Masala & Food",
+      "price": 430,
+      "mrp": 580,
+      "discountPercent": 26,
+      "rating": 4.7,
+      "reviewCount": 290,
+      "inStock": true,
+      "stockQuantity": 40,
+      "images": [
+        "https://images.unsplash.com/photo-1508061253366-f7da158b6d46?w=800&auto=format&fit=crop&q=80"
+      ],
+      "unit": "500g Vacuum Pouch",
+      "description": "Direct imported high-grade California almonds, 100% natural, high protein and vitamin E.",
+      "serviceablePincodes": [
+        "110001",
+        "110006",
+        "302003",
+        "302004",
+        "302017",
+        "302021",
+        "226001"
+      ],
+      "approved": true,
+      "featured": false,
+      "tags": [
+        "Badam",
+        "Almonds",
+        "Dryfruits"
+      ]
+    },
+    {
+      "id": "prod_brass_kadai",
+      "name": "Handcrafted Heavy Pure Brass Kadhai with Tin Coating (Kalai)",
+      "hindiName": "शुद्ध पीतल की कढ़ाई कलईदार",
+      "slug": "handcrafted-pure-brass-kadai-2litre",
+      "brand": "Aman Heritage Kitchen",
+      "sellerId": "seller_aman_electronics",
+      "sellerName": "Aman Home Appliances & Kitchenware",
+      "isHarwalkartDirect": false,
+      "category": "Kitchen",
+      "price": 1850,
+      "mrp": 2400,
+      "discountPercent": 23,
+      "rating": 4.9,
+      "reviewCount": 94,
+      "inStock": true,
+      "stockQuantity": 18,
+      "images": [
+        "https://images.unsplash.com/photo-1584990347449-39587428e218?w=800&auto=format&fit=crop&q=80",
+        "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=800&auto=format&fit=crop&q=80"
+      ],
+      "unit": "2 Litre (1.8 kg Heavy Base)",
+      "description": "Traditional heavy gauge brass kadai with pure tin inner lining. Even heat distribution for slow-cooked dal, curries and sweets.",
+      "serviceablePincodes": [
+        "226001",
+        "226010",
+        "226016",
+        "110001",
+        "560038"
+      ],
+      "approved": true,
+      "featured": true,
+      "tags": [
+        "Kitchen",
+        "Brass",
+        "Kadai",
+        "Aman Appliances"
+      ]
+    },
+    {
+      "id": "prod_organic_jaggery",
+      "name": "Organic Desi Gur / Jaggery Cubes (Chemical Free)",
+      "hindiName": "देसी जैविक गुड़ क्यूब्स",
+      "slug": "organic-desi-gur-jaggery-1kg",
+      "brand": "Shree Ganesh Organic",
+      "sellerId": "seller_ganesh_fresh",
+      "sellerName": "Shree Ganesh Fresh Mart",
+      "isHarwalkartDirect": false,
+      "category": "Grocery",
+      "price": 95,
+      "mrp": 130,
+      "discountPercent": 27,
+      "rating": 4.7,
+      "reviewCount": 145,
+      "inStock": true,
+      "stockQuantity": 55,
+      "images": [
+        "https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=800&auto=format&fit=crop&q=80"
+      ],
+      "unit": "1 kg Box",
+      "description": "Solid organic jaggery chunks made without chemical bleaching or sulphur. Packed with iron.",
+      "serviceablePincodes": [
+        "400058",
+        "400050",
+        "400014",
+        "400001"
+      ],
+      "approved": true,
+      "featured": false,
+      "tags": [
+        "Gur",
+        "Jaggery",
+        "Organic",
+        "Ganesh Mart"
+      ]
+    },
+    {
+      "id": "prod_ayurvedic_soap",
+      "name": "Medimix Ayurvedic 18 Herbs Classic Body Soap (Pack of 4)",
+      "hindiName": "मेडिमिक्स आयुर्वेदिक साबुन (4 का पैक)",
+      "slug": "medimix-ayurvedic-18-herbs-soap-pack-4",
+      "brand": "Medimix",
+      "sellerId": "seller_sharma_kirana",
+      "sellerName": "Sharma Kirana & General Store",
+      "isHarwalkartDirect": false,
+      "category": "Personal Care",
+      "price": 180,
+      "mrp": 220,
+      "discountPercent": 18,
+      "rating": 4.6,
+      "reviewCount": 210,
+      "inStock": true,
+      "stockQuantity": 70,
+      "images": [
+        "https://images.unsplash.com/photo-1607006314354-94672e811166?w=800&auto=format&fit=crop&q=80"
+      ],
+      "unit": "4 x 125g Bars",
+      "description": "Time-tested Ayurvedic formulation with 18 pure herbs to protect and clarify skin.",
+      "serviceablePincodes": [
+        "110001",
+        "110005",
+        "110006",
+        "110024"
+      ],
+      "approved": true,
+      "featured": false,
+      "tags": [
+        "Soap",
+        "Ayurveda",
+        "Personal Care"
+      ]
+    }
+  ],
+  "sellers": [
+    {
+      "id": "seller_harwalkart_direct",
+      "name": "Harwalkart Direct Enterprise",
+      "ownerName": "Harwalkart Enterprise Operations",
+      "shopName": "Harwalkart Official Store",
+      "slug": "harwalkart-official",
+      "logo": "https://images.unsplash.com/photo-1542838132-92c53300491e?w=150&auto=format&fit=crop&q=80",
+      "bannerImage": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=1200&auto=format&fit=crop&q=80",
+      "rating": 4.9,
+      "reviewCount": 3420,
+      "isOpen": true,
+      "openingHours": "24x7 Order Online (Dispatch: 9 AM - 8 PM)",
+      "distanceKm": 0.5,
+      "serviceablePincodes": [
+        "*"
+      ],
+      "serviceRadiusKm": 5000,
+      "isRadiusLocked": false,
+      "sellerType": "gst",
+      "kycStatus": "approved",
+      "isHarwalkartDirect": true,
+      "isGstRegistered": true,
+      "gstin": "07AAACH7409R1ZZ",
+      "gstDocFileName": "Harwalkart_GST_Cert.pdf",
+      "panNumber": "AAACH7409R",
+      "panDocFileName": "Harwalkart_PAN_Card.pdf",
+      "status": "approved",
+      "walletBalance": 84250,
+      "totalEarnings": 342000,
+      "password": "seller123",
+      "businessInfo": "Official Harwalkart Kitchen Shakti Central Fulfillment Hub and Direct Spices Processing Unit",
+      "latitude": 28.6315,
+      "longitude": 77.2167,
+      "kycDoc": {
+        "docType": "GST Certificate",
+        "docNumber": "07AAACH7409R1ZZ",
+        "fileName": "Harwalkart_GST_Cert.pdf",
+        "verified": true,
+        "uploadedAt": "2023-01-15"
+      },
+      "kycDocuments": [
+        {
+          "docType": "GST Certificate",
+          "docNumber": "07AAACH7409R1ZZ",
+          "fileName": "Harwalkart_GST_Cert.pdf",
+          "verified": true,
+          "uploadedAt": "2023-01-15"
+        },
+        {
+          "docType": "PAN Card",
+          "docNumber": "AAACH7409R",
+          "fileName": "Harwalkart_PAN_Card.pdf",
+          "verified": true,
+          "uploadedAt": "2023-01-15"
+        },
+        {
+          "docType": "FSSAI Registration",
+          "docNumber": "10020011000942",
+          "fileName": "Harwalkart_FSSAI_Lic.pdf",
+          "verified": true,
+          "uploadedAt": "2023-01-15"
+        }
+      ],
+      "address": {
+        "street": "Plot No. 44, Industrial Hub Phase 2",
+        "area": "Connaught Place / Central Warehouse",
+        "city": "New Delhi",
+        "pincode": "110001",
+        "state": "Delhi"
+      },
+      "phone": "9372207811",
+      "email": "harwalkart@gmail.com",
+      "verified": true,
+      "productCount": 18,
+      "joinedDate": "2023-01-15",
+      "categories": [
+        "Masala & Food",
+        "Grocery",
+        "Kitchen"
+      ]
+    },
+    {
+      "id": "seller_sharma_kirana",
+      "name": "Ramesh Sharma",
+      "ownerName": "Ramesh Sharma",
+      "shopName": "Sharma Kirana & General Store",
+      "slug": "sharma-kirana-store",
+      "logo": "https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=150&auto=format&fit=crop&q=80",
+      "bannerImage": "https://images.unsplash.com/photo-1534723452862-4c874018d66d?w=1200&auto=format&fit=crop&q=80",
+      "rating": 4.8,
+      "reviewCount": 428,
+      "isOpen": true,
+      "openingHours": "7:30 AM - 10:00 PM",
+      "distanceKm": 1.2,
+      "serviceablePincodes": [
+        "110001",
+        "110005",
+        "110006",
+        "110024"
+      ],
+      "serviceRadiusKm": 5000,
+      "isRadiusLocked": false,
+      "sellerType": "gst",
+      "kycStatus": "approved",
+      "isHarwalkartDirect": false,
+      "isGstRegistered": true,
+      "gstin": "07AABCS1234D1Z2",
+      "gstDocFileName": "Sharma_GST_Registration.pdf",
+      "panNumber": "AABCS1234D",
+      "panDocFileName": "Sharma_PAN_Card.pdf",
+      "status": "approved",
+      "walletBalance": 12450,
+      "totalEarnings": 68900,
+      "password": "seller123",
+      "businessInfo": "Authorized retail general merchant for FMCG, daily pulses, flours, and household cleaning products",
+      "latitude": 28.6517,
+      "longitude": 77.1906,
+      "kycDoc": {
+        "docType": "GST Certificate",
+        "docNumber": "07AABCS1234D1Z2",
+        "fileName": "Sharma_GST_Registration.pdf",
+        "verified": true,
+        "uploadedAt": "2023-05-10"
+      },
+      "kycDocuments": [
+        {
+          "docType": "GST Certificate",
+          "docNumber": "07AABCS1234D1Z2",
+          "fileName": "Sharma_GST_Registration.pdf",
+          "verified": true,
+          "uploadedAt": "2023-05-10"
+        },
+        {
+          "docType": "PAN Card",
+          "docNumber": "AABCS1234D",
+          "fileName": "Sharma_PAN_Card.pdf",
+          "verified": true,
+          "uploadedAt": "2023-05-10"
+        },
+        {
+          "docType": "Aadhaar Card",
+          "docNumber": "9922-8833-1122",
+          "fileName": "Sharma_Aadhaar.pdf",
+          "verified": true,
+          "uploadedAt": "2023-05-10"
+        }
+      ],
+      "address": {
+        "street": "Shop 12, Main Market Road",
+        "area": "Connaught Place / Karol Bagh",
+        "city": "New Delhi",
+        "pincode": "110001",
+        "state": "Delhi"
+      },
+      "phone": "9811223344",
+      "email": "sharmakirana.delhi@gmail.com",
+      "verified": true,
+      "productCount": 46,
+      "joinedDate": "2023-05-10",
+      "categories": [
+        "Grocery",
+        "Cleaning & Hygiene",
+        "Personal Care"
+      ]
+    },
+    {
+      "id": "seller_gupta_masala",
+      "name": "Kailash Gupta",
+      "ownerName": "Kailash Gupta",
+      "shopName": "Gupta Masala & Dryfruits Bhandar",
+      "slug": "gupta-masala-bhandar",
+      "logo": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=150&auto=format&fit=crop&q=80",
+      "bannerImage": "https://images.unsplash.com/photo-1509358271058-acd22cc93898?w=1200&auto=format&fit=crop&q=80",
+      "rating": 4.7,
+      "reviewCount": 310,
+      "isOpen": true,
+      "openingHours": "9:00 AM - 9:00 PM",
+      "distanceKm": 2.1,
+      "serviceablePincodes": [
+        "110001",
+        "110006",
+        "302003",
+        "302004",
+        "302017",
+        "302021",
+        "226001"
+      ],
+      "serviceRadiusKm": 5000,
+      "isRadiusLocked": false,
+      "sellerType": "gst",
+      "kycStatus": "approved",
+      "isHarwalkartDirect": false,
+      "isGstRegistered": true,
+      "gstin": "08AAEFG5678H1Z9",
+      "gstDocFileName": "Gupta_GST_Cert.pdf",
+      "panNumber": "AAEFG5678H",
+      "panDocFileName": "Gupta_PAN_Card.pdf",
+      "status": "approved",
+      "walletBalance": 18200,
+      "totalEarnings": 89400,
+      "password": "seller123",
+      "businessInfo": "Traditional Rajasthani dry fruits and heritage whole spice distributor",
+      "latitude": 26.9196,
+      "longitude": 75.8267,
+      "kycDoc": {
+        "docType": "FSSAI Registration",
+        "docNumber": "12221027000341",
+        "fileName": "Gupta_FSSAI_Lic.pdf",
+        "verified": true,
+        "uploadedAt": "2023-08-20"
+      },
+      "kycDocuments": [
+        {
+          "docType": "GST Certificate",
+          "docNumber": "08AAEFG5678H1Z9",
+          "fileName": "Gupta_GST_Cert.pdf",
+          "verified": true,
+          "uploadedAt": "2023-08-20"
+        },
+        {
+          "docType": "PAN Card",
+          "docNumber": "AAEFG5678H",
+          "fileName": "Gupta_PAN_Card.pdf",
+          "verified": true,
+          "uploadedAt": "2023-08-20"
+        },
+        {
+          "docType": "FSSAI Registration",
+          "docNumber": "12221027000341",
+          "fileName": "Gupta_FSSAI_Lic.pdf",
+          "verified": true,
+          "uploadedAt": "2023-08-20"
+        }
+      ],
+      "address": {
+        "street": "Shop 4, Khari Baoli / Johari Bazar",
+        "area": "Johari Bazar & Central Hub",
+        "city": "Jaipur",
+        "pincode": "302003",
+        "state": "Rajasthan"
+      },
+      "phone": "9829012345",
+      "email": "guptamasala.shop@gmail.com",
+      "verified": true,
+      "productCount": 32,
+      "joinedDate": "2023-08-20",
+      "categories": [
+        "Masala & Food",
+        "Grocery"
+      ]
+    },
+    {
+      "id": "seller_ganesh_fresh",
+      "name": "Suresh Patil",
+      "ownerName": "Suresh Patil",
+      "shopName": "Shree Ganesh Fresh Mart",
+      "slug": "shree-ganesh-fresh-mart",
+      "logo": "https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=150&auto=format&fit=crop&q=80",
+      "bannerImage": "https://images.unsplash.com/photo-1542838132-92c53300491e?w=1200&auto=format&fit=crop&q=80",
+      "rating": 4.6,
+      "reviewCount": 195,
+      "isOpen": true,
+      "openingHours": "8:00 AM - 9:30 PM",
+      "distanceKm": 1.8,
+      "serviceablePincodes": [
+        "400058",
+        "400050",
+        "400014",
+        "400001"
+      ],
+      "serviceRadiusKm": 10,
+      "isRadiusLocked": true,
+      "sellerType": "local_without_gst",
+      "kycStatus": "approved",
+      "isHarwalkartDirect": false,
+      "isGstRegistered": false,
+      "panNumber": "BCDPP9876K",
+      "panDocFileName": "Patil_PAN_Card.pdf",
+      "status": "approved",
+      "walletBalance": 9600,
+      "totalEarnings": 45200,
+      "password": "seller123",
+      "businessInfo": "Neighbourhood fresh farm grocery and local household items (Micro-merchant under 10 KM delivery radius)",
+      "latitude": 19.1363,
+      "longitude": 72.8277,
+      "kycDoc": {
+        "docType": "Shop Act License",
+        "docNumber": "MH-MUM-2023-88912",
+        "fileName": "Ganesh_Shop_Gumasta.pdf",
+        "verified": true,
+        "uploadedAt": "2023-11-04"
+      },
+      "kycDocuments": [
+        {
+          "docType": "PAN Card",
+          "docNumber": "BCDPP9876K",
+          "fileName": "Patil_PAN_Card.pdf",
+          "verified": true,
+          "uploadedAt": "2023-11-04"
+        },
+        {
+          "docType": "Shop Act License",
+          "docNumber": "MH-MUM-2023-88912",
+          "fileName": "Ganesh_Shop_Gumasta.pdf",
+          "verified": true,
+          "uploadedAt": "2023-11-04"
+        },
+        {
+          "docType": "Aadhaar Card",
+          "docNumber": "8877-4433-2211",
+          "fileName": "Patil_Aadhaar.pdf",
+          "verified": true,
+          "uploadedAt": "2023-11-04"
+        }
+      ],
+      "address": {
+        "street": "Plot 8, Lokhandwala Market",
+        "area": "Andheri West",
+        "city": "Mumbai",
+        "pincode": "400058",
+        "state": "Maharashtra"
+      },
+      "phone": "9820334455",
+      "email": "ganeshfresh.mumbai@gmail.com",
+      "verified": true,
+      "productCount": 28,
+      "joinedDate": "2023-11-04",
+      "categories": [
+        "Grocery",
+        "Home & Living",
+        "Kitchen"
+      ]
+    },
+    {
+      "id": "seller_aman_electronics",
+      "name": "Aman Verma",
+      "ownerName": "Aman Verma",
+      "shopName": "Aman Home Appliances & Kitchenware",
+      "slug": "aman-home-appliances",
+      "logo": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=150&auto=format&fit=crop&q=80",
+      "bannerImage": "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?w=1200&auto=format&fit=crop&q=80",
+      "rating": 4.8,
+      "reviewCount": 164,
+      "isOpen": true,
+      "openingHours": "10:00 AM - 8:30 PM",
+      "distanceKm": 3.4,
+      "serviceablePincodes": [
+        "226001",
+        "226010",
+        "226016",
+        "110001",
+        "560038"
+      ],
+      "serviceRadiusKm": 5000,
+      "isRadiusLocked": false,
+      "sellerType": "gst",
+      "kycStatus": "approved",
+      "isHarwalkartDirect": false,
+      "isGstRegistered": true,
+      "gstin": "09AAKPV9988L1Z5",
+      "gstDocFileName": "Aman_GST_Registration.pdf",
+      "panNumber": "AAKPV9988L",
+      "panDocFileName": "Aman_PAN_Card.pdf",
+      "status": "approved",
+      "walletBalance": 15300,
+      "totalEarnings": 74200,
+      "password": "seller123",
+      "businessInfo": "Retail store for branded cookware, non-stick utensils, pressure cookers, and appliances",
+      "latitude": 26.852,
+      "longitude": 80.9462,
+      "kycDoc": {
+        "docType": "GST Certificate",
+        "docNumber": "09AAKPV9988L1Z5",
+        "fileName": "Aman_GST_Registration.pdf",
+        "verified": true,
+        "uploadedAt": "2024-02-15"
+      },
+      "kycDocuments": [
+        {
+          "docType": "GST Certificate",
+          "docNumber": "09AAKPV9988L1Z5",
+          "fileName": "Aman_GST_Registration.pdf",
+          "verified": true,
+          "uploadedAt": "2024-02-15"
+        },
+        {
+          "docType": "PAN Card",
+          "docNumber": "AAKPV9988L",
+          "fileName": "Aman_PAN_Card.pdf",
+          "verified": true,
+          "uploadedAt": "2024-02-15"
+        }
+      ],
+      "address": {
+        "street": "55, MG Road Near Clock Tower",
+        "area": "Hazratganj",
+        "city": "Lucknow",
+        "pincode": "226001",
+        "state": "Uttar Pradesh"
+      },
+      "phone": "9415011223",
+      "email": "amanappliances.lko@gmail.com",
+      "verified": true,
+      "productCount": 22,
+      "joinedDate": "2024-02-15",
+      "categories": [
+        "Kitchen",
+        "Electronics",
+        "Home & Living"
+      ]
+    },
+    {
+      "id": "seller_jaipur_organic",
+      "name": "Virendra Singh",
+      "ownerName": "Virendra Singh",
+      "shopName": "Jaipur Organic Kirana & Dairy",
+      "slug": "jaipur-organic-kirana",
+      "logo": "https://images.unsplash.com/photo-1542838132-92c53300491e?w=150&auto=format&fit=crop&q=80",
+      "bannerImage": "https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=1200&auto=format&fit=crop&q=80",
+      "rating": 4.5,
+      "reviewCount": 12,
+      "isOpen": true,
+      "openingHours": "8:00 AM - 9:00 PM",
+      "distanceKm": 2.5,
+      "serviceablePincodes": [
+        "*"
+      ],
+      "serviceRadiusKm": 5000,
+      "isRadiusLocked": false,
+      "sellerType": "gst",
+      "kycStatus": "under_review",
+      "isHarwalkartDirect": false,
+      "isGstRegistered": true,
+      "gstin": "08BAPVS9911K1Z2",
+      "gstDocFileName": "JaipurOrganic_GST_Document.pdf",
+      "panNumber": "BAPVS9911K",
+      "panDocFileName": "JaipurOrganic_PAN_Card.pdf",
+      "status": "pending",
+      "walletBalance": 0,
+      "totalEarnings": 0,
+      "password": "seller123",
+      "businessInfo": "Pure A2 organic dairy products, cold-pressed mustard oil, and desi pulses directly sourced from local farmers.",
+      "latitude": 26.9069,
+      "longitude": 75.7438,
+      "kycDoc": {
+        "docType": "GST Certificate",
+        "docNumber": "08BAPVS9911K1Z2",
+        "fileName": "JaipurOrganic_GST_Document.pdf",
+        "verified": false,
+        "uploadedAt": "2026-08-19"
+      },
+      "kycDocuments": [
+        {
+          "docType": "GST Certificate",
+          "docNumber": "08BAPVS9911K1Z2",
+          "fileName": "JaipurOrganic_GST_Document.pdf",
+          "verified": false,
+          "uploadedAt": "2026-08-19"
+        },
+        {
+          "docType": "PAN Card",
+          "docNumber": "BAPVS9911K",
+          "fileName": "JaipurOrganic_PAN_Card.pdf",
+          "verified": false,
+          "uploadedAt": "2026-08-19"
+        },
+        {
+          "docType": "Aadhaar Card",
+          "docNumber": "7788-9900-1122",
+          "fileName": "Virendra_Aadhaar.pdf",
+          "verified": false,
+          "uploadedAt": "2026-08-19"
+        }
+      ],
+      "address": {
+        "street": "Shop 8, Queens Road",
+        "area": "Vaishali Nagar",
+        "city": "Jaipur",
+        "pincode": "302021",
+        "state": "Rajasthan"
+      },
+      "phone": "9829988776",
+      "email": "jaipurorganic.shop@gmail.com",
+      "verified": false,
+      "productCount": 8,
+      "joinedDate": "2026-08-19",
+      "categories": [
+        "Grocery",
+        "Masala & Food"
+      ]
+    },
+    {
+      "id": "seller_patel_local_mart",
+      "name": "Jayesh Patel",
+      "ownerName": "Jayesh Patel",
+      "shopName": "Patel Fresh Kirana & Provisions",
+      "slug": "patel-fresh-kirana",
+      "logo": "https://images.unsplash.com/photo-1534723452862-4c874018d66d?w=150&auto=format&fit=crop&q=80",
+      "bannerImage": "https://images.unsplash.com/photo-1542838132-92c53300491e?w=1200&auto=format&fit=crop&q=80",
+      "rating": 4.7,
+      "reviewCount": 0,
+      "isOpen": true,
+      "openingHours": "7:00 AM - 10:00 PM",
+      "distanceKm": 1.5,
+      "serviceablePincodes": [
+        "110001",
+        "110005",
+        "110006"
+      ],
+      "serviceRadiusKm": 10,
+      "isRadiusLocked": true,
+      "sellerType": "local_without_gst",
+      "kycStatus": "under_review",
+      "isHarwalkartDirect": false,
+      "isGstRegistered": false,
+      "panNumber": "BPYPJ4589E",
+      "panDocFileName": "Jayesh_Patel_PAN_Card.pdf",
+      "status": "pending",
+      "walletBalance": 0,
+      "totalEarnings": 0,
+      "password": "seller123",
+      "businessInfo": "Local neighborhood kirana store selling daily grains, packaged snacks, tea, sugar and edible oils within 10 KM.",
+      "latitude": 28.6448,
+      "longitude": 77.2167,
+      "kycDoc": {
+        "docType": "Shop Act License",
+        "docNumber": "DL-CENTRAL-2026-44019",
+        "fileName": "Patel_ShopAct_License.pdf",
+        "verified": false,
+        "uploadedAt": "2026-08-25"
+      },
+      "kycDocuments": [
+        {
+          "docType": "PAN Card",
+          "docNumber": "BPYPJ4589E",
+          "fileName": "Jayesh_Patel_PAN_Card.pdf",
+          "verified": false,
+          "uploadedAt": "2026-08-25"
+        },
+        {
+          "docType": "Shop Act License",
+          "docNumber": "DL-CENTRAL-2026-44019",
+          "fileName": "Patel_ShopAct_License.pdf",
+          "verified": false,
+          "uploadedAt": "2026-08-25"
+        },
+        {
+          "docType": "Aadhaar Card",
+          "docNumber": "6655-4433-2211",
+          "fileName": "Jayesh_Patel_Aadhaar.pdf",
+          "verified": false,
+          "uploadedAt": "2026-08-25"
+        }
+      ],
+      "address": {
+        "street": "Shop 18, Block B, Bengali Market",
+        "area": "Connaught Place / Mandi House",
+        "city": "New Delhi",
+        "pincode": "110001",
+        "state": "Delhi"
+      },
+      "phone": "9871100223",
+      "email": "patelkirana.delhi@gmail.com",
+      "verified": false,
+      "productCount": 0,
+      "joinedDate": "2026-08-25",
+      "categories": [
+        "Grocery",
+        "Cleaning & Hygiene"
+      ]
+    }
+  ],
+  "brands": [
+    {
+      "id": "brand_kitchen_shakti",
+      "name": "KitchenShakti",
+      "slug": "kitchen-shakti",
+      "category": "Kitchen & Household Essentials",
+      "categoryName": "Kitchen & Household Essentials",
+      "tagline": "100% Pure Spices & Kitchen Essentials",
+      "description": "Direct from origin spice farms. Agmark Grade A, stone ground at low temperature to preserve aroma, essential oils, and health benefits.",
+      "logoUrl": "/file_00000000794c821185049f924c68c558.png",
+      "bannerUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=1600&auto=format&fit=crop&q=80",
+      "themeColor": "#FFB800",
+      "accentColor": "#B45309",
+      "isOwned": true,
+      "isFeatured": true,
+      "status": "active",
+      "story": "KitchenShakti was born out of a commitment to bring purity back to Indian kitchens. We eliminate middlemen and pesticide-laden spice batches by partnering directly with traditional growers across Guntur, Salem, and Coorg.",
+      "uspBadges": [
+        "100% Agmark Pure",
+        "Cold Stone Ground",
+        "Zero Additives",
+        "Pan-India Express Delivery"
+      ],
+      "hindiName": "KitchenShakti "
+    },
+    {
+      "id": "brand_nutriflow",
+      "name": "NutriFlow",
+      "slug": "nutriflow",
+      "category": "Food, Grocery & Nutrition Products",
+      "categoryName": "Food, Grocery & Nutrition Products",
+      "tagline": "Pure Nutrition, Whole Grains & Daily Health",
+      "description": "Wholesome nutrition with unpolished pulses, cold-pressed oils, organic grains, and immunity superfoods for healthy Indian families.",
+      "logoUrl": "/file_0000000082e482119790271ad29cc7b6.png",
+      "bannerUrl": "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=1600&auto=format&fit=crop&q=80",
+      "themeColor": "#16A34A",
+      "accentColor": "#15803D",
+      "isOwned": true,
+      "isFeatured": true,
+      "status": "active",
+      "story": "NutriFlow powers daily health with nutrient-dense unpolished grains, protein-rich pulses, and superfood blends designed for active lifestyle and holistic family nourishment.",
+      "uspBadges": [
+        "Unpolished Whole Grains",
+        "High Natural Protein",
+        "Zero Chemical Preservatives",
+        "Lab-Tested Nutrition"
+      ]
+    },
+    {
+      "id": "brand_rupabhoom",
+      "name": "Rupabhoom™",
+      "slug": "rupabhoom",
+      "category": "Beauty, Personal Care & Wellness Products",
+      "categoryName": "Beauty, Personal Care & Wellness Products",
+      "tagline": "Ayurvedic Glow & Herbal Personal Care",
+      "description": "Natural skincare, hair wellness, and herbal beauty formulated with pure botanical extracts, essential oils, and time-tested Ayurvedic rituals.",
+      "logoUrl": "/file_00000000012c82118fad6fc2551041ca.png",
+      "bannerUrl": "https://images.unsplash.com/photo-1608248597359-bbad20a4ceb5?w=1600&auto=format&fit=crop&q=80",
+      "themeColor": "#E11D48",
+      "accentColor": "#BE185D",
+      "isOwned": true,
+      "isFeatured": true,
+      "status": "active",
+      "story": "Rupabhoom™ celebrates natural Indian beauty with potent herbs, cold-pressed essential oils, and toxin-free formulations that nurture glowing skin and luscious hair naturally.",
+      "uspBadges": [
+        "Ayurvedic Herbal Formulas",
+        "Sulphate & Paraben Free",
+        "Dermatologically Tested",
+        "Cruelty Free"
+      ]
+    },
+    {
+      "id": "brand_grahshorya",
+      "name": "GrahShorya™",
+      "slug": "grahshorya",
+      "category": "Home, Cleaning & Household Products",
+      "categoryName": "Home, Cleaning & Household Products",
+      "tagline": "Sparkling Clean Home & Household Hygiene",
+      "description": "High-performance home care, plant-powered dish cleaners, floor disinfectants, and laundry essentials for a hygienic, fragrant home.",
+      "logoUrl": "/file_000000005d608211b37767321e5c23f7.png",
+      "bannerUrl": "https://images.unsplash.com/photo-1585670270606-b33df06e8b4e?w=1600&auto=format&fit=crop&q=80",
+      "themeColor": "#059669",
+      "accentColor": "#047857",
+      "isOwned": true,
+      "isFeatured": true,
+      "status": "active",
+      "story": "GrahShorya™ empowers every home with superior germ-killing power, fresh citrus fragrance, and eco-conscious household cleaners that are tough on stains and safe for hands.",
+      "uspBadges": [
+        "99.9% Germ Protection",
+        "Plant-Powered Cleaners",
+        "Gentle on Skin",
+        "Bio-Degradable Active Formula"
+      ]
+    }
+  ],
+  "categories": [
+    {
+      "id": "cat_ks_spices",
+      "name": "Kitchen Shakti Spices",
+      "slug": "kitchen-shakti-spices",
+      "image": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=400&auto=format&fit=crop&q=80",
+      "description": "Harwalkart Direct 100% pure authentic whole & ground spices.",
+      "commissionRate": 0,
+      "isActive": true,
+      "displayOrder": 1
+    },
+    {
+      "id": "cat_grocery",
+      "name": "Grocery & Staples",
+      "slug": "grocery-staples",
+      "image": "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&auto=format&fit=crop&q=80",
+      "description": "Daily rice, premium atta, dals, cooking oils, and sugar.",
+      "commissionRate": 2.5,
+      "isActive": true,
+      "displayOrder": 2
+    },
+    {
+      "id": "cat_spices",
+      "name": "Spices & Masalas",
+      "slug": "spices-masalas",
+      "image": "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=400&auto=format&fit=crop&q=80",
+      "description": "Local store organic seasonings, whole spices and curry mixes.",
+      "commissionRate": 2.5,
+      "isActive": true,
+      "displayOrder": 3
+    },
+    {
+      "id": "cat_dairy",
+      "name": "Dairy & Daily Needs",
+      "slug": "dairy-daily-needs",
+      "image": "https://images.unsplash.com/photo-1589927986089-35812388d1f4?w=400&auto=format&fit=crop&q=80",
+      "description": "Farm-fresh milk, pure desi ghee, paneer, and butter.",
+      "commissionRate": 2,
+      "isActive": true,
+      "displayOrder": 4
+    },
+    {
+      "id": "cat_snacks",
+      "name": "Snacks & Beverages",
+      "slug": "snacks-beverages",
+      "image": "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400&auto=format&fit=crop&q=80",
+      "description": "Assam tea, roasted namkeens, biscuits, and soft drinks.",
+      "commissionRate": 3,
+      "isActive": true,
+      "displayOrder": 5
+    },
+    {
+      "id": "cat_personal_care",
+      "name": "Personal Care",
+      "slug": "personal-care",
+      "image": "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&auto=format&fit=crop&q=80",
+      "description": "Ayurvedic soaps, shampoos, skin care, and hygiene items.",
+      "commissionRate": 3.5,
+      "isActive": true,
+      "displayOrder": 6
+    }
+  ],
+  "heroBanners": [
+    {
+      "id": "banner_transparent_pack_1",
+      "title": "Har Din Kuch Khas – Transparent Packaging",
+      "subtitle": "See the 100% visible purity before you buy. Pure Masalas, Pulses, Dry Fruits & Essentials in premium transparent pouches & clear jars.",
+      "badgeText": "✨ 100% VISIBLE PURITY",
+      "brandTag": "KitchenShakti",
+      "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=1200&auto=format&fit=crop&q=80",
+      "buttonText": "Explore Transparent Range",
+      "buttonLink": "/brand/kitchen-shakti",
+      "priority": 1,
+      "isActive": true,
+      "createdAt": "2026-08-25"
+    },
+    {
+      "id": "banner_transparent_pack_2",
+      "title": "KitchenShakti™ Pure Spices In Transparent Stand-Up Pouches",
+      "subtitle": "Cold stone-ground Salem Turmeric, Guntur Red Chilli & Ramganj Coriander in clear moisture-proof stand-up pouches.",
+      "badgeText": "🌶️ ZERO ARTIFICIAL COLOR",
+      "brandTag": "KitchenShakti",
+      "imageUrl": "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=1200&auto=format&fit=crop&q=80",
+      "buttonText": "Shop KitchenShakti",
+      "buttonLink": "/brand/kitchen-shakti",
+      "priority": 2,
+      "isActive": true,
+      "createdAt": "2026-08-25"
+    },
+    {
+      "id": "banner_transparent_pack_3",
+      "title": "NutriFlow™ Unpolished Dals In Clear Food-Grade Pouches",
+      "subtitle": "Natural high-protein Toor, Moong & Chana Dal with visible whole grains, zero water polish and natural taste.",
+      "badgeText": "🌾 100% UNPOLISHED PULSES",
+      "brandTag": "NutriFlow",
+      "imageUrl": "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=1200&auto=format&fit=crop&q=80",
+      "buttonText": "Shop NutriFlow",
+      "buttonLink": "/brand/nutriflow",
+      "priority": 3,
+      "isActive": true,
+      "createdAt": "2026-08-25"
+    },
+    {
+      "id": "banner_transparent_pack_4",
+      "title": "Rupabhoom™ Ayurvedic Care in Frosted & Clear Bottles",
+      "subtitle": "Kumkumadi Face Glow Oil, Bhringraj Hair Elixir & Rose Water in luxury transparent and frosted glass containers.",
+      "badgeText": "🌸 100% AYURVEDIC FORMULAS",
+      "brandTag": "Rupabhoom™",
+      "imageUrl": "https://images.unsplash.com/photo-1608248597359-bbad20a4ceb5?w=1200&auto=format&fit=crop&q=80",
+      "buttonText": "Shop Rupabhoom™",
+      "buttonLink": "/brand/rupabhoom",
+      "priority": 4,
+      "isActive": true,
+      "createdAt": "2026-08-25"
+    },
+    {
+      "id": "banner_transparent_pack_5",
+      "title": "GrahShorya™ Home Hygiene In Transparent Bottles",
+      "subtitle": "Plant-powered dish wash, floor disinfectant and multi-surface spray in crystal clear easy-pour containers.",
+      "badgeText": "🏡 99.9% GERM PROTECTION",
+      "brandTag": "GrahShorya™",
+      "imageUrl": "https://images.unsplash.com/photo-1585670270606-b33df06e8b4e?w=1200&auto=format&fit=crop&q=80",
+      "buttonText": "Shop GrahShorya™",
+      "buttonLink": "/brand/grahshorya",
+      "priority": 5,
+      "isActive": true,
+      "createdAt": "2026-08-25"
+    }
+  ],
+  "orders": [
+    {
+      "id": "HK-ORD-89421",
+      "date": "2026-08-23 14:30",
+      "items": [
+        {
+          "productId": "hk_ks_lal_mirch",
+          "productName": "Kitchen Shakti Lal Mirch Powder (200g)",
+          "brand": "KITCHEN SHAKTI",
+          "image": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=400&auto=format&fit=crop&q=80",
+          "price": 85,
+          "quantity": 2,
+          "sellerName": "Harwalkart Official Store",
+          "sellerId": "seller_harwalkart_direct",
+          "commissionRate": 0.02,
+          "commissionAmount": 3.4,
+          "netSellerAmount": 166.6
+        },
+        {
+          "productId": "prod_basmati_rice",
+          "productName": "Fortune Super Basmati Rice (5kg)",
+          "brand": "Fortune",
+          "image": "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&auto=format&fit=crop&q=80",
+          "price": 499,
+          "quantity": 1,
+          "sellerName": "Sharma Kirana & General Store",
+          "sellerId": "seller_sharma_kirana",
+          "commissionRate": 0.02,
+          "commissionAmount": 9.98,
+          "netSellerAmount": 489.02
+        }
+      ],
+      "subtotal": 669,
+      "deliveryCharge": 0,
+      "discount": 100,
+      "taxAmount": 32,
+      "total": 601,
+      "sellerCommissionTotal": 13.38,
+      "sellerNetSettlementTotal": 655.62,
+      "status": "out_for_delivery",
+      "deliveryAddress": {
+        "fullName": "Rahul Verma",
+        "mobile": "9876543210",
+        "addressLine": "Flat 402, Royal Residency, Near Metro Gate 3",
+        "area": "Connaught Place",
+        "city": "New Delhi",
+        "pincode": "110001",
+        "state": "Delhi",
+        "landmark": "Gate 3"
+      },
+      "paymentMethod": "cod",
+      "paymentStatus": "pending",
+      "estimatedDelivery": "Today by 6:00 PM",
+      "trackingSteps": [
+        {
+          "title": "Order Placed",
+          "description": "Order received at Harwalkart",
+          "timestamp": "23 Aug, 2:30 PM",
+          "completed": true,
+          "current": false
+        },
+        {
+          "title": "Order Confirmed",
+          "description": "Verified by local hub and seller",
+          "timestamp": "23 Aug, 2:35 PM",
+          "completed": true,
+          "current": false
+        },
+        {
+          "title": "Preparing / Packed",
+          "description": "Items safely packed & sealed in transparent packaging",
+          "timestamp": "23 Aug, 3:15 PM",
+          "completed": true,
+          "current": false
+        },
+        {
+          "title": "Out for Delivery",
+          "description": "Rider Ramesh is on the way with Cash on Delivery collection (₹601)",
+          "timestamp": "23 Aug, 4:00 PM",
+          "completed": true,
+          "current": true
+        },
+        {
+          "title": "Delivered & COD Collected",
+          "description": "Handed over with OTP verification",
+          "timestamp": "Pending",
+          "completed": false,
+          "current": false
+        }
+      ]
+    },
+    {
+      "id": "HK-ORD-92014",
+      "date": "2026-08-24 11:15",
+      "items": [
+        {
+          "productId": "prod_sharma_ghee",
+          "productName": "Amul Pure Ghee Pouch (1 Litre)",
+          "brand": "Amul",
+          "image": "https://images.unsplash.com/photo-1589927986089-35812388d1f4?w=400&auto=format&fit=crop&q=80",
+          "price": 650,
+          "quantity": 2,
+          "sellerName": "Sharma Kirana & General Store",
+          "sellerId": "seller_sharma_kirana",
+          "commissionRate": 0.02,
+          "commissionAmount": 26,
+          "netSellerAmount": 1274
+        }
+      ],
+      "subtotal": 1300,
+      "deliveryCharge": 0,
+      "discount": 0,
+      "taxAmount": 0,
+      "total": 1300,
+      "sellerCommissionTotal": 26,
+      "sellerNetSettlementTotal": 1274,
+      "status": "confirmed",
+      "deliveryAddress": {
+        "fullName": "Ananya Gupta",
+        "mobile": "9810112233",
+        "addressLine": "House 14, Barakhamba Road",
+        "area": "Connaught Place",
+        "city": "New Delhi",
+        "pincode": "110001",
+        "state": "Delhi",
+        "landmark": "Opp British Council"
+      },
+      "paymentMethod": "upi",
+      "paymentStatus": "paid",
+      "estimatedDelivery": "Today by 3:00 PM",
+      "trackingSteps": [
+        {
+          "title": "Order Placed",
+          "description": "Order received at Harwalkart",
+          "timestamp": "24 Aug, 11:15 AM",
+          "completed": true,
+          "current": false
+        },
+        {
+          "title": "Order Confirmed",
+          "description": "Confirmed by Sharma Kirana",
+          "timestamp": "24 Aug, 11:20 AM",
+          "completed": true,
+          "current": true
+        },
+        {
+          "title": "Preparing / Packed",
+          "description": "Packing in progress",
+          "timestamp": "Pending",
+          "completed": false,
+          "current": false
+        },
+        {
+          "title": "Out for Delivery",
+          "description": "Awaiting rider pickup",
+          "timestamp": "Pending",
+          "completed": false,
+          "current": false
+        },
+        {
+          "title": "Delivered",
+          "description": "Contactless delivery",
+          "timestamp": "Pending",
+          "completed": false,
+          "current": false
+        }
+      ]
+    }
+  ],
+  "customers": [
+    {
+      "id": "cust_rahul_verma",
+      "name": "Rahul Verma",
+      "phone": "9876543210",
+      "email": "rahul.verma@example.com",
+      "password": "customer123",
+      "pincode": "110001",
+      "address": "Flat 402, Royal Residency, Connaught Place, New Delhi",
+      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80",
+      "isVerified": true,
+      "joinedDate": "2024-01-10",
+      "savedAddresses": [
+        {
+          "id": "addr_1",
+          "name": "Rahul Verma (Home)",
+          "mobile": "9876543210",
+          "addressLine": "Flat 402, Royal Residency, Near Metro Gate 3",
+          "area": "Connaught Place",
+          "city": "New Delhi",
+          "pincode": "110001",
+          "isDefault": true
+        },
+        {
+          "id": "addr_2",
+          "name": "Rahul Verma (Office)",
+          "mobile": "9876543210",
+          "addressLine": "Plot 18, Cyber Towers, Sector 18",
+          "area": "Noida Central",
+          "city": "Noida",
+          "pincode": "201301",
+          "isDefault": false
+        }
+      ],
+      "wishlist": [
+        "hk_ks_lal_mirch",
+        "prod_kashmiri_saffron",
+        "hk_ks_chai_masala"
+      ]
+    },
+    {
+      "id": "cust_priya_sharma",
+      "name": "Priya Sharma",
+      "phone": "9811224466",
+      "email": "priya.sharma@example.com",
+      "password": "customer123",
+      "pincode": "302003",
+      "address": "B-12, Malviya Nagar, Jaipur, Rajasthan",
+      "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80",
+      "isVerified": true,
+      "joinedDate": "2024-03-15",
+      "savedAddresses": [
+        {
+          "id": "addr_3",
+          "name": "Priya Sharma",
+          "mobile": "9811224466",
+          "addressLine": "House 55, Lane 4, Malviya Nagar",
+          "area": "Malviya Nagar",
+          "city": "Jaipur",
+          "pincode": "302003",
+          "isDefault": true
+        }
+      ],
+      "wishlist": [
+        "hk_ks_haldi",
+        "prod_organic_ghee"
+      ]
+    }
+  ],
+  "videoAds": [
+    {
+      "id": "video_ad_1",
+      "productId": "hk_ks_lal_mirch",
+      "productName": "Kitchen Shakti Lal Mirch Powder",
+      "price": 85,
+      "shopId": "seller_harwalkart_direct",
+      "shopName": "Harwalkart Official Store",
+      "sellerName": "Harwalkart Direct",
+      "locationArea": "Central Delhi / Pan-India",
+      "city": "New Delhi",
+      "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-seasoning-food-with-spices-41551-large.mp4",
+      "thumbnail": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=600&auto=format&fit=crop&q=80",
+      "targetPincodes": [
+        "*"
+      ],
+      "targetRadiusKm": 5000,
+      "campaignDurationDays": 30,
+      "budgetDaily": 500,
+      "views": 12450,
+      "clicks": 1890,
+      "shares": 420,
+      "status": "active",
+      "createdAt": "2025-01-10"
+    },
+    {
+      "id": "video_ad_2",
+      "productId": "hk_ks_garam_masala",
+      "productName": "Kitchen Shakti 16-Spice Garam Masala",
+      "price": 130,
+      "shopId": "seller_harwalkart_direct",
+      "shopName": "Harwalkart Official Store",
+      "sellerName": "Harwalkart Direct",
+      "locationArea": "Delhi NCR",
+      "city": "New Delhi",
+      "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-cooking-fresh-curry-in-a-pan-43093-large.mp4",
+      "thumbnail": "https://images.unsplash.com/photo-1532336414038-cf19250c5757?w=600&auto=format&fit=crop&q=80",
+      "targetPincodes": [
+        "110001",
+        "110005",
+        "110006",
+        "110024",
+        "110085"
+      ],
+      "targetRadiusKm": 25,
+      "campaignDurationDays": 15,
+      "budgetDaily": 350,
+      "views": 8920,
+      "clicks": 1340,
+      "shares": 280,
+      "status": "active",
+      "createdAt": "2025-02-01"
+    },
+    {
+      "id": "video_ad_3",
+      "productId": "prod_kashmiri_saffron",
+      "productName": "Pure Kashmiri Mongra Saffron / Kesar",
+      "price": 340,
+      "shopId": "seller_gupta_masala",
+      "shopName": "Gupta Masala & Dryfruits Bhandar",
+      "sellerName": "Kailash Gupta",
+      "locationArea": "Johari Bazar & Malviya Nagar",
+      "city": "Jaipur",
+      "videoUrl": "https://assets.mixkit.co/videos/preview/mixkit-herbs-and-spices-on-spoons-41549-large.mp4",
+      "thumbnail": "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=600&auto=format&fit=crop&q=80",
+      "targetPincodes": [
+        "302003",
+        "302004",
+        "302017",
+        "302021"
+      ],
+      "targetRadiusKm": 10,
+      "campaignDurationDays": 20,
+      "budgetDaily": 250,
+      "views": 5410,
+      "clicks": 760,
+      "shares": 190,
+      "status": "active",
+      "createdAt": "2025-02-12"
+    }
+  ],
+  "deliveryPartners": [
+    {
+      "id": "rider_del_101",
+      "name": "Rajesh Kumar",
+      "phone": "9818822334",
+      "email": "rajesh.rider.delhi@gmail.com",
+      "city": "New Delhi",
+      "pincode": "110001",
+      "vehicleType": "Bike",
+      "vehicleNumber": "DL 01 AB 4920",
+      "licenseNumber": "DL-0120220049182",
+      "status": "active",
+      "walletBalance": 4200,
+      "totalEarnings": 38400,
+      "completedDeliveries": 480,
+      "rating": 4.85,
+      "upiId": "rajeshkumar@paytm",
+      "bankDetails": {
+        "accountHolderName": "Rajesh Kumar",
+        "accountNumber": "304918203918",
+        "ifscCode": "SBIN0000691",
+        "bankName": "State Bank of India, Connaught Circus"
+      },
+      "joinedDate": "2025-01-10"
+    },
+    {
+      "id": "rider_del_102",
+      "name": "Manoj Verma",
+      "phone": "9871100229",
+      "email": "manoj.verma.rider@gmail.com",
+      "city": "New Delhi",
+      "pincode": "110005",
+      "vehicleType": "Electric EV",
+      "vehicleNumber": "DL 05 EV 1184",
+      "licenseNumber": "DL-0520230018273",
+      "status": "active",
+      "walletBalance": 3850,
+      "totalEarnings": 29600,
+      "completedDeliveries": 370,
+      "rating": 4.9,
+      "upiId": "manojverma@okhdfcbank",
+      "bankDetails": {
+        "accountHolderName": "Manoj Verma",
+        "accountNumber": "50100293849102",
+        "ifscCode": "HDFC0000034",
+        "bankName": "HDFC Bank, Karol Bagh"
+      },
+      "joinedDate": "2025-03-20"
+    },
+    {
+      "id": "rider_jai_103",
+      "name": "Suresh Yadav",
+      "phone": "9829011445",
+      "email": "suresh.yadav.jaipur@gmail.com",
+      "city": "Jaipur",
+      "pincode": "302001",
+      "vehicleType": "Bike",
+      "vehicleNumber": "RJ 14 SK 8821",
+      "licenseNumber": "RJ-1420210088219",
+      "status": "active",
+      "walletBalance": 2400,
+      "totalEarnings": 41200,
+      "completedDeliveries": 515,
+      "rating": 4.78,
+      "upiId": "sureshyadav@icici",
+      "bankDetails": {
+        "accountHolderName": "Suresh Yadav",
+        "accountNumber": "003401583920",
+        "ifscCode": "ICIC0000034",
+        "bankName": "ICICI Bank, MI Road Jaipur"
+      },
+      "joinedDate": "2024-11-15"
+    },
+    {
+      "id": "rider_mum_104",
+      "name": "Pradeep Salve",
+      "phone": "9820033441",
+      "email": "pradeep.salve.mumbai@gmail.com",
+      "city": "Mumbai",
+      "pincode": "400050",
+      "vehicleType": "Scooter",
+      "vehicleNumber": "MH 02 CK 4410",
+      "licenseNumber": "MH-0220200044103",
+      "status": "active",
+      "walletBalance": 5100,
+      "totalEarnings": 52800,
+      "completedDeliveries": 660,
+      "rating": 4.92,
+      "upiId": "pradeepsalve@axisbank",
+      "bankDetails": {
+        "accountHolderName": "Pradeep Salve",
+        "accountNumber": "91802004819203",
+        "ifscCode": "UTIB0000182",
+        "bankName": "Axis Bank, Bandra West"
+      },
+      "joinedDate": "2024-09-01"
+    }
+  ],
+  "withdrawalRequests": [
+    {
+      "id": "wdr_101",
+      "beneficiaryType": "seller",
+      "sellerId": "seller_sharma_kirana",
+      "sellerShopName": "Sharma Kirana & General Store",
+      "amount": 15000,
+      "grossAmount": 15306.12,
+      "commissionDeducted": 306.12,
+      "netPaid": 15000,
+      "payoutMethod": "upi",
+      "upiOrAccount": "sharmakirana@okhdfcbank",
+      "bankDetails": {
+        "accountHolderName": "Ramesh Sharma",
+        "upiId": "sharmakirana@okhdfcbank",
+        "bankName": "HDFC Bank, Connaught Place"
+      },
+      "status": "paid",
+      "requestDate": "2026-08-10",
+      "approvedDate": "2026-08-10",
+      "processedDate": "2026-08-11",
+      "paidDate": "2026-08-11",
+      "transactionRef": "UTR99281741HDFC",
+      "paymentMode": "UPI Instant Payout",
+      "adminNotes": "Automated weekly vendor settlement batch #902."
+    },
+    {
+      "id": "wdr_102",
+      "beneficiaryType": "seller",
+      "sellerId": "seller_gupta_masala",
+      "sellerShopName": "Gupta Masala & Dryfruits Bhandar",
+      "amount": 25000,
+      "grossAmount": 25510.2,
+      "commissionDeducted": 510.2,
+      "netPaid": 25000,
+      "payoutMethod": "bank_transfer",
+      "upiOrAccount": "A/C 50200012938491 (HDFC Bank, Johari Bazar IFSC: HDFC0001293)",
+      "bankDetails": {
+        "accountHolderName": "Dinesh Gupta",
+        "accountNumber": "50200012938491",
+        "ifscCode": "HDFC0001293",
+        "bankName": "HDFC Bank, Johari Bazar, Jaipur"
+      },
+      "status": "paid",
+      "requestDate": "2026-08-14",
+      "approvedDate": "2026-08-14",
+      "processedDate": "2026-08-15",
+      "paidDate": "2026-08-15",
+      "transactionRef": "NEFT-SBIN00889218",
+      "paymentMode": "Bank NEFT",
+      "adminNotes": "Bi-weekly spice merchant settlement confirmed."
+    },
+    {
+      "id": "wdr_103",
+      "beneficiaryType": "seller",
+      "sellerId": "seller_sharma_kirana",
+      "sellerShopName": "Sharma Kirana & General Store",
+      "amount": 8500,
+      "grossAmount": 8673.47,
+      "commissionDeducted": 173.47,
+      "netPaid": 8500,
+      "payoutMethod": "upi",
+      "upiOrAccount": "sharmakirana@okhdfcbank",
+      "bankDetails": {
+        "accountHolderName": "Ramesh Sharma",
+        "upiId": "sharmakirana@okhdfcbank",
+        "bankName": "HDFC Bank"
+      },
+      "status": "pending",
+      "requestDate": "2026-08-24",
+      "adminNotes": "Regular withdrawal request submitted from Seller Dashboard."
+    },
+    {
+      "id": "wdr_104",
+      "beneficiaryType": "delivery_partner",
+      "partnerId": "rider_del_101",
+      "partnerName": "Rajesh Kumar",
+      "partnerPhone": "9818822334",
+      "partnerVehicle": "Bike (DL 01 AB 4920)",
+      "amount": 4200,
+      "netPaid": 4200,
+      "payoutMethod": "upi",
+      "upiOrAccount": "rajeshkumar@paytm",
+      "bankDetails": {
+        "accountHolderName": "Rajesh Kumar",
+        "upiId": "rajeshkumar@paytm",
+        "bankName": "State Bank of India"
+      },
+      "status": "pending",
+      "requestDate": "2026-08-25",
+      "adminNotes": "Rider payout for 52 completed deliveries in Central Delhi hub."
+    },
+    {
+      "id": "wdr_105",
+      "beneficiaryType": "delivery_partner",
+      "partnerId": "rider_del_102",
+      "partnerName": "Manoj Verma",
+      "partnerPhone": "9871100229",
+      "partnerVehicle": "Electric EV (DL 05 EV 1184)",
+      "amount": 3850,
+      "netPaid": 3850,
+      "payoutMethod": "bank_transfer",
+      "upiOrAccount": "A/C 50100293849102 (HDFC Bank IFSC: HDFC0000034)",
+      "bankDetails": {
+        "accountHolderName": "Manoj Verma",
+        "accountNumber": "50100293849102",
+        "ifscCode": "HDFC0000034",
+        "bankName": "HDFC Bank, Karol Bagh"
+      },
+      "status": "approved",
+      "requestDate": "2026-08-24",
+      "approvedDate": "2026-08-25",
+      "adminNotes": "Approved by Admin. Ready for bank IMPS batch disbursal."
+    },
+    {
+      "id": "wdr_106",
+      "beneficiaryType": "seller",
+      "sellerId": "seller_aman_appliances",
+      "sellerShopName": "Aman Home & Kitchen Appliances",
+      "amount": 14200,
+      "grossAmount": 14489.8,
+      "commissionDeducted": 289.8,
+      "netPaid": 14200,
+      "payoutMethod": "bank_transfer",
+      "upiOrAccount": "A/C 008901582910 (ICICI Bank, Hazratganj IFSC: ICIC0000089)",
+      "bankDetails": {
+        "accountHolderName": "Aman Tandon",
+        "accountNumber": "008901582910",
+        "ifscCode": "ICIC0000089",
+        "bankName": "ICICI Bank, Lucknow"
+      },
+      "status": "approved",
+      "requestDate": "2026-08-23",
+      "approvedDate": "2026-08-24",
+      "adminNotes": "KYC verified. Approved for RTGS/NEFT payment run."
+    },
+    {
+      "id": "wdr_107",
+      "beneficiaryType": "delivery_partner",
+      "partnerId": "rider_jai_103",
+      "partnerName": "Suresh Yadav",
+      "partnerPhone": "9829011445",
+      "partnerVehicle": "Bike (RJ 14 SK 8821)",
+      "amount": 5600,
+      "netPaid": 5600,
+      "payoutMethod": "upi",
+      "upiOrAccount": "sureshyadav@icici",
+      "bankDetails": {
+        "accountHolderName": "Suresh Yadav",
+        "upiId": "sureshyadav@icici",
+        "bankName": "ICICI Bank"
+      },
+      "status": "paid",
+      "requestDate": "2026-08-18",
+      "approvedDate": "2026-08-18",
+      "processedDate": "2026-08-19",
+      "paidDate": "2026-08-19",
+      "transactionRef": "AXIS7718290ICICI",
+      "paymentMode": "UPI Instant Payout",
+      "adminNotes": "Jaipur hub delivery incentive and fuel reimbursement."
+    },
+    {
+      "id": "wdr_108",
+      "beneficiaryType": "seller",
+      "sellerId": "seller_jaipur_organic",
+      "sellerShopName": "Jaipur Organic Kirana & Dairy",
+      "amount": 12000,
+      "grossAmount": 12244.9,
+      "commissionDeducted": 244.9,
+      "netPaid": 12000,
+      "payoutMethod": "bank_transfer",
+      "upiOrAccount": "A/C 20192840192 (PNB IFSC: PUNB0201900)",
+      "bankDetails": {
+        "accountHolderName": "Virendra Singh",
+        "accountNumber": "20192840192",
+        "ifscCode": "PUNB0201900",
+        "bankName": "Punjab National Bank, Vaishali Nagar"
+      },
+      "status": "rejected",
+      "requestDate": "2026-08-19",
+      "processedDate": "2026-08-20",
+      "rejectionReason": "Bank account beneficiary name does not match the GSTIN registration certificate name. Please upload updated passbook in KYC settings.",
+      "adminNotes": "Seller KYC under verification; account name mismatch with GST."
+    }
+  ],
+  "sellerMessages": [
+    {
+      "id": "msg_1",
+      "sellerId": "seller_sharma_kirana",
+      "customerName": "Amit Patel",
+      "customerPhone": "9898011223",
+      "customerEmail": "amit.patel@gmail.com",
+      "productName": "Royal Fortune Daawat Basmati Rice 5kg",
+      "message": "Hello, is same-day delivery available for Karol Bagh area if I order 2 bags right now?",
+      "date": "2026-08-19 14:30",
+      "reply": "Yes sir! Orders placed before 6 PM are delivered within 90 minutes in Karol Bagh and Connaught Place.",
+      "repliedAt": "2026-08-19 14:45"
+    },
+    {
+      "id": "msg_2",
+      "sellerId": "seller_sharma_kirana",
+      "customerName": "Kavita Singh",
+      "customerPhone": "9810998877",
+      "customerEmail": "kavita.singh@gmail.com",
+      "productName": "Aashirvaad Shudh Chakki Atta 10kg",
+      "message": "Can you please ensure the packaging batch is manufactured this month?",
+      "date": "2026-08-20 10:15"
+    }
+  ],
+  "advertisements": [
+    {
+      "id": "ad_ks_hero_1",
+      "title": "Kitchen Shakti Pure Spices Range",
+      "subtitle": "Direct from Central Processing Mills • 100% Purity Guarantee",
+      "badge": "HARWALKART DIRECT",
+      "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=1200&auto=format&fit=crop&q=80",
+      "linkUrl": "/kitchen-shakti",
+      "targetCity": "All",
+      "position": "hero",
+      "status": "active",
+      "clicks": 1420,
+      "impressions": 18450,
+      "createdAt": "2026-08-01"
+    },
+    {
+      "id": "ad_sharma_kirana_promo",
+      "title": "Sharma Kirana Superfast Delivery",
+      "subtitle": "Get daily staples delivered in under 90 minutes across Connaught Place & Karol Bagh",
+      "badge": "HYPERLOCAL STORE",
+      "imageUrl": "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=1200&auto=format&fit=crop&q=80",
+      "linkUrl": "/shops",
+      "targetCity": "New Delhi",
+      "targetPincode": "110001",
+      "position": "middle",
+      "status": "active",
+      "clicks": 685,
+      "impressions": 8900,
+      "createdAt": "2026-08-10"
+    },
+    {
+      "id": "ad_jaipur_organic",
+      "title": "Jaipur Pure Masala & Cold Pressed Oils",
+      "subtitle": "Stone-crushed Rajasthan masalas delivered fresh to your doorstep",
+      "badge": "VERIFIED LOCAL SHOP",
+      "imageUrl": "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=1200&auto=format&fit=crop&q=80",
+      "linkUrl": "/shops",
+      "targetCity": "Jaipur",
+      "targetPincode": "302003",
+      "position": "sidebar",
+      "status": "active",
+      "clicks": 412,
+      "impressions": 5400,
+      "createdAt": "2026-08-15"
+    }
+  ],
+  "cityHubs": [
+    {
+      "id": "hub_new_delhi",
+      "city": "New Delhi",
+      "state": "Delhi",
+      "areas": [
+        {
+          "name": "Connaught Place",
+          "pincode": "110001"
+        },
+        {
+          "name": "Karol Bagh",
+          "pincode": "110005"
+        },
+        {
+          "name": "Lajpat Nagar",
+          "pincode": "110024"
+        },
+        {
+          "name": "Chandni Chowk",
+          "pincode": "110006"
+        },
+        {
+          "name": "Rohini Sector 7",
+          "pincode": "110085"
+        },
+        {
+          "name": "Dwarka Sector 10",
+          "pincode": "110075"
+        }
+      ],
+      "isActive": true
+    },
+    {
+      "id": "hub_mumbai",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "areas": [
+        {
+          "name": "Andheri West",
+          "pincode": "400058"
+        },
+        {
+          "name": "Bandra West",
+          "pincode": "400050"
+        },
+        {
+          "name": "Dadar Central",
+          "pincode": "400014"
+        },
+        {
+          "name": "Borivali East",
+          "pincode": "400066"
+        },
+        {
+          "name": "Fort / CST",
+          "pincode": "400001"
+        }
+      ],
+      "isActive": true
+    },
+    {
+      "id": "hub_jaipur",
+      "city": "Jaipur",
+      "state": "Rajasthan",
+      "areas": [
+        {
+          "name": "Malviya Nagar",
+          "pincode": "302017"
+        },
+        {
+          "name": "Vaishali Nagar",
+          "pincode": "302021"
+        },
+        {
+          "name": "Mansarovar",
+          "pincode": "302020"
+        },
+        {
+          "name": "Raja Park",
+          "pincode": "302004"
+        },
+        {
+          "name": "Johari Bazar",
+          "pincode": "302003"
+        }
+      ],
+      "isActive": true
+    },
+    {
+      "id": "hub_lucknow",
+      "city": "Lucknow",
+      "state": "Uttar Pradesh",
+      "areas": [
+        {
+          "name": "Hazratganj",
+          "pincode": "226001"
+        },
+        {
+          "name": "Gomti Nagar",
+          "pincode": "226010"
+        },
+        {
+          "name": "Alambagh",
+          "pincode": "226005"
+        },
+        {
+          "name": "Indira Nagar",
+          "pincode": "226016"
+        },
+        {
+          "name": "Aminabad",
+          "pincode": "226018"
+        }
+      ],
+      "isActive": true
+    },
+    {
+      "id": "hub_indore",
+      "city": "Indore",
+      "state": "Madhya Pradesh",
+      "areas": [
+        {
+          "name": "Vijay Nagar",
+          "pincode": "452010"
+        },
+        {
+          "name": "Palasia",
+          "pincode": "452001"
+        },
+        {
+          "name": "Sarafa Bazar",
+          "pincode": "452002"
+        },
+        {
+          "name": "Rajwada",
+          "pincode": "452004"
+        }
+      ],
+      "isActive": true
+    },
+    {
+      "id": "hub_bengaluru",
+      "city": "Bengaluru",
+      "state": "Karnataka",
+      "areas": [
+        {
+          "name": "Indiranagar",
+          "pincode": "560038"
+        },
+        {
+          "name": "Koramangala",
+          "pincode": "560034"
+        },
+        {
+          "name": "Jayanagar",
+          "pincode": "560041"
+        },
+        {
+          "name": "Whitefield",
+          "pincode": "560066"
+        },
+        {
+          "name": "Malleshwaram",
+          "pincode": "560003"
+        }
+      ],
+      "isActive": true
+    }
+  ],
+  "supportTickets": [
+    {
+      "id": "TKT-1002",
+      "name": "Rahul Verma",
+      "email": "rahul.verma@example.com",
+      "phone": "9876543210",
+      "orderId": "HK-ORD-89421",
+      "category": "Delivery query",
+      "message": "Namaste Harwalkart, please ensure delivery before 7 PM today.",
+      "status": "in_progress",
+      "createdAt": "2026-08-23 15:00",
+      "response": "Our delivery partner is en route and will reach by 5:30 PM. Thank you!"
+    }
+  ],
+  "websiteSettings": {
+    "companyOwnerName": "SharanKumar Harwalkar",
+    "brandName": "HARWALKART",
+    "tagline": "Every One Local Shop",
+    "description": "India’s premier hyperlocal marketplace connecting buyers to verified local neighborhood stores and 100% pure Kitchen Shakti spices.",
+    "logoUrl": "https://images.unsplash.com/photo-1542838132-92c53300491e?w=200&auto=format&fit=crop&q=80",
+    "faviconUrl": "https://images.unsplash.com/photo-1542838132-92c53300491e?w=64&auto=format&fit=crop&q=80",
+    "helplinePhone": "+91 9372207811",
+    "supportEmail": "harwalkart@gmail.com",
+    "whatsappSupportNumber": "+91 9372207811",
+    "officialAddress": "Harwalkart, Yah In, Chuk Karegaon, Pune MIDC, Maharashtra, India – 412220",
+    "registeredAddress": "Harwalkart (SharanKumar Harwalkar), Yah In, Chuk Karegaon, Pune MIDC, Maharashtra, India – 412220",
+    "flagshipBrand": "KITCHEN SHAKTI",
+    "flagshipTagline": "Har Din Ka Hissa.",
+    "theme": "amber-modern",
+    "primaryColor": "#f59e0b",
+    "accentColor": "#0f172a",
+    "heroBannerTitle": "Connecting Bharat To Your Neighborhood Local Shops",
+    "heroBannerSubtitle": "Fast 15-45 minute hyperlocal delivery & 100% pure Agmark certified Kitchen Shakti spices direct from source.",
+    "showHeroBanner": true,
+    "showCategorySection": true,
+    "showTrendingSection": true,
+    "showKitchenShaktiSection": true,
+    "announcementBannerText": "🎉 Welcome to HARWALKART! Enjoy Flat ₹100 Off on orders above ₹499 with code HARWAL100.",
+    "isAnnouncementActive": true,
+    "footerAboutText": "HARWALKART is India’s fast-growing multi-vendor retail platform empowering local kirana merchants, artisans, and in-house pure kitchen spices.",
+    "footerCopyrightText": "© 2026 HARWALKART (SharanKumar Harwalkar). All rights reserved.",
+    "socialLinks": {
+      "facebook": "https://facebook.com/harwalkart",
+      "instagram": "https://instagram.com/harwalkart_official",
+      "youtube": "https://youtube.com/@harwalkart",
+      "twitter": "https://twitter.com/harwalkart",
+      "linkedin": "https://linkedin.com/company/harwalkart"
+    },
+    "enableCustomerRegistration": true,
+    "enableSellerRegistration": true,
+    "requireSellerKycApproval": true,
+    "requireProductApproval": true,
+    "enableProductReviews": true,
+    "defaultCommissionRate": 2.5,
+    "enableDirectKitchenShakti": true,
+    "localDeliveryRadiusKm": 15,
+    "standardDeliveryFee": 40,
+    "expressDeliveryFee": 65,
+    "freeDeliveryThreshold": 499,
+    "localDeliveryTime": "15-45 mins",
+    "enablePanIndiaDelivery": true,
+    "panIndiaDeliveryTime": "3-5 business days",
+    "panIndiaDeliveryFee": 70,
+    "enableCodDelivery": true,
+    "enableUpiPayment": true,
+    "enableCardPayment": true,
+    "enableNetBankingPayment": true,
+    "enableCodPayment": true,
+    "enableWalletPayment": true,
+    "minWithdrawalAmount": 500,
+    "payoutSchedule": "daily",
+    "settlementCycleDays": 1,
+    "autoApprovePayoutsBelow": 5000,
+    "companyBankAccount": null,
+    "orderAutoCancelUnpaidMinutes": 30,
+    "enableOrderLiveTracking": true,
+    "allowCustomerOrderCancellation": true,
+    "orderCancellationWindowMinutes": 15,
+    "allowCustomerReturns": true,
+    "returnWindowDays": 7,
+    "refundProcessingDays": 3,
+    "requireCustomerOtpVerification": true,
+    "requireCustomerEmailVerification": false,
+    "requireSellerGst": true,
+    "requireSellerPan": true,
+    "requireSellerBankProof": true,
+    "requireSellerFssai": true,
+    "gstNumber": "07AAACH7409R1ZZ",
+    "defaultGstPercentage": 5,
+    "fssaiLicense": "10021011000452",
+    "autoSuspendSellerOnReports": true,
+    "maxReportThreshold": 5,
+    "allowedPincodes": "110001, 110002, 110003, 110005, 110006, 110011, 110015, 110019, 110020, 110025, 110028, 110034, 110048, 110075, 110085, 302001, 302002, 302003, 302012, 302017, 302020, 400001, 400050, 560001",
+    "enablePincodeCheck": true,
+    "operationalCities": [
+      "New Delhi",
+      "Jaipur",
+      "Mumbai",
+      "Bengaluru",
+      "Ahmedabad",
+      "Pune"
+    ],
+    "defaultCity": "New Delhi",
+    "defaultState": "Delhi NCR",
+    "serviceableAreasLabel": "Pan-India Delivery for Kitchen Shakti & Hyperlocal Delivery for Verified Shops",
+    "enableGpsLocation": true,
+    "requirePreciseLocation": false,
+    "enableEmailNotifications": true,
+    "enableSmsNotifications": true,
+    "enableWhatsAppNotifications": true,
+    "smsGatewayProvider": "Default Gateway",
+    "notificationSenderEmail": "notifications@harwalkart.com",
+    "notifyCustomerOnOrderPlaced": true,
+    "notifyCustomerOnOutForDelivery": true,
+    "notifyCustomerOnDelivered": true,
+    "notifySellerOnNewOrder": true,
+    "notifyDeliveryPartnerOnDispatch": true,
+    "enableAdmin2FA": true,
+    "admin2faMethod": "email_otp",
+    "adminSessionTimeoutMinutes": 60,
+    "maxFailedLoginAttempts": 5,
+    "lockoutDurationMinutes": 15,
+    "enableActivityLogging": true,
+    "logRetentionDays": 90,
+    "allowSubAdminProductDelete": false,
+    "allowSubAdminPayoutApproval": false,
+    "termsAndConditionsText": "Welcome to HARWALKART. By accessing or using our marketplace platform, you agree to be bound by Indian e-commerce laws, fair consumer practices, and Harwalkart terms of service. All vendor listings must represent genuine products, and buyers receive authentic fulfillment.",
+    "privacyPolicyText": "HARWALKART and SharanKumar Harwalkar are dedicated to safeguarding your personal and transactional information under the Digital Personal Data Protection (DPDP) Act of India. We never sell your personal information to third parties.",
+    "refundPolicyText": "If you receive damaged, defective, or incorrect items, you can request an instant return within 7 days of delivery. Refunds are credited to the original payment method or Harwalkart Wallet within 3-5 business days upon pickup verification.",
+    "cancellationPolicyText": "Customers can cancel orders directly through their dashboard within 15 minutes of placing the order, prior to merchant dispatch. Once dispatched by local delivery partners, cancellations cannot be accepted.",
+    "shippingDeliveryPolicyText": "Hyperlocal orders are fulfilled within 15 to 45 minutes from local verified neighbourhood shops. Kitchen Shakti direct pantry packages are shipped pan-India via express surface courier within 3 to 5 business days.",
+    "sellerTermsText": "Sellers must maintain active GST and valid KYC documents. Payouts are settled within 1-2 business days post order delivery. Misleading pricing, adulterated goods, or counterfeit products result in immediate account termination.",
+    "maintenanceModeEnabled": false,
+    "maintenanceMessage": "HARWALKART is undergoing scheduled server optimization. We will be back online shortly with improved speed and services!",
+    "isWebsiteLive": true,
+    "offlineNoticeMessage": "Marketplace is currently in offline mode. Please check back later or contact customer support at +91 9372207811.",
+    "autoBackupEnabled": true,
+    "backupFrequency": "daily",
+    "lastBackupTimestamp": "2026-08-29T01:16:36.468Z",
+    "enableDebugLogs": true,
+    "logLevel": "info"
+  },
+  "companyBankAccount": null
+}

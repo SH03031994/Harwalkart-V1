@@ -18,6 +18,7 @@ import {
   ExternalLink,
   Layers,
 } from 'lucide-react';
+import { ImageUploadField } from '../../common/ImageUploadField';
 
 export const AdminBannersTab: React.FC = () => {
   const { heroBanners, addHeroBanner, updateHeroBanner, deleteHeroBanner, toggleHeroBannerStatus, brands } = useApp();
@@ -67,19 +68,6 @@ export const AdminBannersTab: React.FC = () => {
       isActive: banner.isActive !== false,
     });
     setIsEditModalOpen(true);
-  };
-
-  const handleImageFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        if (typeof reader.result === 'string') {
-          setFormData(prev => ({ ...prev, imageUrl: reader.result as string }));
-        }
-      };
-      reader.readAsDataURL(file);
-    }
   };
 
   const handleSaveAdd = (e: React.FormEvent) => {
@@ -356,31 +344,19 @@ export const AdminBannersTab: React.FC = () => {
                 </div>
               </div>
 
-              {/* Image URL & File Upload */}
-              <div className="space-y-2">
-                <label className="font-bold text-slate-700">Banner Background Image URL or Upload *</label>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    required
-                    value={formData.imageUrl}
-                    onChange={e => setFormData({ ...formData, imageUrl: e.target.value })}
-                    placeholder="https://images.unsplash.com/..."
-                    className="flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white outline-none"
-                  />
-                  <label className="px-3 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-xl font-bold flex items-center gap-1 cursor-pointer shrink-0">
-                    <ImageIcon className="w-4 h-4" />
-                    <span>Upload Image</span>
-                    <input type="file" accept="image/*" onChange={handleImageFileUpload} className="hidden" />
-                  </label>
-                </div>
+              {/* Image URL & File Upload with Persistent Server Storage */}
+              <ImageUploadField
+                label="Banner Background Image *"
+                sublabel="High-resolution hero visual (1920x600 or 1200x500 recommended)"
+                value={formData.imageUrl}
+                onChange={url => setFormData({ ...formData, imageUrl: url })}
+                role="admin"
+                imageType="banner"
+                folder="banners"
+                required
+                helpNote="Persistent storage on Harwalkart server. Uploaded image will be preserved across all sessions."
+              />
 
-                {formData.imageUrl && (
-                  <div className="w-full h-24 rounded-xl overflow-hidden border border-slate-200 bg-slate-100">
-                    <img src={formData.imageUrl} alt="Preview" className="w-full h-full object-cover" />
-                  </div>
-                )}
-              </div>
 
               {/* Button CTA & Link */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

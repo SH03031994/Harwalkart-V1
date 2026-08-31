@@ -1766,10 +1766,66 @@ export const INITIAL_CATEGORIES: CategoryItem[] = [
     name: 'Kitchen Shakti Spices',
     slug: 'kitchen-shakti-spices',
     image: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=400&auto=format&fit=crop&q=80',
-    description: 'Harwalkart Direct 100% pure authentic whole & ground spices.',
+    description: 'Harwalkart Direct 100% pure authentic whole & ground spices in transparent packaging.',
     commissionRate: 0.0,
     isActive: true,
     displayOrder: 1,
+    subCategories: [
+      { id: 'sub_ks_ground', name: 'Ground Spices (Pisi Masale)', slug: 'ground-spices', categoryId: 'cat_ks_spices', categoryName: 'Kitchen Shakti Spices', brandSlug: 'kitchen-shakti', brandName: 'KitchenShakti', isActive: true, displayOrder: 1 },
+      { id: 'sub_ks_whole', name: 'Whole Spices (Khada Masala)', slug: 'whole-spices', categoryId: 'cat_ks_spices', categoryName: 'Kitchen Shakti Spices', brandSlug: 'kitchen-shakti', brandName: 'KitchenShakti', isActive: true, displayOrder: 2 },
+      { id: 'sub_ks_blends', name: 'Royal Blends & Garam Masala', slug: 'royal-blends', categoryId: 'cat_ks_spices', categoryName: 'Kitchen Shakti Spices', brandSlug: 'kitchen-shakti', brandName: 'KitchenShakti', isActive: true, displayOrder: 3 },
+      { id: 'sub_ks_sprinklers', name: 'Table Sprinklers & Chaat Masala', slug: 'sprinklers', categoryId: 'cat_ks_spices', categoryName: 'Kitchen Shakti Spices', brandSlug: 'kitchen-shakti', brandName: 'KitchenShakti', isActive: true, displayOrder: 4 },
+      { id: 'sub_ks_biryani', name: 'Biryani & Curry Masalas', slug: 'biryani-curry-masalas', categoryId: 'cat_ks_spices', categoryName: 'Kitchen Shakti Spices', brandSlug: 'kitchen-shakti', brandName: 'KitchenShakti', isActive: true, displayOrder: 5 },
+      { id: 'sub_ks_hing', name: 'Pure Hing & Mustard Seeds', slug: 'hing-mustard', categoryId: 'cat_ks_spices', categoryName: 'Kitchen Shakti Spices', brandSlug: 'kitchen-shakti', brandName: 'KitchenShakti', isActive: true, displayOrder: 6 },
+    ],
+  },
+  {
+    id: 'cat_nutriflow_nutrition',
+    name: 'Food & Nutrition',
+    slug: 'food-nutrition',
+    image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&auto=format&fit=crop&q=80',
+    description: 'NutriFlow unpolished pulses, cold pressed virgin oils, and superfoods.',
+    commissionRate: 0.0,
+    isActive: true,
+    displayOrder: 2,
+    subCategories: [
+      { id: 'sub_nf_dals', name: 'Unpolished Dals & Pulses', slug: 'unpolished-dals', categoryId: 'cat_nutriflow_nutrition', categoryName: 'Food & Nutrition', brandSlug: 'nutriflow', brandName: 'NutriFlow', isActive: true, displayOrder: 1 },
+      { id: 'sub_nf_oils', name: 'Cold-Pressed Virgin Oils', slug: 'cold-pressed-oils', categoryId: 'cat_nutriflow_nutrition', categoryName: 'Food & Nutrition', brandSlug: 'nutriflow', brandName: 'NutriFlow', isActive: true, displayOrder: 2 },
+      { id: 'sub_nf_grains', name: 'Organic Grains & Millets', slug: 'organic-grains', categoryId: 'cat_nutriflow_nutrition', categoryName: 'Food & Nutrition', brandSlug: 'nutriflow', brandName: 'NutriFlow', isActive: true, displayOrder: 3 },
+      { id: 'sub_nf_seeds', name: 'Immunity Seeds & Superfoods', slug: 'superfoods-seeds', categoryId: 'cat_nutriflow_nutrition', categoryName: 'Food & Nutrition', brandSlug: 'nutriflow', brandName: 'NutriFlow', isActive: true, displayOrder: 4 },
+    ],
+  },
+  {
+    id: 'cat_rupabhoom_beauty',
+    name: 'Beauty & Personal Care',
+    slug: 'beauty-personal-care',
+    image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&auto=format&fit=crop&q=80',
+    description: 'Rupabhoom Ayurvedic skincare, herbal hair wellness, and pure body care.',
+    commissionRate: 0.0,
+    isActive: true,
+    displayOrder: 3,
+    subCategories: [
+      { id: 'sub_rb_face', name: 'Ayurvedic Face Glow & Kumkumadi', slug: 'ayurvedic-face-glow', categoryId: 'cat_rupabhoom_beauty', categoryName: 'Beauty & Personal Care', brandSlug: 'rupabhoom', brandName: 'Rupabhoom™', isActive: true, displayOrder: 1 },
+      { id: 'sub_rb_hair', name: 'Herbal Hair Oils & Shampoos', slug: 'herbal-hair-oils', categoryId: 'cat_rupabhoom_beauty', categoryName: 'Beauty & Personal Care', brandSlug: 'rupabhoom', brandName: 'Rupabhoom™', isActive: true, displayOrder: 2 },
+      { id: 'sub_rb_body', name: 'Natural Bath Soaps & Body Wash', slug: 'natural-bath-soaps', categoryId: 'cat_rupabhoom_beauty', categoryName: 'Beauty & Personal Care', brandSlug: 'rupabhoom', brandName: 'Rupabhoom™', isActive: true, displayOrder: 3 },
+      { id: 'sub_rb_ubtan', name: 'Herbal Skin Ubtan & Toners', slug: 'skin-ubtan-toners', categoryId: 'cat_rupabhoom_beauty', categoryName: 'Beauty & Personal Care', brandSlug: 'rupabhoom', brandName: 'Rupabhoom™', isActive: true, displayOrder: 4 },
+    ],
+  },
+  {
+    id: 'cat_grahshorya_home',
+    name: 'Home & Household',
+    slug: 'home-household',
+    image: 'https://images.unsplash.com/photo-1585670270606-b33df06e8b4e?w=400&auto=format&fit=crop&q=80',
+    description: 'GrahShorya plant-powered dish cleaners, floor hygiene, and laundry care.',
+    commissionRate: 0.0,
+    isActive: true,
+    displayOrder: 4,
+    subCategories: [
+      { id: 'sub_gs_dishwash', name: 'Plant-Powered Dishwash Cleaners', slug: 'plant-dishwash', categoryId: 'cat_grahshorya_home', categoryName: 'Home & Household', brandSlug: 'grahshorya', brandName: 'GrahShorya™', isActive: true, displayOrder: 1 },
+      { id: 'sub_gs_floor', name: 'Citrus Surface & Floor Cleaners', slug: 'floor-cleaners', categoryId: 'cat_grahshorya_home', categoryName: 'Home & Household', brandSlug: 'grahshorya', brandName: 'GrahShorya™', isActive: true, displayOrder: 2 },
+      { id: 'sub_gs_laundry', name: 'Bio-Degradable Laundry Care', slug: 'laundry-care', categoryId: 'cat_grahshorya_home', categoryName: 'Home & Household', brandSlug: 'grahshorya', brandName: 'GrahShorya™', isActive: true, displayOrder: 3 },
+      { id: 'sub_gs_hygiene', name: 'Kitchen Hygiene & Multi-Surface Sprays', slug: 'hygiene-sprays', categoryId: 'cat_grahshorya_home', categoryName: 'Home & Household', brandSlug: 'grahshorya', brandName: 'GrahShorya™', isActive: true, displayOrder: 4 },
+    ],
   },
   {
     id: 'cat_grocery',
@@ -1779,7 +1835,13 @@ export const INITIAL_CATEGORIES: CategoryItem[] = [
     description: 'Daily rice, premium atta, dals, cooking oils, and sugar.',
     commissionRate: 2.5,
     isActive: true,
-    displayOrder: 2,
+    displayOrder: 5,
+    subCategories: [
+      { id: 'sub_gr_atta', name: 'Atta, Flours & Sooji', slug: 'atta-flours', categoryId: 'cat_grocery', categoryName: 'Grocery & Staples', isActive: true, displayOrder: 1 },
+      { id: 'sub_gr_rice', name: 'Basmati & Regular Rice', slug: 'rice-grains', categoryId: 'cat_grocery', categoryName: 'Grocery & Staples', isActive: true, displayOrder: 2 },
+      { id: 'sub_gr_sugar', name: 'Sugar, Jaggery & Salt', slug: 'sugar-salt', categoryId: 'cat_grocery', categoryName: 'Grocery & Staples', isActive: true, displayOrder: 3 },
+      { id: 'sub_gr_oil', name: 'Edible Oils & Desi Ghee', slug: 'edible-oils', categoryId: 'cat_grocery', categoryName: 'Grocery & Staples', isActive: true, displayOrder: 4 },
+    ],
   },
   {
     id: 'cat_spices',
@@ -1789,7 +1851,12 @@ export const INITIAL_CATEGORIES: CategoryItem[] = [
     description: 'Local store organic seasonings, whole spices and curry mixes.',
     commissionRate: 2.5,
     isActive: true,
-    displayOrder: 3,
+    displayOrder: 6,
+    subCategories: [
+      { id: 'sub_sp_whole', name: 'Whole Seasonings', slug: 'whole-seasonings', categoryId: 'cat_spices', categoryName: 'Spices & Masalas', isActive: true, displayOrder: 1 },
+      { id: 'sub_sp_powder', name: 'Pure Ground Powders', slug: 'ground-powders', categoryId: 'cat_spices', categoryName: 'Spices & Masalas', isActive: true, displayOrder: 2 },
+      { id: 'sub_sp_blends', name: 'Curry & Sabzi Blends', slug: 'curry-blends', categoryId: 'cat_spices', categoryName: 'Spices & Masalas', isActive: true, displayOrder: 3 },
+    ],
   },
   {
     id: 'cat_dairy',
@@ -1799,7 +1866,12 @@ export const INITIAL_CATEGORIES: CategoryItem[] = [
     description: 'Farm-fresh milk, pure desi ghee, paneer, and butter.',
     commissionRate: 2.0,
     isActive: true,
-    displayOrder: 4,
+    displayOrder: 7,
+    subCategories: [
+      { id: 'sub_dy_ghee', name: 'Pure Desi Cow Ghee', slug: 'pure-desi-ghee', categoryId: 'cat_dairy', categoryName: 'Dairy & Daily Needs', isActive: true, displayOrder: 1 },
+      { id: 'sub_dy_milk', name: 'Fresh Milk & Cream', slug: 'fresh-milk', categoryId: 'cat_dairy', categoryName: 'Dairy & Daily Needs', isActive: true, displayOrder: 2 },
+      { id: 'sub_dy_butter', name: 'Butter, Paneer & Cheese', slug: 'butter-paneer', categoryId: 'cat_dairy', categoryName: 'Dairy & Daily Needs', isActive: true, displayOrder: 3 },
+    ],
   },
   {
     id: 'cat_snacks',
@@ -1809,17 +1881,12 @@ export const INITIAL_CATEGORIES: CategoryItem[] = [
     description: 'Assam tea, roasted namkeens, biscuits, and soft drinks.',
     commissionRate: 3.0,
     isActive: true,
-    displayOrder: 5,
-  },
-  {
-    id: 'cat_personal_care',
-    name: 'Personal Care',
-    slug: 'personal-care',
-    image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&auto=format&fit=crop&q=80',
-    description: 'Ayurvedic soaps, shampoos, skin care, and hygiene items.',
-    commissionRate: 3.5,
-    isActive: true,
-    displayOrder: 6,
+    displayOrder: 8,
+    subCategories: [
+      { id: 'sub_sn_tea', name: 'Tea & Coffee', slug: 'tea-coffee', categoryId: 'cat_snacks', categoryName: 'Snacks & Beverages', isActive: true, displayOrder: 1 },
+      { id: 'sub_sn_namkeen', name: 'Namkeen & Mixtures', slug: 'namkeen-mixtures', categoryId: 'cat_snacks', categoryName: 'Snacks & Beverages', isActive: true, displayOrder: 2 },
+      { id: 'sub_sn_biscuits', name: 'Biscuits & Cookies', slug: 'biscuits-cookies', categoryId: 'cat_snacks', categoryName: 'Snacks & Beverages', isActive: true, displayOrder: 3 },
+    ],
   },
 ];
 
@@ -1879,7 +1946,8 @@ export const INITIAL_CITY_HUBS: CityHub[] = CITIES_AND_PINCODES.map((c, idx) => 
 }));
 
 export const INITIAL_WEBSITE_SETTINGS: WebsiteSettings = {
-  // 1. Basic Information
+  // 1. Basic Information & Ownership
+  companyOwnerName: 'SharanKumar Harwalkar',
   brandName: 'HARWALKART',
   tagline: 'Every One Local Shop',
   description: 'India’s premier hyperlocal marketplace connecting buyers to verified local neighborhood stores and 100% pure Kitchen Shakti spices.',
@@ -1889,7 +1957,7 @@ export const INITIAL_WEBSITE_SETTINGS: WebsiteSettings = {
   supportEmail: 'harwalkart@gmail.com',
   whatsappSupportNumber: '+91 9372207811',
   officialAddress: 'Harwalkart, Yah In, Chuk Karegaon, Pune MIDC, Maharashtra, India – 412220',
-  registeredAddress: 'Harwalkart (Jai Shree Ram Enterprises), Yah In, Chuk Karegaon, Pune MIDC, Maharashtra, India – 412220',
+  registeredAddress: 'Harwalkart (SharanKumar Harwalkar), Yah In, Chuk Karegaon, Pune MIDC, Maharashtra, India – 412220',
 
   // In-House Flagship Brand
   flagshipBrand: 'KITCHEN SHAKTI',
@@ -1908,7 +1976,7 @@ export const INITIAL_WEBSITE_SETTINGS: WebsiteSettings = {
   announcementBannerText: '🎉 Welcome to HARWALKART! Enjoy Flat ₹100 Off on orders above ₹499 with code HARWAL100.',
   isAnnouncementActive: true,
   footerAboutText: 'HARWALKART is India’s fast-growing multi-vendor retail platform empowering local kirana merchants, artisans, and in-house pure kitchen spices.',
-  footerCopyrightText: '© 2026 HARWALKART (Jai Shree Ram Enterprises). All rights reserved.',
+  footerCopyrightText: '© 2026 HARWALKART (SharanKumar Harwalkar). All rights reserved.',
   socialLinks: {
     facebook: 'https://facebook.com/harwalkart',
     instagram: 'https://instagram.com/harwalkart_official',
@@ -2006,7 +2074,7 @@ export const INITIAL_WEBSITE_SETTINGS: WebsiteSettings = {
 
   // 11. Legal Pages
   termsAndConditionsText: 'Welcome to HARWALKART. By accessing or using our marketplace platform, you agree to be bound by Indian e-commerce laws, fair consumer practices, and Harwalkart terms of service. All vendor listings must represent genuine products, and buyers receive authentic fulfillment.',
-  privacyPolicyText: 'HARWALKART and Jai Shree Ram Enterprises are dedicated to safeguarding your personal and transactional information under the Digital Personal Data Protection (DPDP) Act of India. We never sell your personal information to third parties.',
+  privacyPolicyText: 'HARWALKART and SharanKumar Harwalkar are dedicated to safeguarding your personal and transactional information under the Digital Personal Data Protection (DPDP) Act of India. We never sell your personal information to third parties.',
   refundPolicyText: 'If you receive damaged, defective, or incorrect items, you can request an instant return within 7 days of delivery. Refunds are credited to the original payment method or Harwalkart Wallet within 3-5 business days upon pickup verification.',
   cancellationPolicyText: 'Customers can cancel orders directly through their dashboard within 15 minutes of placing the order, prior to merchant dispatch. Once dispatched by local delivery partners, cancellations cannot be accepted.',
   shippingDeliveryPolicyText: 'Hyperlocal orders are fulfilled within 15 to 45 minutes from local verified neighbourhood shops. Kitchen Shakti direct pantry packages are shipped pan-India via express surface courier within 3 to 5 business days.',

@@ -52,8 +52,8 @@ export const CmsPageView: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-slate-700">
                   <div className="space-y-2">
                     <div>
-                      <span className="font-bold text-slate-900 block">Registered Entity:</span>
-                      <p>HARWALKART (Jai Shree Ram Enterprises)</p>
+                      <span className="font-bold text-slate-900 block">Registered Entity & Owner:</span>
+                      <p>HARWALKART (SharanKumar Harwalkar)</p>
                     </div>
                     <div>
                       <span className="font-bold text-slate-900 block">In-House Spice Brand:</span>
@@ -115,7 +115,7 @@ export const CmsPageView: React.FC = () => {
               <h4 className="font-bold text-slate-900">1. Marketplace Intermediary Role</h4>
               <p>HARWALKART operates as an intermediary marketplace connecting buyers with verified local merchants, as well as a direct seller for Kitchen Shakti products.</p>
               <h4 className="font-bold text-slate-900">2. Official Company Address & Jurisdiction</h4>
-              <p>This platform is operated by HARWALKART (Jai Shree Ram Enterprises), with official Head Office located at <strong>{officialAddress}</strong>. All contractual transactions are governed by the laws of India under applicable Maharashtra jurisdiction.</p>
+              <p>This platform is operated by HARWALKART (SharanKumar Harwalkar), with official Head Office located at <strong>{officialAddress}</strong>. All contractual transactions are governed by the laws of India under applicable Maharashtra jurisdiction.</p>
             </div>
           </>
         )}

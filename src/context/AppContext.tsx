@@ -18,6 +18,7 @@ import {
   SellerCustomerMessage,
   SellerStatus,
   CategoryItem,
+  SubCategoryItem,
   Advertisement,
   CityHub,
   WebsiteSettings,
@@ -183,6 +184,9 @@ interface AppContextType {
   addCategory: (cat: Omit<CategoryItem, 'id'>) => CategoryItem;
   editCategory: (id: string, updates: Partial<CategoryItem>) => boolean;
   deleteCategory: (id: string) => boolean;
+  addSubCategory: (categoryId: string, subCat: Omit<SubCategoryItem, 'id' | 'categoryId'>) => SubCategoryItem | null;
+  editSubCategory: (categoryId: string, subCatId: string, updates: Partial<SubCategoryItem>) => boolean;
+  deleteSubCategory: (categoryId: string, subCatId: string) => boolean;
 
   // Advertisements (Admin Managed)
   advertisements: Advertisement[];
@@ -265,10 +269,12 @@ interface AppContextType {
   openShareModal: (data: ShareData) => void;
   closeShareModal: () => void;
 
-  // Seller Dashboard Actions
+  // Seller & Admin Product Actions
   addProduct: (product: Omit<Product, 'id' | 'rating' | 'reviewCount' | 'approved'> & { approved?: boolean }) => void;
   updateProduct: (id: string, updates: Partial<Product>, requestingSellerId?: string) => boolean;
   deleteProduct: (productId: string, requestingSellerId?: string) => boolean;
+  toggleProductPublish: (productId: string, isPublished: boolean) => void;
+  toggleProductActive: (productId: string, isActive: boolean) => void;
   updateSellerStock: (productId: string, stockQuantity: number, inStock: boolean) => void;
   createVideoCampaign: (campaign: Omit<ProductVideoAd, 'id' | 'views' | 'clicks' | 'shares' | 'status' | 'createdAt'>) => void;
   updateSellerProfile: (sellerId: string, updates: Partial<Seller>) => void;
@@ -933,6 +939,113 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     localStorage.setItem('hk_website_settings', JSON.stringify(websiteSettings));
   }, [websiteSettings]);
 
+  // ================= CENTRAL DATABASE SYNCHRONIZATION ENGINE =================
+  // Single Source of Truth: connects Admin, Seller, and Customer panels to server DB
+  const notifyCentralDataMutation = () => {
+    try {
+      if (typeof BroadcastChannel !== 'undefined') {
+        const channel = new BroadcastChannel('hk_central_sync_channel');
+        channel.postMessage({ type: 'DATA_MUTATED', timestamp: Date.now() });
+        channel.close();
+      }
+    } catch (e) {
+      // ignore
+    }
+  };
+
+  const fetchCentralDatabase = async (silent = true) => {
+    try {
+      const res = await fetch('/api/sync/full');
+      if (!res.ok) return;
+      const json = await res.json();
+      if (json && json.success && json.data) {
+        const {
+          products: sProducts,
+          sellers: sSellers,
+          brands: sBrands,
+          categories: sCategories,
+          heroBanners: sBanners,
+          orders: sOrders,
+          customers: sCustomers,
+          videoAds: sVideoAds,
+          deliveryPartners: sDeliveryPartners,
+          withdrawalRequests: sWithdrawals,
+          sellerMessages: sSellerMessages,
+          advertisements: sAds,
+          cityHubs: sHubs,
+          supportTickets: sTickets,
+          websiteSettings: sSettings,
+          companyBankAccount: sBank,
+        } = json.data;
+
+        if (Array.isArray(sProducts) && sProducts.length > 0) setProducts(sProducts);
+        if (Array.isArray(sSellers) && sSellers.length > 0) setSellers(sSellers);
+        if (Array.isArray(sBrands) && sBrands.length > 0) setBrands(sBrands);
+        if (Array.isArray(sCategories) && sCategories.length > 0) setCategories(sCategories);
+        if (Array.isArray(sBanners) && sBanners.length > 0) setHeroBanners(sBanners);
+        if (Array.isArray(sOrders)) setOrders(sOrders);
+        if (Array.isArray(sCustomers) && sCustomers.length > 0) setRegisteredCustomers(sCustomers);
+        if (Array.isArray(sVideoAds)) setVideoAds(sVideoAds);
+        if (Array.isArray(sDeliveryPartners)) setDeliveryPartners(sDeliveryPartners);
+        if (Array.isArray(sWithdrawals)) setWithdrawalRequests(sWithdrawals);
+        if (Array.isArray(sSellerMessages)) setSellerMessages(sSellerMessages);
+        if (Array.isArray(sAds)) setAdvertisements(sAds);
+        if (Array.isArray(sHubs)) setCityHubs(sHubs);
+        if (Array.isArray(sTickets)) setSupportTickets(sTickets);
+        if (sSettings) setWebsiteSettings(prev => ({ ...prev, ...sSettings }));
+        if (sBank !== undefined) setCompanyBankAccount(sBank);
+      }
+    } catch (err) {
+      if (!silent) console.error('Failed to sync central database:', err);
+    }
+  };
+
+  useEffect(() => {
+    // Initial fetch on mount
+    fetchCentralDatabase(false);
+
+    // Active polling every 3.5 seconds to maintain real-time single source of truth across all tabs/panels
+    const interval = setInterval(() => {
+      fetchCentralDatabase(true);
+    }, 3500);
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        fetchCentralDatabase(true);
+      }
+    };
+
+    const handleFocus = () => {
+      fetchCentralDatabase(true);
+    };
+
+    window.addEventListener('focus', handleFocus);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    let channel: BroadcastChannel | null = null;
+    try {
+      if (typeof BroadcastChannel !== 'undefined') {
+        channel = new BroadcastChannel('hk_central_sync_channel');
+        channel.onmessage = (event) => {
+          if (event.data?.type === 'DATA_MUTATED') {
+            fetchCentralDatabase(true);
+          }
+        };
+      }
+    } catch (e) {
+      // ignore
+    }
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('focus', handleFocus);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      if (channel) {
+        channel.close();
+      }
+    };
+  }, []);
+
   // Robust URL & View Router
   const navigate = (path: string) => {
     setCurrentPath(path);
@@ -1498,7 +1611,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (isAuthorizedAdmin && isValidPassword) {
       const adminUser: AdminUser = {
         id: 'admin_master_1',
-        name: cleanEmail.includes('jaishreeram') ? 'Jai Shree Ram Enterprises (Admin)' : 'Harwalkart Central Admin',
+        name: 'SharanKumar Harwalkar',
         email: cleanEmail,
         role: 'admin',
         avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80',
@@ -1625,6 +1738,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           : null,
       }));
     }
+    fetch(`/api/sellers/${sellerId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'approved', kycStatus: 'approved', verified: true, isOpen: true }),
+    }).then(() => notifyCentralDataMutation()).catch(console.error);
+
     showToast(`Seller #${sellerId} has been APPROVED! Shop is now LIVE on Harwalkart marketplace. ✅`);
   };
 
@@ -1663,6 +1782,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           : null,
       }));
     }
+
+    fetch(`/api/sellers/${sellerId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'rejected', kycStatus: 'rejected', verified: false, isOpen: false, rejectionReason: finalReason }),
+    }).then(() => notifyCentralDataMutation()).catch(console.error);
+
     showToast(`Seller #${sellerId} application has been REJECTED: "${finalReason}"`);
   };
 
@@ -1694,6 +1820,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           : null,
       }));
     }
+
+    fetch(`/api/sellers/${sellerId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'pending', kycStatus: 'correction_requested', correctionNotes: noteText }),
+    }).then(() => notifyCentralDataMutation()).catch(console.error);
+
     showToast(`Correction request sent to Seller #${sellerId}: "${noteText}"`);
   };
 
@@ -1847,9 +1980,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Product Approvals & Moderation
   const toggleProductApproval = (productId: string) => {
+    const prod = products.find(p => p.id === productId);
+    if (!prod) return;
+    const updatedApproved = !prod.approved;
     setProducts(prev =>
-      prev.map(p => (p.id === productId ? { ...p, approved: !p.approved } : p))
+      prev.map(p => (p.id === productId ? { ...p, approved: updatedApproved } : p))
     );
+    fetch(`/api/products/${productId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ approved: updatedApproved }),
+    }).then(() => notifyCentralDataMutation()).catch(console.error);
     showToast('Product marketplace approval status toggled.');
   };
 
@@ -1857,6 +1998,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setProducts(prev =>
       prev.map(p => (p.id === productId ? { ...p, approved: true } : p))
     );
+    fetch(`/api/products/${productId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ approved: true }),
+    }).then(() => notifyCentralDataMutation()).catch(console.error);
     showToast('Product approved for marketplace live catalog! ✅');
   };
 
@@ -1864,13 +2010,26 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setProducts(prev =>
       prev.map(p => (p.id === productId ? { ...p, approved: false } : p))
     );
+    fetch(`/api/products/${productId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ approved: false }),
+    }).then(() => notifyCentralDataMutation()).catch(console.error);
     showToast('Product unapproved / hidden from store catalog.');
   };
 
   const toggleSellerVerification = (sellerId: string) => {
+    const seller = sellers.find(s => s.id === sellerId);
+    if (!seller) return;
+    const updatedVerified = !seller.verified;
     setSellers(prev =>
-      prev.map(s => (s.id === sellerId ? { ...s, verified: !s.verified } : s))
+      prev.map(s => (s.id === sellerId ? { ...s, verified: updatedVerified } : s))
     );
+    fetch(`/api/sellers/${sellerId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ verified: updatedVerified }),
+    }).then(() => notifyCentralDataMutation()).catch(console.error);
     showToast('Seller verification badge updated.');
   };
 
@@ -1881,19 +2040,117 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       id: `cat_${catData.slug || Date.now()}`,
     };
     setCategories(prev => [...prev, newCat]);
+    fetch('/api/categories', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newCat),
+    }).then(() => notifyCentralDataMutation()).catch(console.error);
     showToast(`Category "${newCat.name}" added to marketplace.`);
     return newCat;
   };
 
   const editCategory = (id: string, updates: Partial<CategoryItem>) => {
     setCategories(prev => prev.map(c => (c.id === id ? { ...c, ...updates } : c)));
+    fetch(`/api/categories/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updates),
+    }).then(() => notifyCentralDataMutation()).catch(console.error);
     showToast('Category updated successfully.');
     return true;
   };
 
   const deleteCategory = (id: string) => {
     setCategories(prev => prev.filter(c => c.id !== id));
+    fetch(`/api/categories/${id}`, { method: 'DELETE' })
+      .then(() => notifyCentralDataMutation())
+      .catch(console.error);
     showToast('Category removed.');
+    return true;
+  };
+
+  const addSubCategory = (
+    categoryId: string,
+    subCatData: Omit<SubCategoryItem, 'id' | 'categoryId'>
+  ) => {
+    const cat = categories.find(c => c.id === categoryId);
+    if (!cat) {
+      showToast('Parent category not found.');
+      return null;
+    }
+    const newSub: SubCategoryItem = {
+      ...subCatData,
+      id: `sub_${subCatData.slug || Date.now()}`,
+      categoryId,
+      categoryName: subCatData.categoryName || cat.name,
+      isActive: subCatData.isActive !== undefined ? subCatData.isActive : true,
+    };
+
+    setCategories(prev =>
+      prev.map(c => {
+        if (c.id === categoryId) {
+          const subs = c.subCategories ? [...c.subCategories, newSub] : [newSub];
+          return { ...c, subCategories: subs };
+        }
+        return c;
+      })
+    );
+
+    fetch(`/api/categories/${categoryId}/subcategories`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newSub),
+    }).then(() => notifyCentralDataMutation()).catch(console.error);
+
+    showToast(`Sub-category "${newSub.name}" added to ${cat.name}!`);
+    return newSub;
+  };
+
+  const editSubCategory = (
+    categoryId: string,
+    subCatId: string,
+    updates: Partial<SubCategoryItem>
+  ) => {
+    setCategories(prev =>
+      prev.map(c => {
+        if (c.id === categoryId && c.subCategories) {
+          const updatedSubs = c.subCategories.map(s =>
+            s.id === subCatId ? { ...s, ...updates } : s
+          );
+          return { ...c, subCategories: updatedSubs };
+        }
+        return c;
+      })
+    );
+
+    fetch(`/api/categories/${categoryId}/subcategories/${subCatId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updates),
+    }).then(() => notifyCentralDataMutation()).catch(console.error);
+
+    showToast('Sub-category updated.');
+    return true;
+  };
+
+  const deleteSubCategory = (categoryId: string, subCatId: string) => {
+    setCategories(prev =>
+      prev.map(c => {
+        if (c.id === categoryId && c.subCategories) {
+          return {
+            ...c,
+            subCategories: c.subCategories.filter(s => s.id !== subCatId),
+          };
+        }
+        return c;
+      })
+    );
+
+    fetch(`/api/categories/${categoryId}/subcategories/${subCatId}`, {
+      method: 'DELETE',
+    }).then(() => notifyCentralDataMutation()).catch(console.error);
+
+    showToast('Sub-category deleted.');
     return true;
   };
 
@@ -1904,26 +2161,47 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       id: `brand_${brandData.slug || Date.now()}`,
     };
     setBrands(prev => [...prev, newBrand]);
+    fetch('/api/brands', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newBrand),
+    }).then(() => notifyCentralDataMutation()).catch(console.error);
     showToast(`Brand "${newBrand.name}" registered successfully.`);
     return newBrand;
   };
 
   const updateBrand = (id: string, updates: Partial<Brand>) => {
     setBrands(prev => prev.map(b => (b.id === id ? { ...b, ...updates } : b)));
+    fetch(`/api/brands/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updates),
+    }).then(() => notifyCentralDataMutation()).catch(console.error);
     showToast('Brand details updated successfully.');
     return true;
   };
 
   const deleteBrand = (id: string) => {
     setBrands(prev => prev.filter(b => b.id !== id));
+    fetch(`/api/brands/${id}`, { method: 'DELETE' })
+      .then(() => notifyCentralDataMutation())
+      .catch(console.error);
     showToast('Brand removed from marketplace.');
     return true;
   };
 
   const toggleBrandStatus = (id: string) => {
+    const brand = brands.find(b => b.id === id);
+    if (!brand) return;
+    const updatedIsActive = !brand.isActive;
     setBrands(prev =>
-      prev.map(b => (b.id === id ? { ...b, isActive: !b.isActive } : b))
+      prev.map(b => (b.id === id ? { ...b, isActive: updatedIsActive } : b))
     );
+    fetch(`/api/brands/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ isActive: updatedIsActive }),
+    }).then(() => notifyCentralDataMutation()).catch(console.error);
     showToast('Brand active status updated.');
   };
 
@@ -1934,32 +2212,56 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       id: `banner_${Date.now()}`,
     };
     setHeroBanners(prev => [...prev, newBanner]);
+    fetch('/api/banners', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newBanner),
+    }).then(() => notifyCentralDataMutation()).catch(console.error);
     showToast(`Hero banner "${newBanner.title}" created successfully! 🎨`);
     return newBanner;
   };
 
   const updateHeroBanner = (id: string, updates: Partial<HeroBanner>) => {
     setHeroBanners(prev => prev.map(b => (b.id === id ? { ...b, ...updates } : b)));
+    fetch(`/api/banners/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updates),
+    }).then(() => notifyCentralDataMutation()).catch(console.error);
     showToast('Hero banner updated successfully.');
     return true;
   };
 
   const deleteHeroBanner = (id: string) => {
     setHeroBanners(prev => prev.filter(b => b.id !== id));
+    fetch(`/api/banners/${id}`, { method: 'DELETE' })
+      .then(() => notifyCentralDataMutation())
+      .catch(console.error);
     showToast('Hero banner removed.');
     return true;
   };
 
   const toggleHeroBannerStatus = (id: string) => {
+    const banner = heroBanners.find(b => b.id === id);
+    if (!banner) return;
+    const updatedIsActive = !banner.isActive;
     setHeroBanners(prev =>
-      prev.map(b => (b.id === id ? { ...b, isActive: !b.isActive } : b))
+      prev.map(b => (b.id === id ? { ...b, isActive: updatedIsActive } : b))
     );
+    fetch(`/api/banners/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ isActive: updatedIsActive }),
+    }).then(() => notifyCentralDataMutation()).catch(console.error);
     showToast('Hero banner active status toggled.');
   };
 
   // Order deletion
   const deleteOrder = (orderId: string) => {
     setOrders(prev => prev.filter(o => o.id !== orderId));
+    fetch(`/api/orders/${orderId}`, { method: 'DELETE' })
+      .then(() => notifyCentralDataMutation())
+      .catch(console.error);
     showToast(`Order #${orderId} deleted from records.`);
     return true;
   };
@@ -2485,8 +2787,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       rating: 5.0,
       reviewCount: 0,
       approved: prodData.approved !== undefined ? prodData.approved : true,
+      inStock: prodData.inStock !== undefined ? prodData.inStock : true,
     };
     setProducts(prev => [newProd, ...prev]);
+
+    fetch('/api/products', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newProd),
+    }).then(() => notifyCentralDataMutation()).catch(console.error);
+
     showToast(`Product "${newProd.name.slice(0, 30)}..." added to inventory! 📦`);
   };
 
@@ -2501,6 +2811,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       return false;
     }
     setProducts(prev => prev.map(p => (p.id === id ? { ...p, ...updates } : p)));
+
+    fetch(`/api/products/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...updates, requestingSellerId }),
+    }).then(() => notifyCentralDataMutation()).catch(console.error);
+
     showToast('Product inventory updated successfully.');
     return true;
   };
@@ -2516,14 +2833,68 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       return false;
     }
     setProducts(prev => prev.filter(p => p.id !== productId));
+
+    const query = requestingSellerId ? `?sellerId=${encodeURIComponent(requestingSellerId)}` : '';
+    fetch(`/api/products/${productId}${query}`, { method: 'DELETE' })
+      .then(() => notifyCentralDataMutation())
+      .catch(console.error);
+
     showToast(`Product "${existing.name.slice(0, 25)}..." deleted from catalog.`);
     return true;
+  };
+
+  const toggleProductPublish = (productId: string, isPublished: boolean) => {
+    setProducts(prev =>
+      prev.map(p =>
+        p.id === productId
+          ? {
+              ...p,
+              isPublished,
+              isDraft: !isPublished,
+              approved: isPublished ? true : p.approved,
+            }
+          : p
+      )
+    );
+
+    fetch(`/api/products/${productId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        isPublished,
+        isDraft: !isPublished,
+        approved: isPublished ? true : undefined,
+      }),
+    }).then(() => notifyCentralDataMutation()).catch(console.error);
+
+    showToast(isPublished ? 'Product published to live store! 🚀' : 'Product unpublished (saved as draft).');
+  };
+
+  const toggleProductActive = (productId: string, isActive: boolean) => {
+    setProducts(prev =>
+      prev.map(p => (p.id === productId ? { ...p, isActive } : p))
+    );
+
+    fetch(`/api/products/${productId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ isActive }),
+    }).then(() => notifyCentralDataMutation()).catch(console.error);
+
+    showToast(isActive ? 'Product enabled in catalog.' : 'Product disabled in catalog.');
   };
 
   const updateSellerStock = (productId: string, stockQuantity: number, inStock: boolean) => {
     setProducts(prev =>
       prev.map(p => (p.id === productId ? { ...p, stockQuantity, inStock } : p))
     );
+
+    fetch(`/api/products/${productId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ stockQuantity, inStock }),
+    }).then(() => notifyCentralDataMutation()).catch(console.error);
+
     showToast(`Stock updated: ${stockQuantity} units (${inStock ? 'In Stock' : 'Out of Stock'})`);
   };
 
@@ -2549,6 +2920,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         seller: prev.seller ? { ...prev.seller, ...updates } : null,
       }));
     }
+
+    fetch(`/api/sellers/${sellerId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updates),
+    }).then(() => notifyCentralDataMutation()).catch(console.error);
+
     showToast('Shop profile details updated successfully.');
   };
 
@@ -2747,6 +3125,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const sellerCommissionTotal = Math.round(enrichedItems.reduce((acc, cur) => acc + (cur.commissionAmount || 0), 0) * 100) / 100;
     const sellerNetSettlementTotal = Math.round(enrichedItems.reduce((acc, cur) => acc + (cur.netSellerAmount || 0), 0) * 100) / 100;
 
+    const isCod = orderDetails.paymentMethod === 'cod';
+
     const newOrder: Order = {
       id: `HK-ORD-${Math.floor(10000 + Math.random() * 90000)}`,
       date: new Date().toLocaleString('en-IN', {
@@ -2760,13 +3140,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       items: enrichedItems,
       sellerCommissionTotal,
       sellerNetSettlementTotal,
-      status: 'placed',
+      status: 'confirmed',
+      paymentStatus: isCod ? 'pending' : (orderDetails.paymentStatus || 'paid'),
       trackingSteps: [
-        { title: 'Order Placed', description: 'Order successfully placed on Harwalkart', timestamp: 'Just now', completed: true, current: true },
-        { title: 'Order Confirmed', description: 'Awaiting seller dispatch confirmation', timestamp: 'Pending', completed: false, current: false },
-        { title: 'Preparing / Packed', description: 'Packing fresh items with tamper-proof seal', timestamp: 'Pending', completed: false, current: false },
-        { title: 'Out for Delivery', description: 'Local delivery executive assignment', timestamp: 'Pending', completed: false, current: false },
-        { title: 'Delivered', description: 'Contactless delivery with OTP verification', timestamp: 'Pending', completed: false, current: false },
+        { title: 'Order Placed', description: isCod ? `Order placed with Cash on Delivery (₹${orderDetails.total})` : `Order placed via ${orderDetails.paymentMethod?.toUpperCase() || 'ONLINE'}`, timestamp: 'Just now', completed: true, current: false },
+        { title: 'Order Confirmed', description: 'Order confirmed by Harwalkart Central Hub and assigned sellers', timestamp: 'Just now', completed: true, current: true },
+        { title: 'Preparing / Packed', description: 'Sellers packaging 100% pure transparent packaging items safely', timestamp: 'Pending', completed: false, current: false },
+        { title: 'Out for Delivery', description: isCod ? `Delivery rider dispatched. Please keep ₹${orderDetails.total} cash ready.` : 'Delivery rider dispatched for contactless delivery.', timestamp: 'Pending', completed: false, current: false },
+        { title: isCod ? 'Delivered & COD Collected' : 'Delivered Successfully', description: isCod ? 'Handed over and Cash on Delivery collected.' : 'Handed over to customer safely.', timestamp: 'Pending', completed: false, current: false },
       ],
     };
 
@@ -2811,6 +3192,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setOrders(prev => [newOrder, ...prev]);
     clearCart();
     setSelectedTrackingOrderId(newOrder.id);
+
+    fetch('/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newOrder),
+    }).then(() => notifyCentralDataMutation()).catch(console.error);
+
     return newOrder;
   };
 
@@ -2830,6 +3218,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         return { ...ord, status, trackingSteps: steps };
       })
     );
+
+    fetch(`/api/orders/${orderId}/status`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status }),
+    }).then(() => notifyCentralDataMutation()).catch(console.error);
+
     showToast(`Order #${orderId} status changed to ${status.replace('_', ' ').toUpperCase()}`);
   };
 
@@ -2984,6 +3379,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         addProduct,
         updateProduct,
         deleteProduct,
+        toggleProductPublish,
+        toggleProductActive,
         updateSellerStock,
         createVideoCampaign,
         updateSellerProfile,
@@ -3005,6 +3402,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         addCategory,
         editCategory,
         deleteCategory,
+        addSubCategory,
+        editSubCategory,
+        deleteSubCategory,
         advertisements,
         addAdvertisement,
         editAdvertisement,

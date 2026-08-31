@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { ProductCard } from './ProductCard';
-import { CATEGORIES } from '../../data/mockData';
 import { checkProductServiceability } from '../../utils/location';
 import { Filter, SlidersHorizontal, ArrowUpDown, Store, Flame, Search } from 'lucide-react';
 
@@ -10,6 +9,7 @@ export const ProductListingView: React.FC = () => {
     products,
     sellers,
     brands,
+    categories,
     selectedCategory,
     setSelectedCategory,
     searchQuery,
@@ -189,7 +189,7 @@ export const ProductListingView: React.FC = () => {
           {/* Categories list */}
           <div className="space-y-1">
             <label className="text-[11px] font-bold uppercase text-slate-400 block mb-1">Categories</label>
-            {CATEGORIES.map(cat => (
+            {categories.map(cat => (
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}

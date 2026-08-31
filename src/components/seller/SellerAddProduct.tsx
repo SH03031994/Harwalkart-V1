@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useApp } from '../../context/AppContext';
 import { Seller } from '../../types';
 import {
@@ -13,7 +13,10 @@ import {
   Tag,
   ShieldCheck,
   Percent,
+  Loader2,
 } from 'lucide-react';
+import { ImageUploadField } from '../common/ImageUploadField';
+import { uploadImageFile } from '../../utils/imageUpload';
 
 interface SellerAddProductProps {
   seller: Seller;
@@ -58,42 +61,61 @@ export const SellerAddProduct: React.FC<SellerAddProductProps> = ({ seller, onSu
   const [fssaiNumber, setFssaiNumber] = useState(seller.gstin ? '10019011006542' : '');
   const [description, setDescription] = useState('');
   
-  // Multi-image state
-  const [images, setImages] = useState<string[]>([
-    'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&auto=format&fit=crop&q=80',
-  ]);
-  const [imageUrlInput, setImageUrlInput] = useState('');
+  // Real Persistent Images state
+  const [mainImage, setMainImage] = useState<string>('https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&auto=format&fit=crop&q=80');
+  const [transparentPackagingImage, setTransparentPackagingImage] = useState<string>('');
+  const [additionalImages, setAdditionalImages] = useState<string[]>([]);
+  const [isUploadingAdditional, setIsUploadingAdditional] = useState(false);
+  const additionalFileInputRef = useRef<HTMLInputElement>(null);
 
   // Auto-calculated discount percentage
   const discountPercent = mrp > price && mrp > 0 ? Math.round(((mrp - price) / mrp) * 100) : 0;
 
-  const handleAddImageUrl = () => {
-    if (!imageUrlInput.trim()) return;
-    setImages(prev => [...prev, imageUrlInput.trim()]);
-    setImageUrlInput('');
-    showToast('Image added to product gallery.');
+  const handleUploadAdditional = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploadingAdditional(true);
+    const res = await uploadImageFile(file, {
+      role: 'seller',
+      sellerId: seller.id,
+      imageType: 'additional',
+      folder: 'products',
+    });
+    setIsUploadingAdditional(false);
+
+    if (res.success && res.url) {
+      setAdditionalImages(prev => [...prev, res.url]);
+      showToast('Additional image added to product gallery.');
+    } else {
+      showToast(res.error || 'Failed to upload image.');
+    }
+
+    if (additionalFileInputRef.current) {
+      additionalFileInputRef.current.value = '';
+    }
   };
 
   const handleAddPresetImage = (url: string) => {
-    if (!images.includes(url)) {
-      setImages(prev => [...prev, url]);
+    if (!mainImage) {
+      setMainImage(url);
+      showToast('Main product image set from preset.');
+    } else if (!additionalImages.includes(url)) {
+      setAdditionalImages(prev => [...prev, url]);
       showToast('Preset image added to gallery.');
     }
   };
 
-  const handleRemoveImage = (index: number) => {
-    if (images.length <= 1) {
-      showToast('Product must have at least one main image.');
-      return;
-    }
-    setImages(prev => prev.filter((_, i) => i !== index));
+  const handleRemoveAdditionalImage = (index: number) => {
+    setAdditionalImages(prev => prev.filter((_, i) => i !== index));
   };
 
-  const handleSetPrimaryImage = (index: number) => {
-    if (index === 0) return;
-    const selected = images[index];
-    const rest = images.filter((_, i) => i !== index);
-    setImages([selected, ...rest]);
+  const handleMakePrimary = (index: number) => {
+    const selected = additionalImages[index];
+    const prevMain = mainImage;
+    const rest = additionalImages.filter((_, i) => i !== index);
+    setMainImage(selected);
+    setAdditionalImages(prevMain ? [prevMain, ...rest] : rest);
     showToast('Main product image set.');
   };
 
@@ -112,8 +134,8 @@ export const SellerAddProduct: React.FC<SellerAddProductProps> = ({ seller, onSu
       showToast('Selling price cannot exceed MRP.');
       return;
     }
-    if (images.length === 0) {
-      showToast('Please add at least one product image.');
+    if (!mainImage.trim()) {
+      showToast('Please upload or select a main product image.');
       return;
     }
 
@@ -122,6 +144,8 @@ export const SellerAddProduct: React.FC<SellerAddProductProps> = ({ seller, onSu
       .trim()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-+|-+$/g, '');
+
+    const allImages = [mainImage, ...additionalImages].filter(Boolean);
 
     addProduct({
       name: name.trim(),
@@ -141,13 +165,18 @@ export const SellerAddProduct: React.FC<SellerAddProductProps> = ({ seller, onSu
       sku: sku.trim() || `HK-SKU-${Date.now().toString().slice(-4)}`,
       description: description.trim() || `${name} by ${seller.shopName}. Fresh quality guaranteed.`,
       fssaiNumber: fssaiNumber.trim() || undefined,
-      images,
+      images: allImages.length > 0 ? allImages : [mainImage],
+      productImage: mainImage,
+      transparentPackagingImage: transparentPackagingImage.trim() || undefined,
+      packagingImage: transparentPackagingImage.trim() || undefined,
+      additionalImages: additionalImages,
       serviceablePincodes: seller.serviceablePincodes || ['*'],
       tags: [category, brand, 'Fresh', 'Local'],
     });
 
     onSuccess();
   };
+
 
   return (
     <div className="space-y-6 animate-in fade-in max-w-4xl mx-auto">
@@ -341,94 +370,150 @@ export const SellerAddProduct: React.FC<SellerAddProductProps> = ({ seller, onSu
           </div>
         </div>
 
-        {/* Section 3: Multi-Image Management */}
-        <div className="space-y-4 pt-2">
+        {/* Section 3: Product Images & Transparent Packaging */}
+        <div className="space-y-5 pt-2 border-t border-slate-100">
           <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-            <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider">
-              3. Product Images Gallery ({images.length})
-            </h3>
-            <span className="text-xs text-slate-400 font-medium">Add multiple photos for best customer conversion</span>
+            <div>
+              <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                <ImageIcon className="w-4 h-4 text-emerald-600" />
+                <span>3. Product Images & Packaging</span>
+              </h3>
+              <p className="text-xs text-slate-500">
+                Upload real photos from your mobile camera or gallery for high conversion and customer trust.
+              </p>
+            </div>
+            <span className="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+              Server Storage Active
+            </span>
           </div>
 
-          {/* Gallery Preview Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {images.map((imgUrl, idx) => (
-              <div
-                key={idx}
-                className={`relative group aspect-square rounded-2xl overflow-hidden border-2 bg-slate-100 ${
-                  idx === 0 ? 'border-amber-500 ring-2 ring-amber-400/30' : 'border-slate-200'
-                }`}
-              >
-                <img
-                  src={imgUrl}
-                  alt={`Product view ${idx + 1}`}
-                  className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
+          {/* 1. Primary Product Image */}
+          <ImageUploadField
+            label="Primary Product Image (Cover photo) *"
+            sublabel="The main image seen by customers in search results and category browsing"
+            value={mainImage}
+            onChange={url => setMainImage(url)}
+            role="seller"
+            sellerId={seller.id}
+            imageType="main"
+            folder="products"
+            required
+          />
 
-                {idx === 0 && (
-                  <span className="absolute top-2 left-2 px-2 py-0.5 bg-amber-500 text-white text-[9px] font-black uppercase rounded shadow-xs">
-                    Primary Image
-                  </span>
-                )}
+          {/* 2. Transparent Packaging Image */}
+          <ImageUploadField
+            label="Transparent Packaging Photo (Optional but Recommended)"
+            sublabel="Upload a clear view of the stand-up pouch or jar showing the genuine product purity inside"
+            value={transparentPackagingImage}
+            onChange={url => setTransparentPackagingImage(url)}
+            role="seller"
+            sellerId={seller.id}
+            imageType="packaging"
+            folder="products"
+            helpNote="Shows Harwalkart customers the authentic purity inside the transparent pouch."
+          />
 
-                <div className="absolute inset-0 bg-slate-950/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-2 p-2">
-                  {idx !== 0 && (
-                    <button
-                      type="button"
-                      onClick={() => handleSetPrimaryImage(idx)}
-                      className="px-2.5 py-1 bg-amber-400 text-slate-950 font-bold rounded-lg text-[10px] cursor-pointer"
-                    >
-                      Make Primary
-                    </button>
-                  )}
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveImage(idx)}
-                    className="p-1.5 bg-rose-600 text-white rounded-lg cursor-pointer hover:bg-rose-500"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
-                </div>
+          {/* 3. Additional Gallery Photos */}
+          <div className="space-y-3 p-4 bg-slate-50 border border-slate-200 rounded-2xl">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <label className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+                  Additional Product Images ({additionalImages.length})
+                </label>
+                <p className="text-[11px] text-slate-500">
+                  Add multiple angles, back label, FSSAI seal, or nutritional facts.
+                </p>
               </div>
-            ))}
-          </div>
 
-          {/* Add Image URL Row */}
-          <div className="flex gap-2">
-            <input
-              type="url"
-              placeholder="Paste image URL (https://...)..."
-              value={imageUrlInput}
-              onChange={e => setImageUrlInput(e.target.value)}
-              className="flex-1 px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs"
-            />
-            <button
-              type="button"
-              onClick={handleAddImageUrl}
-              className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl cursor-pointer transition"
-            >
-              Add URL
-            </button>
-          </div>
-
-          {/* Presets Row */}
-          <div className="space-y-1.5">
-            <span className="text-[11px] font-bold text-slate-500 uppercase">Quick Add Category Photo Presets:</span>
-            <div className="flex flex-wrap gap-2">
-              {SAMPLE_PRESET_IMAGES.map((preset, idx) => (
+              <div>
+                <input
+                  ref={additionalFileInputRef}
+                  type="file"
+                  accept="image/jpeg,image/jpg,image/png,image/webp"
+                  onChange={handleUploadAdditional}
+                  className="hidden"
+                />
                 <button
-                  key={idx}
                   type="button"
-                  onClick={() => handleAddPresetImage(preset.url)}
-                  className="px-3 py-1.5 bg-slate-100 hover:bg-amber-100 text-slate-700 hover:text-amber-900 rounded-xl text-xs font-medium transition cursor-pointer border border-slate-200"
+                  onClick={() => additionalFileInputRef.current?.click()}
+                  disabled={isUploadingAdditional}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl cursor-pointer transition disabled:opacity-50 shadow-xs"
                 >
-                  + {preset.label}
+                  {isUploadingAdditional ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      <span>Uploading Image...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>+ Upload Extra Photo</span>
+                    </>
+                  )}
                 </button>
-              ))}
+              </div>
+            </div>
+
+            {/* Gallery Grid */}
+            {additionalImages.length > 0 ? (
+              <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 pt-2">
+                {additionalImages.map((imgUrl, idx) => (
+                  <div
+                    key={idx}
+                    className="relative group aspect-square rounded-xl overflow-hidden border border-slate-200 bg-white shadow-xs"
+                  >
+                    <img
+                      src={imgUrl}
+                      alt={`Gallery ${idx + 1}`}
+                      className="w-full h-full object-cover"
+                      referrerPolicy="no-referrer"
+                    />
+                    <div className="absolute inset-0 bg-slate-950/70 opacity-0 group-hover:opacity-100 transition flex flex-col items-center justify-center gap-1.5 p-1.5">
+                      <button
+                        type="button"
+                        onClick={() => handleMakePrimary(idx)}
+                        className="px-2 py-1 bg-amber-400 text-slate-950 font-black text-[10px] uppercase rounded cursor-pointer"
+                        title="Set as main primary product image"
+                      >
+                        Set Main
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveAdditionalImage(idx)}
+                        className="p-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded cursor-pointer"
+                        title="Remove photo"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-xs text-slate-400 italic py-1">
+                No additional photos uploaded yet. You can upload extra photos above or pick quick presets below.
+              </p>
+            )}
+
+            {/* Presets Row */}
+            <div className="pt-2 border-t border-slate-200/60 space-y-1.5">
+              <span className="text-[11px] font-bold text-slate-500 uppercase">Quick Category Presets:</span>
+              <div className="flex flex-wrap gap-2">
+                {SAMPLE_PRESET_IMAGES.map((preset, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => handleAddPresetImage(preset.url)}
+                    className="px-2.5 py-1 bg-white hover:bg-emerald-50 text-slate-700 hover:text-emerald-800 rounded-lg text-xs font-medium transition cursor-pointer border border-slate-200"
+                  >
+                    + {preset.label}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
+
 
         {/* Section 4: Description & Details */}
         <div className="space-y-4 pt-2">

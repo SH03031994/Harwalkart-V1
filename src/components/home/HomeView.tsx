@@ -39,7 +39,6 @@ export const HomeView: React.FC = () => {
   const {
     products,
     sellers,
-    heroBanners,
     currentLocation,
     setIsLocationModalOpen,
     searchQuery,

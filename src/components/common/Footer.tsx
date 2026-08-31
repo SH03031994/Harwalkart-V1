@@ -316,7 +316,7 @@ export const Footer: React.FC = () => {
       {/* Bottom Bar */}
       <div className="max-w-7xl mx-auto px-4 pt-6 mt-4 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-3">
         <div>
-          <p>© {new Date().getFullYear()} HARWALKART (Jai Shree Ram Enterprises). All rights reserved.</p>
+          <p>© {new Date().getFullYear()} HARWALKART (SharanKumar Harwalkar). All rights reserved.</p>
           <p className="text-[11px] text-slate-500 mt-0.5">
             Head Office: Yah In, Chuk Karegaon, Pune MIDC, Maharashtra, India – 412220
           </p>

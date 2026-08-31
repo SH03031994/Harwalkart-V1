@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { Logo } from './Logo';
-import { PRODUCT_CATEGORIES } from '../../data/mockData';
 import {
   MapPin,
   Search,
@@ -31,6 +30,7 @@ export const Header: React.FC = () => {
     setSearchQuery,
     selectedCategory,
     setSelectedCategory,
+    categories,
     brands,
     selectedBrandSlug,
     setSelectedBrandSlug,
@@ -222,7 +222,7 @@ export const Header: React.FC = () => {
                     >
                       All Categories
                     </button>
-                    {PRODUCT_CATEGORIES.map(cat => (
+                    {categories.map(cat => (
                       <button
                         key={cat.id}
                         type="button"
@@ -540,7 +540,7 @@ export const Header: React.FC = () => {
                       <span>All Products</span>
                       <span className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md">View All</span>
                     </button>
-                    {PRODUCT_CATEGORIES.map(cat => (
+                    {categories.map(cat => (
                       <button
                         key={cat.id}
                         onClick={() => handleCategorySelect(cat.id, cat.name)}

@@ -164,7 +164,7 @@ export const OrderTrackingView: React.FC = () => {
                   Official GST Tax Invoice
                 </span>
                 <h3 className="text-xl font-black text-slate-950 mt-1">HARWALKART</h3>
-                <p className="text-slate-600 text-xs font-bold">Jai Shree Ram Enterprises</p>
+                <p className="text-slate-600 text-xs font-bold">{websiteSettings?.companyOwnerName || 'SharanKumar Harwalkar'}</p>
                 <div className="text-[11px] text-slate-500 mt-1 space-y-0.5">
                   <p className="font-semibold text-slate-700">
                     Head Office: {websiteSettings?.officialAddress || 'Harwalkart, Yah In, Chuk Karegaon, Pune MIDC, Maharashtra, India – 412220'}

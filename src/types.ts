@@ -233,6 +233,8 @@ export interface Product {
   sellerName: string;
   isHarwalkartDirect: boolean;
   category: string;
+  subCategory?: string; // e.g. 'Pure Red Chilli', 'Cold Pressed Oils', 'Ayurvedic Skincare'
+  subCategoryId?: string;
   price: number;
   mrp: number;
   discountPercent: number;
@@ -242,17 +244,24 @@ export interface Product {
   stockQuantity: number;
   sku?: string;
   images: string[];
+  productImage?: string; // Main primary product image
+  transparentPackagingImage?: string; // Dedicated transparent packaging photo (pouch/jar)
+  packagingImage?: string;
+  additionalImages?: string[]; // Extra gallery product angles
   videoUrl?: string;
   unit: string;
   packagingType?: string; // 'Transparent Stand-up Pouch' | 'Transparent Food-Grade Pouch' | 'Clear Premium Jar' | 'Frosted Beauty Bottle' | 'Transparent Trigger Spray' | string
   weightOrQuantity?: string;
   description: string;
+  features?: string[];
   ingredients?: string[];
   benefits?: string[];
   fssaiNumber?: string;
   serviceablePincodes: string[]; // empty or ['*'] means PAN-India
   approved: boolean;
   isActive?: boolean;
+  isDraft?: boolean;
+  isPublished?: boolean;
   displayOrder?: number;
   featured?: boolean;
   isBestSeller?: boolean;
@@ -378,6 +387,20 @@ export interface ProductReview {
   helpfulCount: number;
 }
 
+export interface SubCategoryItem {
+  id: string;
+  name: string;
+  slug: string;
+  categoryId: string;
+  categoryName?: string;
+  brandSlug?: string;
+  brandName?: string;
+  image?: string;
+  description?: string;
+  isActive: boolean;
+  displayOrder?: number;
+}
+
 export interface CategoryItem {
   id: string;
   name: string;
@@ -388,6 +411,7 @@ export interface CategoryItem {
   commissionRate: number; // e.g. 2.5
   isActive: boolean;
   displayOrder?: number;
+  subCategories?: SubCategoryItem[];
 }
 
 export interface Advertisement {
@@ -420,7 +444,8 @@ export interface CityHub {
 }
 
 export interface WebsiteSettings {
-  // 1. Basic Information
+  // 1. Basic Information & Ownership
+  companyOwnerName?: string;
   brandName: string;
   tagline: string;
   description: string;

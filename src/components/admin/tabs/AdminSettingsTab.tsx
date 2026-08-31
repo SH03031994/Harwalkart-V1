@@ -329,6 +329,19 @@ export const AdminSettingsTab: React.FC = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                   <div className="space-y-1">
+                    <label className="font-bold text-slate-700">Company Owner / Authorized Admin *</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.companyOwnerName || 'SharanKumar Harwalkar'}
+                      onChange={e => handleChange('companyOwnerName', e.target.value)}
+                      placeholder="SharanKumar Harwalkar"
+                      className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-900 focus:bg-white"
+                    />
+                    <p className="text-[10px] text-slate-400">Official company owner and authorized super-administrator.</p>
+                  </div>
+
+                  <div className="space-y-1">
                     <label className="font-bold text-slate-700">Brand / Marketplace Name *</label>
                     <input
                       type="text"
@@ -453,7 +466,7 @@ export const AdminSettingsTab: React.FC = () => {
                       type="text"
                       value={formData.registeredAddress || ''}
                       onChange={e => handleChange('registeredAddress', e.target.value)}
-                      placeholder="Harwalkart (Jai Shree Ram Enterprises), Yah In, Chuk Karegaon, Pune MIDC, Maharashtra, India – 412220"
+                      placeholder="Harwalkart (SharanKumar Harwalkar), Yah In, Chuk Karegaon, Pune MIDC, Maharashtra, India – 412220"
                       className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:bg-white"
                     />
                   </div>

@@ -55,6 +55,12 @@ export const BrandDetailView: React.FC = () => {
 
   // Filter products belonging to this brand
   const brandProducts = products.filter(p => {
+    // Only live published approved active products for customers
+    if (!p.approved) return false;
+    if (p.isActive === false) return false;
+    if (p.isDraft) return false;
+    if (p.isPublished === false) return false;
+
     const matchesBrand =
       p.brandSlug === currentBrand.slug ||
       p.brandId === currentBrand.id ||
@@ -67,24 +73,36 @@ export const BrandDetailView: React.FC = () => {
       const matchName = p.name.toLowerCase().includes(q);
       const matchHindi = p.hindiName?.toLowerCase().includes(q);
       const matchCat = p.category.toLowerCase().includes(q);
-      if (!matchName && !matchHindi && !matchCat) return false;
+      const matchSub = p.subCategory?.toLowerCase().includes(q);
+      if (!matchName && !matchHindi && !matchCat && !matchSub) return false;
     }
 
-    if (selectedSubCategory !== 'all' && p.category !== selectedSubCategory) {
-      return false;
+    if (selectedSubCategory !== 'all') {
+      const matchesCategory = p.category === selectedSubCategory;
+      const matchesSub = p.subCategory === selectedSubCategory;
+      if (!matchesCategory && !matchesSub) return false;
     }
 
     return true;
   });
 
-  // Extract unique categories within this brand's catalog
+  // Extract unique categories and subcategories within this brand's catalog
   const allBrandProducts = products.filter(
     p =>
-      p.brandSlug === currentBrand.slug ||
-      p.brandId === currentBrand.id ||
-      p.brand.toLowerCase().trim() === currentBrand.name.toLowerCase().trim()
+      p.approved &&
+      p.isActive !== false &&
+      !p.isDraft &&
+      p.isPublished !== false &&
+      (p.brandSlug === currentBrand.slug ||
+        p.brandId === currentBrand.id ||
+        p.brand.toLowerCase().trim() === currentBrand.name.toLowerCase().trim())
   );
-  const brandCategories = Array.from(new Set(allBrandProducts.map(p => p.category)));
+  const brandCategories = Array.from(
+    new Set([
+      ...allBrandProducts.map(p => p.category),
+      ...allBrandProducts.map(p => p.subCategory).filter(Boolean) as string[],
+    ])
+  );
 
   // Sorting
   const sortedProducts = [...brandProducts].sort((a, b) => {

@@ -164,7 +164,7 @@ export const AdminOrdersTab: React.FC = () => {
                 <div className="space-y-0.5">
                   {o.items.map((it, idx) => (
                     <div key={idx} className="flex justify-between text-slate-700 font-medium">
-                      <span className="truncate max-w-[150px]">{it.name} (x{it.quantity})</span>
+                      <span className="truncate max-w-[150px]">{it.productName || (it as any).name || 'Product'} (x{it.quantity})</span>
                       <span>₹{it.price * it.quantity}</span>
                     </div>
                   ))}
@@ -229,7 +229,7 @@ export const AdminOrdersTab: React.FC = () => {
               <div>
                 <h3 className="text-base font-black text-slate-950">HARWALKART GST Tax Invoice</h3>
                 <p className="text-slate-600 text-[11px] font-semibold mt-0.5">
-                  Harwalkart (Jai Shree Ram Enterprises)
+                  Harwalkart (SharanKumar Harwalkar)
                 </p>
                 <p className="text-slate-500 text-[10px] leading-tight">
                   Head Office: Yah In, Chuk Karegaon, Pune MIDC, Maharashtra, India – 412220
@@ -266,7 +266,7 @@ export const AdminOrdersTab: React.FC = () => {
                   {selectedOrder.items.map((it, idx) => (
                     <div key={idx} className="flex justify-between py-1.5 text-xs">
                       <div>
-                        <p className="font-bold text-slate-900">{it.name}</p>
+                        <p className="font-bold text-slate-900">{it.productName || (it as any).name || 'Product'}</p>
                         <p className="text-slate-500 text-[11px]">Seller: {it.sellerName} | Qty: {it.quantity}</p>
                       </div>
                       <div className="text-right font-black text-slate-900">

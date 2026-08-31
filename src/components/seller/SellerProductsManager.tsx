@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useApp } from '../../context/AppContext';
 import { Seller, Product } from '../../types';
 import {
@@ -19,7 +19,10 @@ import {
   Upload,
   Layers,
   ArrowUpDown,
+  Loader2,
 } from 'lucide-react';
+import { ImageUploadField } from '../common/ImageUploadField';
+import { uploadImageFile } from '../../utils/imageUpload';
 
 interface SellerProductsManagerProps {
   seller: Seller;
@@ -64,8 +67,13 @@ export const SellerProductsManager: React.FC<SellerProductsManagerProps> = ({
   const [editUnit, setEditUnit] = useState('');
   const [editSku, setEditSku] = useState('');
   const [editDescription, setEditDescription] = useState('');
-  const [editImages, setEditImages] = useState<string[]>([]);
-  const [newImageUrl, setNewImageUrl] = useState('');
+  
+  // Real persistent image states for edit
+  const [editMainImage, setEditMainImage] = useState('');
+  const [editTransparentPackaging, setEditTransparentPackaging] = useState('');
+  const [editAdditionalImages, setEditAdditionalImages] = useState<string[]>([]);
+  const [isUploadingEditAdditional, setIsUploadingEditAdditional] = useState(false);
+  const editAdditionalFileInputRef = useRef<HTMLInputElement>(null);
 
   // Delete Confirmation Modal State
   const [deletingProduct, setDeletingProduct] = useState<Product | null>(null);
@@ -108,32 +116,52 @@ export const SellerProductsManager: React.FC<SellerProductsManagerProps> = ({
     setEditUnit(product.unit || '1 unit');
     setEditSku(product.sku || `HK-SKU-${product.id.slice(-4)}`);
     setEditDescription(product.description || '');
-    setEditImages(product.images && product.images.length > 0 ? [...product.images] : ['https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600&auto=format&fit=crop&q=80']);
-    setNewImageUrl('');
+    
+    const extraImgs = product.additionalImages && product.additionalImages.length > 0
+      ? [...product.additionalImages]
+      : (product.images && product.images.length > 1 ? product.images.slice(1) : []);
+
+    setEditMainImage(product.productImage || (product.images && product.images[0]) || '');
+    setEditTransparentPackaging(product.transparentPackagingImage || product.packagingImage || '');
+    setEditAdditionalImages(extraImgs);
   };
 
-  // Image manipulation in Edit Modal
-  const handleAddEditImage = () => {
-    if (!newImageUrl.trim()) return;
-    setEditImages(prev => [...prev, newImageUrl.trim()]);
-    setNewImageUrl('');
-    showToast('Image added to product gallery.');
-  };
+  const handleUploadEditAdditional = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-  const handleRemoveEditImage = (index: number) => {
-    if (editImages.length <= 1) {
-      showToast('Product must have at least one main image.');
-      return;
+    setIsUploadingEditAdditional(true);
+    const res = await uploadImageFile(file, {
+      role: 'seller',
+      sellerId: seller.id,
+      imageType: 'additional',
+      folder: 'products',
+    });
+    setIsUploadingEditAdditional(false);
+
+    if (res.success && res.url) {
+      setEditAdditionalImages(prev => [...prev, res.url]);
+      showToast('Additional image uploaded to gallery.');
+    } else {
+      showToast(res.error || 'Failed to upload additional image.');
     }
-    setEditImages(prev => prev.filter((_, i) => i !== index));
+
+    if (editAdditionalFileInputRef.current) {
+      editAdditionalFileInputRef.current.value = '';
+    }
   };
 
-  const handleSetPrimaryImage = (index: number) => {
-    if (index === 0) return;
-    const selected = editImages[index];
-    const rest = editImages.filter((_, i) => i !== index);
-    setEditImages([selected, ...rest]);
-    showToast('Primary product image updated!');
+  const handleRemoveEditAdditional = (index: number) => {
+    setEditAdditionalImages(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleSetPrimaryEdit = (index: number) => {
+    const selected = editAdditionalImages[index];
+    const prevMain = editMainImage;
+    const rest = editAdditionalImages.filter((_, i) => i !== index);
+    setEditMainImage(selected);
+    setEditAdditionalImages(prevMain ? [prevMain, ...rest] : rest);
+    showToast('Main product image updated.');
   };
 
   // Save Edit Changes
@@ -149,12 +177,13 @@ export const SellerProductsManager: React.FC<SellerProductsManagerProps> = ({
       showToast('Please enter valid Price and MRP.');
       return;
     }
-    if (editImages.length === 0) {
-      showToast('Please add at least one product image.');
+    if (!editMainImage.trim()) {
+      showToast('Please upload or select a main product image.');
       return;
     }
 
     const calculatedDiscount = Math.max(0, Math.round(((editMrp - editPrice) / editMrp) * 100));
+    const allImages = [editMainImage, ...editAdditionalImages].filter(Boolean);
 
     const success = updateProduct(
       editingProduct.id,
@@ -170,15 +199,21 @@ export const SellerProductsManager: React.FC<SellerProductsManagerProps> = ({
         unit: editUnit,
         sku: editSku,
         description: editDescription.trim(),
-        images: editImages,
+        images: allImages.length > 0 ? allImages : [editMainImage],
+        productImage: editMainImage,
+        transparentPackagingImage: editTransparentPackaging.trim() || undefined,
+        packagingImage: editTransparentPackaging.trim() || undefined,
+        additionalImages: editAdditionalImages,
       },
       seller.id // strictly enforce ownership
     );
 
     if (success) {
       setEditingProduct(null);
+      showToast('Product updated successfully with persistent images.');
     }
   };
+
 
   // Confirm and Execute Delete
   const handleConfirmDelete = () => {
@@ -570,79 +605,129 @@ export const SellerProductsManager: React.FC<SellerProductsManagerProps> = ({
                 />
               </div>
 
-              {/* Image Management */}
-              <div className="space-y-3 border-t border-slate-100 pt-4">
+              {/* Real Image Management */}
+              <div className="space-y-4 border-t border-slate-100 pt-4">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold text-slate-700 uppercase">
-                    Product Images ({editImages.length})
-                  </label>
-                  <span className="text-[11px] text-slate-400">First image is Main/Primary</span>
+                  <div>
+                    <h4 className="text-xs font-black uppercase text-slate-900 tracking-wider flex items-center gap-1.5">
+                      <ImageIcon className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Product Images & Packaging</span>
+                    </h4>
+                    <p className="text-[11px] text-slate-500">
+                      Update photos directly from camera/gallery with permanent server persistence
+                    </p>
+                  </div>
+                  <span className="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                    Storage Connected
+                  </span>
                 </div>
 
-                {/* Gallery of Images */}
-                <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
-                  {editImages.map((imgUrl, idx) => (
-                    <div
-                      key={idx}
-                      className={`relative group rounded-xl overflow-hidden border-2 aspect-square bg-slate-100 ${
-                        idx === 0 ? 'border-amber-500 ring-2 ring-amber-400/30' : 'border-slate-200'
-                      }`}
-                    >
-                      <img
-                        src={imgUrl}
-                        alt={`Preview ${idx + 1}`}
-                        className="w-full h-full object-cover"
-                        referrerPolicy="no-referrer"
-                      />
+                {/* 1. Primary Product Image */}
+                <ImageUploadField
+                  label="Primary Product Image (Cover photo) *"
+                  sublabel="Main product view shown across the catalog and search results"
+                  value={editMainImage}
+                  onChange={url => setEditMainImage(url)}
+                  role="seller"
+                  sellerId={seller.id}
+                  imageType="main"
+                  folder="products"
+                  required
+                />
 
-                      {idx === 0 && (
-                        <span className="absolute top-1 left-1 px-1.5 py-0.5 bg-amber-500 text-white text-[8px] font-black uppercase rounded shadow-xs">
-                          Primary
-                        </span>
-                      )}
+                {/* 2. Transparent Packaging Image */}
+                <ImageUploadField
+                  label="Transparent Packaging Photo (Optional)"
+                  sublabel="Clear view of pouch or jar showing authentic grain/spice purity"
+                  value={editTransparentPackaging}
+                  onChange={url => setEditTransparentPackaging(url)}
+                  role="seller"
+                  sellerId={seller.id}
+                  imageType="packaging"
+                  folder="products"
+                />
 
-                      <div className="absolute inset-0 bg-slate-950/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-1.5 p-1">
-                        {idx !== 0 && (
-                          <button
-                            type="button"
-                            onClick={() => handleSetPrimaryImage(idx)}
-                            title="Set as Main Image"
-                            className="p-1.5 bg-amber-400 text-slate-950 rounded-lg text-[10px] font-bold cursor-pointer"
-                          >
-                            Set Main
-                          </button>
-                        )}
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveEditImage(idx)}
-                          title="Delete Image"
-                          className="p-1.5 bg-rose-600 text-white rounded-lg cursor-pointer"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
+                {/* 3. Additional Gallery Images */}
+                <div className="space-y-2.5 p-3.5 bg-slate-50 border border-slate-200 rounded-2xl">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <label className="text-xs font-bold text-slate-800 uppercase tracking-wider">
+                        Additional Gallery Photos ({editAdditionalImages.length})
+                      </label>
+                      <p className="text-[11px] text-slate-500">
+                        Angles, nutrition table, FSSAI seal, packaging back
+                      </p>
                     </div>
-                  ))}
-                </div>
 
-                {/* Add Image URL Row */}
-                <div className="flex gap-2">
-                  <input
-                    type="url"
-                    placeholder="Paste image URL (https://...)..."
-                    value={newImageUrl}
-                    onChange={e => setNewImageUrl(e.target.value)}
-                    className="flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs"
-                  />
-                  <button
-                    type="button"
-                    onClick={handleAddEditImage}
-                    className="px-4 py-2 bg-slate-900 text-white text-xs font-bold rounded-xl cursor-pointer hover:bg-slate-800 transition"
-                  >
-                    Add Image
-                  </button>
+                    <div>
+                      <input
+                        ref={editAdditionalFileInputRef}
+                        type="file"
+                        accept="image/jpeg,image/jpg,image/png,image/webp"
+                        onChange={handleUploadEditAdditional}
+                        className="hidden"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => editAdditionalFileInputRef.current?.click()}
+                        disabled={isUploadingEditAdditional}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl cursor-pointer transition disabled:opacity-50"
+                      >
+                        {isUploadingEditAdditional ? (
+                          <>
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                            <span>Uploading...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Plus className="w-3.5 h-3.5" />
+                            <span>+ Upload Extra Image</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+
+                  {editAdditionalImages.length > 0 ? (
+                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5 pt-1">
+                      {editAdditionalImages.map((imgUrl, idx) => (
+                        <div
+                          key={idx}
+                          className="relative group aspect-square rounded-xl overflow-hidden border border-slate-200 bg-white"
+                        >
+                          <img
+                            src={imgUrl}
+                            alt={`Gallery ${idx + 1}`}
+                            className="w-full h-full object-cover"
+                            referrerPolicy="no-referrer"
+                          />
+                          <div className="absolute inset-0 bg-slate-950/70 opacity-0 group-hover:opacity-100 transition flex flex-col items-center justify-center gap-1 p-1">
+                            <button
+                              type="button"
+                              onClick={() => handleSetPrimaryEdit(idx)}
+                              className="px-1.5 py-0.5 bg-amber-400 text-slate-950 font-bold text-[9px] uppercase rounded cursor-pointer"
+                              title="Make this primary cover photo"
+                            >
+                              Make Main
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveEditAdditional(idx)}
+                              className="p-1 bg-rose-600 text-white rounded cursor-pointer hover:bg-rose-500"
+                              title="Delete photo"
+                            >
+                              <Trash2 className="w-3 h-3" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-xs text-slate-400 italic">No extra gallery photos uploaded.</p>
+                  )}
                 </div>
               </div>
+
 
               {/* Modal Buttons */}
               <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">

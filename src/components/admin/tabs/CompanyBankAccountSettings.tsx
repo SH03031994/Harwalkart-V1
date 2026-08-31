@@ -78,7 +78,7 @@ export const CompanyBankAccountSettings: React.FC = () => {
 
   const handleOpenAdd = () => {
     setFormData({
-      accountHolderName: 'JAI SHREE RAM ENTERPRISES',
+      accountHolderName: 'SHARANKUMAR HARWALKAR',
       bankName: '',
       accountNumber: '',
       confirmAccountNumber: '',
@@ -344,7 +344,7 @@ export const CompanyBankAccountSettings: React.FC = () => {
               <div>
                 <h4 className="font-black text-slate-900 text-sm">Account Specification & IFSC Verification</h4>
                 <p className="text-[11px] text-slate-500">
-                  Official banking credentials configured for Jai Shree Ram Enterprises (Harwalkart).
+                  Official banking credentials configured for SharanKumar Harwalkar (Harwalkart).
                 </p>
               </div>
               <span className="flex items-center gap-1 text-[11px] font-black text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
@@ -514,7 +514,7 @@ export const CompanyBankAccountSettings: React.FC = () => {
                   id="bank-holder-name-input"
                   type="text"
                   required
-                  placeholder="e.g. JAI SHREE RAM ENTERPRISES"
+                  placeholder="e.g. SHARANKUMAR HARWALKAR"
                   value={formData.accountHolderName}
                   onChange={e => setFormData({ ...formData, accountHolderName: e.target.value })}
                   className={`w-full p-2.5 bg-slate-50 border rounded-xl font-bold text-slate-900 ${

@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 
 import { AdminOverviewTab } from './tabs/AdminOverviewTab';
+import { AdminCompanyProductsTab } from './tabs/AdminCompanyProductsTab';
 import { AdminSellerApprovalsTab } from './tabs/AdminSellerApprovalsTab';
 import { AdminSellersTab } from './tabs/AdminSellersTab';
 import { AdminCustomersTab } from './tabs/AdminCustomersTab';
@@ -58,6 +59,7 @@ export const AdminDashboard: React.FC = () => {
 
   const [activeTab, setActiveTab] = useState<
     | 'overview'
+    | 'company_products'
     | 'seller_approvals'
     | 'sellers'
     | 'customers'
@@ -73,7 +75,7 @@ export const AdminDashboard: React.FC = () => {
     | 'ads'
     | 'messages'
     | 'settings'
-  >('overview');
+  >('company_products');
 
   const pendingSellers = sellers.filter(s => s.status === 'pending');
   const pendingProducts = products.filter(p => !p.approved);
@@ -99,7 +101,7 @@ export const AdminDashboard: React.FC = () => {
               </span>
             </div>
             <p className="text-xs text-slate-400 mt-0.5">
-              Authenticated: <span className="text-amber-400 font-bold">{authSession.admin?.name || 'Jai Shree Ram Enterprises (Admin)'}</span> ({authSession.admin?.email || 'jaishreeramenterprises24@gmail.com'})
+              Authorized Owner / Admin: <span className="text-amber-400 font-bold">{authSession.admin?.name || 'SharanKumar Harwalkar'}</span> ({authSession.admin?.email || 'jaishreeramenterprises24@gmail.com'})
             </p>
           </div>
         </div>
@@ -160,6 +162,22 @@ export const AdminDashboard: React.FC = () => {
               <TrendingUp className="w-4 h-4" />
               <span>Admin Overview</span>
             </div>
+          </button>
+
+          <button
+            id="admin-nav-company-products"
+            onClick={() => setActiveTab('company_products')}
+            className={`w-full flex items-center justify-between p-3 rounded-2xl transition-colors cursor-pointer ${
+              activeTab === 'company_products' ? 'bg-amber-500 text-slate-950 shadow-xs font-black' : 'text-slate-700 hover:bg-slate-100'
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              <Sparkles className="w-4 h-4 text-amber-700" />
+              <span>Company Products</span>
+            </div>
+            <span className="text-[10px] bg-slate-950 text-amber-400 font-black px-2 py-0.5 rounded-full">
+              DIRECT
+            </span>
           </button>
 
           <button
@@ -387,6 +405,7 @@ export const AdminDashboard: React.FC = () => {
         {/* Content Area (9 Cols) */}
         <div className="lg:col-span-9 space-y-6">
           {activeTab === 'overview' && <AdminOverviewTab setActiveTab={setActiveTab} />}
+          {activeTab === 'company_products' && <AdminCompanyProductsTab />}
           {activeTab === 'seller_approvals' && <AdminSellerApprovalsTab />}
           {activeTab === 'sellers' && <AdminSellersTab />}
           {activeTab === 'customers' && <AdminCustomersTab />}
