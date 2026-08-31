@@ -270,13 +270,14 @@ export interface Product {
 
 export interface HeroBanner {
   id: string;
-  title: string;
-  subtitle: string;
-  badgeText?: string;
   imageUrl: string;
   mobileImageUrl?: string;
-  buttonText: string;
-  buttonLink: string; // e.g. '/brand/kitchen-shakti', '/brand/nutriflow', '/products'
+  title?: string;
+  subtitle?: string;
+  badgeText?: string;
+  buttonText?: string;
+  buttonLink?: string;
+  linkUrl?: string;
   brandTag?: string;
   priority: number;
   isActive: boolean;

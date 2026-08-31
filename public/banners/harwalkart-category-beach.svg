@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="100%" height="100%">
+  <defs>
+    <!-- Tropical Blue Sky to Turquoise Ocean to White Sand Gradient -->
+    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="30%" stop-color="#7DD3FC"/>
+      <stop offset="50%" stop-color="#BAE6FD"/>
+      <stop offset="60%" stop-color="#38BDF8"/>
+      <stop offset="70%" stop-color="#0284C7"/>
+      <stop offset="80%" stop-color="#0F766E"/>
+      <stop offset="90%" stop-color="#F1F5F9"/>
+      <stop offset="100%" stop-color="#FFFDF7"/>
+    </linearGradient>
+
+    <!-- Spectrum Rainbow Glowing Ring Stroke Gradient -->
+    <linearGradient id="spectrumRingGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#EF4444"/>
+      <stop offset="25%" stop-color="#F59E0B"/>
+      <stop offset="50%" stop-color="#10B981"/>
+      <stop offset="75%" stop-color="#06B6D4"/>
+      <stop offset="100%" stop-color="#8B5CF6"/>
+    </linearGradient>
+
+    <filter id="beachShadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="2" dy="10" stdDeviation="12" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Ocean Beach Background -->
+  <rect width="1920" height="1080" fill="url(#skyGrad)"/>
+
+  <!-- Clouds in Sky -->
+  <g fill="#FFFFFF" opacity="0.6">
+    <ellipse cx="400" cy="180" rx="140" ry="50"/>
+    <ellipse cx="500" cy="160" rx="110" ry="40"/>
+    <ellipse cx="1400" cy="220" rx="180" ry="60"/>
+    <ellipse cx="1550" cy="190" rx="120" ry="45"/>
+  </g>
+
+  <!-- Ocean Waves Foam Line -->
+  <path d="M 0 860 Q 300 840 600 860 T 1200 860 T 1920 860 L 1920 1080 L 0 1080 Z" fill="#FFFFFF" opacity="0.85"/>
+  <path d="M 0 900 Q 400 880 800 900 T 1600 900 T 1920 900 L 1920 1080 L 0 1080 Z" fill="#FFFBEB"/>
+
+  <!-- Tropical Palm Tree Leaves (Left & Right Framing) -->
+  <!-- Left Palm Fronds -->
+  <g transform="translate(-100, -50)" filter="url(#beachShadow)">
+    <path d="M 0 0 Q 350 150 480 480" stroke="#15803D" stroke-width="12" fill="none"/>
+    <path d="M 100 80 Q 250 200 320 380 Q 180 280 100 80 Z" fill="#22C55E"/>
+    <path d="M 180 110 Q 380 240 450 440 Q 280 340 180 110 Z" fill="#16A34A"/>
+    <path d="M 220 180 Q 420 340 480 560 Q 320 440 220 180 Z" fill="#15803D"/>
+    <path d="M 120 240 Q 340 440 380 680 Q 220 540 120 240 Z" fill="#166534"/>
+  </g>
+
+  <!-- Right Palm Fronds -->
+  <g transform="translate(1950, -50) scale(-1, 1)" filter="url(#beachShadow)">
+    <path d="M 0 0 Q 350 150 480 480" stroke="#15803D" stroke-width="12" fill="none"/>
+    <path d="M 100 80 Q 250 200 320 380 Q 180 280 100 80 Z" fill="#22C55E"/>
+    <path d="M 180 110 Q 380 240 450 440 Q 280 340 180 110 Z" fill="#16A34A"/>
+    <path d="M 220 180 Q 420 340 480 560 Q 320 440 220 180 Z" fill="#15803D"/>
+    <path d="M 120 240 Q 340 440 380 680 Q 220 540 120 240 Z" fill="#166534"/>
+  </g>
+
+  <!-- TOP CENTER: Big Glowing Rainbow Circle "CATEGORY" -->
+  <g transform="translate(960, 270)" filter="url(#beachShadow)">
+    <!-- Rainbow Ring -->
+    <circle cx="0" cy="0" r="210" fill="none" stroke="url(#spectrumRingGrad)" stroke-width="14"/>
+    <circle cx="0" cy="0" r="198" fill="#FFFFFF" fill-opacity="0.25"/>
+    <!-- Distressed / Textured "CATEGORY" Bold Red Headline -->
+    <text x="0" y="20" font-family="'Impact', 'Arial Black', sans-serif" font-size="78" font-weight="900" fill="#DC2626" stroke="#FFFFFF" stroke-width="8" paint-order="stroke fill" text-anchor="middle" letter-spacing="4">
+      CATEGORY
+    </text>
+  </g>
+
+  <!-- 4 BRAND CIRCLES (Bottom Horizontal Row) -->
+  <!-- 1. KitchenShakthi Circle -->
+  <g transform="translate(370, 650)" filter="url(#beachShadow)">
+    <circle cx="0" cy="0" r="165" fill="none" stroke="url(#spectrumRingGrad)" stroke-width="10"/>
+    <circle cx="0" cy="0" r="158" fill="#FFFFFF" fill-opacity="0.4"/>
+    <!-- Brand Logo Graphic -->
+    <text x="0" y="-30" font-family="'Plus Jakarta Sans', sans-serif" font-size="24" font-weight="900" fill="#FFB300" stroke="#111" stroke-width="3" paint-order="stroke fill" text-anchor="middle">
+      Harwalkart
+    </text>
+    <text x="0" y="25" font-family="'Playfair Display', serif" font-size="34" font-weight="900" fill="#111111" text-anchor="middle">
+      Kitchen<tspan fill="#EAB308">Shakthi</tspan>
+    </text>
+  </g>
+
+  <!-- 2. RupaBhoom Circle -->
+  <g transform="translate(760, 650)" filter="url(#beachShadow)">
+    <circle cx="0" cy="0" r="165" fill="none" stroke="url(#spectrumRingGrad)" stroke-width="10"/>
+    <circle cx="0" cy="0" r="158" fill="#FFFFFF" fill-opacity="0.4"/>
+    <text x="0" y="-30" font-family="'Plus Jakarta Sans', sans-serif" font-size="24" font-weight="900" fill="#FFB300" stroke="#111" stroke-width="3" paint-order="stroke fill" text-anchor="middle">
+      Harwalkart
+    </text>
+    <text x="0" y="25" font-family="'Plus Jakarta Sans', sans-serif" font-size="34" font-weight="900" fill="#111111" text-anchor="middle">
+      Rupa<tspan fill="#DB2777">bhoom</tspan>
+    </text>
+  </g>
+
+  <!-- 3. NutriFlow Circle -->
+  <g transform="translate(1160, 650)" filter="url(#beachShadow)">
+    <circle cx="0" cy="0" r="165" fill="none" stroke="url(#spectrumRingGrad)" stroke-width="10"/>
+    <circle cx="0" cy="0" r="158" fill="#FFFFFF" fill-opacity="0.4"/>
+    <text x="0" y="-30" font-family="'Plus Jakarta Sans', sans-serif" font-size="24" font-weight="900" fill="#15803D" stroke="#FFF" stroke-width="3" paint-order="stroke fill" text-anchor="middle">
+      Harwalkart
+    </text>
+    <text x="0" y="25" font-family="'Plus Jakarta Sans', sans-serif" font-size="34" font-weight="900" fill="#111111" text-anchor="middle">
+      Nutri<tspan fill="#CA8A04">Flow</tspan>
+    </text>
+  </g>
+
+  <!-- 4. GrahShorya Circle -->
+  <g transform="translate(1550, 650)" filter="url(#beachShadow)">
+    <circle cx="0" cy="0" r="165" fill="none" stroke="url(#spectrumRingGrad)" stroke-width="10"/>
+    <circle cx="0" cy="0" r="158" fill="#FFFFFF" fill-opacity="0.4"/>
+    <text x="0" y="-30" font-family="'Plus Jakarta Sans', sans-serif" font-size="24" font-weight="900" fill="#FFB300" stroke="#111" stroke-width="3" paint-order="stroke fill" text-anchor="middle">
+      Harwalkart
+    </text>
+    <text x="0" y="25" font-family="'Plus Jakarta Sans', sans-serif" font-size="34" font-weight="900" fill="#111111" text-anchor="middle">
+      Grah<tspan fill="#CA8A04">Shorya</tspan>
+    </text>
+  </g>
+</svg>

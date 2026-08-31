@@ -1,0 +1,161 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="100%" height="100%">
+  <defs>
+    <!-- Bright White / Airy Interior Background Gradient -->
+    <linearGradient id="cleanLivingGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="50%" stop-color="#F1F5F9"/>
+      <stop offset="85%" stop-color="#E2E8F0"/>
+      <stop offset="100%" stop-color="#CBD5E1"/>
+    </linearGradient>
+
+    <!-- Table Wood Tone -->
+    <linearGradient id="cleanWoodGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#E2D4C0"/>
+      <stop offset="35%" stop-color="#CBB69B"/>
+      <stop offset="80%" stop-color="#9C7F5E"/>
+      <stop offset="100%" stop-color="#6E5133"/>
+    </linearGradient>
+
+    <!-- GrahShorya Roof Green & Gold Gradient -->
+    <linearGradient id="grahGoldGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFBEB"/>
+      <stop offset="25%" stop-color="#FDE047"/>
+      <stop offset="60%" stop-color="#EAB308"/>
+      <stop offset="100%" stop-color="#CA8A04"/>
+    </linearGradient>
+
+    <filter id="cleanShadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="3" dy="12" stdDeviation="14" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Modern White Living Room Interior Background -->
+  <rect width="1920" height="1080" fill="url(#cleanLivingGrad)"/>
+
+  <!-- Bright Window Panes & Modern Architecture Lines -->
+  <rect x="80" y="80" width="450" height="600" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="8" opacity="0.6"/>
+  <line x1="80" y1="280" x2="530" y2="280" stroke="#CBD5E1" stroke-width="4"/>
+  <line x1="80" y1="480" x2="530" y2="480" stroke="#CBD5E1" stroke-width="4"/>
+  <line x1="300" y1="80" x2="300" y2="680" stroke="#CBD5E1" stroke-width="4"/>
+
+  <rect x="1350" y="80" width="500" height="600" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="8" opacity="0.6"/>
+  <line x1="1350" y1="280" x2="1850" y2="280" stroke="#CBD5E1" stroke-width="4"/>
+  <line x1="1350" y1="480" x2="1850" y2="480" stroke="#CBD5E1" stroke-width="4"/>
+  <line x1="1600" y1="80" x2="1600" y2="680" stroke="#CBD5E1" stroke-width="4"/>
+
+  <!-- Wooden Counter Surface -->
+  <rect x="0" y="760" width="1920" height="320" fill="url(#cleanWoodGrad)"/>
+  <line x1="0" y1="760" x2="1920" y2="760" stroke="#FFF" stroke-opacity="0.6" stroke-width="5"/>
+
+  <!-- Left: Potted Fresh Green Grass & "HOME SWEET HOME" Cutout Decor -->
+  <g transform="translate(60, 520)" filter="url(#cleanShadow)">
+    <ellipse cx="140" cy="270" rx="140" ry="80" fill="#E2E8F0" stroke="#CBD5E1" stroke-width="4"/>
+    <!-- Lush Green Grass Blades -->
+    <path d="M 40 270 Q 20 100 10 30 Q 35 120 55 270 Z" fill="#22C55E"/>
+    <path d="M 65 270 Q 55 60 45 10 Q 75 100 85 270 Z" fill="#16A34A"/>
+    <path d="M 100 270 Q 110 50 120 0 Q 125 110 115 270 Z" fill="#15803D"/>
+    <path d="M 140 270 Q 160 40 180 5 Q 165 120 155 270 Z" fill="#22C55E"/>
+    <path d="M 180 270 Q 210 70 230 20 Q 200 130 190 270 Z" fill="#16A34A"/>
+    <!-- Wooden "HOME SWEET HOME" Letters Silhouette -->
+    <text x="320" y="240" font-family="'Plus Jakarta Sans', sans-serif" font-size="72" font-weight="900" fill="#94A3B8" opacity="0.6" letter-spacing="4">
+      HOME
+    </text>
+    <text x="320" y="300" font-family="'Plus Jakarta Sans', sans-serif" font-size="64" font-weight="900" fill="#94A3B8" opacity="0.6" letter-spacing="4">
+      SWEET HOME
+    </text>
+  </g>
+
+  <!-- Central Logo: Harwalkart GrahShorya with Green House Emblem -->
+  <g transform="translate(960, 430)" text-anchor="middle" filter="url(#cleanShadow)">
+    <!-- Harwalkart Top Logo -->
+    <g transform="translate(0, -110)">
+      <text x="0" y="0" font-family="'Plus Jakarta Sans', sans-serif" font-size="80" font-weight="900" fill="#FFB300" stroke="#111" stroke-width="8" paint-order="stroke fill">
+        Harwalkart
+      </text>
+    </g>
+
+    <!-- GrahShorya Main -->
+    <g transform="translate(0, 80)">
+      <!-- Green House Emblem (Left / Center) -->
+      <g transform="translate(-490, -130)">
+        <!-- Green House Roof with Windows -->
+        <polygon points="120,20 220,110 20,110" fill="#15803D" stroke="#CA8A04" stroke-width="6"/>
+        <rect x="50" y="110" width="140" height="90" fill="#16A34A"/>
+        <rect x="75" y="125" width="40" height="40" fill="#FEF08A" stroke="#CA8A04" stroke-width="4"/>
+        <line x1="95" y1="125" x2="95" y2="165" stroke="#CA8A04" stroke-width="4"/>
+        <line x1="75" y1="145" x2="115" y2="145" stroke="#CA8A04" stroke-width="4"/>
+        <!-- Green Leaves -->
+        <path d="M 40 90 C -20 70 -10 10 30 0 C 60 40 40 90 40 90 Z" fill="#22C55E"/>
+      </g>
+
+      <!-- Grah (Pure White 3D) -->
+      <text x="-210" y="0" font-family="'Plus Jakarta Sans', sans-serif" font-size="165" font-weight="900" fill="#FFFFFF" stroke="#111111" stroke-width="12" paint-order="stroke fill">
+        Grah
+      </text>
+      <!-- Shorya (Vibrant Golden Sparkle 3D) -->
+      <text x="210" y="0" font-family="'Plus Jakarta Sans', sans-serif" font-size="165" font-weight="900" fill="url(#grahGoldGrad)" stroke="#713F12" stroke-width="12" paint-order="stroke fill">
+        Shorya
+      </text>
+      <text x="510" y="-80" font-family="sans-serif" font-size="34" font-weight="900" fill="#CA8A04">TM</text>
+    </g>
+  </g>
+
+  <!-- Bottom Table Cleaning Products Lineup (Dishwash, Glass Cleaner, Floor Wash, Car Wash) -->
+  <g transform="translate(420, 800)" filter="url(#cleanShadow)">
+    <!-- Yellow Dishwash Bottle & Sponge Pack -->
+    <g transform="translate(0, -30)">
+      <rect x="0" y="30" width="65" height="150" rx="14" fill="#FACC15" stroke="#CA8A04" stroke-width="3"/>
+      <rect x="15" y="0" width="35" height="30" rx="4" fill="#EAB308"/>
+      <rect x="75" y="90" width="100" height="50" rx="8" fill="#38BDF8"/>
+      <rect x="75" y="140" width="100" height="30" rx="4" fill="#22C55E"/>
+    </g>
+
+    <!-- Blue Multi-Surface & Disinfectant Bottles Pack -->
+    <g transform="translate(240, -50)">
+      <rect x="0" y="40" width="70" height="170" rx="14" fill="#0284C7" stroke="#0369A1" stroke-width="3"/>
+      <path d="M 0 40 L 40 0 L 70 0 L 70 40 Z" fill="#0284C7"/>
+      <!-- Spray Trigger Head -->
+      <path d="M -20 10 L 40 10 L 40 -10 L 10 -10 Z" fill="#38BDF8"/>
+      <!-- Scrub Brushes -->
+      <rect x="80" y="110" width="110" height="40" rx="6" fill="#D97706"/>
+      <line x1="80" y1="150" x2="190" y2="150" stroke="#92400E" stroke-width="12"/>
+    </g>
+
+    <!-- Car Care & Auto Detailing Cleaning Kit -->
+    <g transform="translate(500, -30)">
+      <ellipse cx="60" cy="110" rx="60" ry="30" fill="#F8FAFC" stroke="#94A3B8" stroke-width="3"/>
+      <rect x="130" y="50" width="55" height="120" rx="10" fill="#06B6D4"/>
+    </g>
+  </g>
+
+  <!-- Right: Woman Shopper in Red Shirt with Cleaning Bucket & Mop Cart -->
+  <g transform="translate(1380, 360)" filter="url(#cleanShadow)">
+    <!-- Woman Shopper Silhouette / Graphic -->
+    <g transform="translate(60, 0)">
+      <!-- Head & Hair -->
+      <ellipse cx="140" cy="80" rx="40" ry="50" fill="#FEF08A"/>
+      <path d="M 100 80 Q 90 20 140 20 Q 190 20 180 80 Q 140 120 100 80 Z" fill="#78350F"/>
+      <!-- Red Top -->
+      <path d="M 90 140 L 190 140 L 210 380 L 70 380 Z" fill="#DC2626"/>
+      <!-- Arms pushing cart -->
+      <line x1="80" y1="180" x2="20" y2="350" stroke="#FDE047" stroke-width="22" stroke-linecap="round"/>
+      <line x1="200" y1="180" x2="260" y2="350" stroke="#FDE047" stroke-width="22" stroke-linecap="round"/>
+    </g>
+
+    <!-- Full Cleaning Bucket Kit & Spray Bottles (Front) -->
+    <g transform="translate(0, 320)">
+      <!-- Big Blue Bucket -->
+      <polygon points="20,80 180,80 160,260 40,260" fill="#0284C7" stroke="#0369A1" stroke-width="5"/>
+      <!-- Big Red Bucket -->
+      <polygon points="180,120 340,120 320,270 200,270" fill="#DC2626" stroke="#991B1B" stroke-width="5"/>
+      <!-- Mop Stick -->
+      <line x1="330" y1="-80" x2="260" y2="300" stroke="#CA8A04" stroke-width="14" stroke-linecap="round"/>
+      <!-- Mop Head / Broom -->
+      <path d="M 230 260 L 330 230 L 360 300 L 240 310 Z" fill="#84CC16"/>
+      <!-- Spray Bottles Inside Buckets -->
+      <rect x="50" y="0" width="50" height="130" rx="10" fill="#F8FAFC"/>
+      <rect x="110" y="20" width="50" height="110" rx="10" fill="#EAB308"/>
+      <rect x="210" y="30" width="50" height="120" rx="10" fill="#22C55E"/>
+    </g>
+  </g>
+</svg>
