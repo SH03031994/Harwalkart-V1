@@ -450,17 +450,51 @@ export const AdminPaymentsTab: React.FC = () => {
             </div>
           </div>
 
-          <div className="p-4 bg-slate-900 text-white rounded-2xl flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <ShieldCheck className="w-6 h-6 text-amber-400 shrink-0" />
-              <div>
-                <div className="font-bold text-xs">Gateway Mode: Sandbox / Internal Accounting</div>
-                <p className="text-[11px] text-slate-400">Live gateway will connect to the configured Company Bank Account when enabled.</p>
+          <div className="p-5 bg-slate-900 text-white rounded-3xl space-y-3 border border-slate-800">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400">
+                  <ShieldCheck className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="font-black text-sm text-white flex items-center gap-2">
+                    <span>Razorpay Real Payment Gateway Flow</span>
+                    <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[10px] font-black px-2 py-0.5 rounded-full uppercase">
+                      Server Verified
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    Real checkout with UPI QR, Card 3D-Secure OTP, NetBanking & HMAC-SHA256 signature verification.
+                  </p>
+                </div>
               </div>
             </div>
-            <span className="bg-amber-400 text-slate-950 font-black text-[10px] px-2.5 py-1 rounded-full uppercase">
-              Ready
-            </span>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 border-t border-slate-800 text-xs">
+              <div className="p-3 bg-slate-800/80 rounded-xl border border-slate-700 space-y-1">
+                <span className="text-slate-400 text-[10px] uppercase font-bold block">Webhook Endpoint</span>
+                <code className="text-amber-300 font-mono text-[11px] font-bold block truncate">
+                  /api/payment/webhook
+                </code>
+                <span className="text-[10px] text-slate-400">Handles payment.captured & failed callbacks</span>
+              </div>
+
+              <div className="p-3 bg-slate-800/80 rounded-xl border border-slate-700 space-y-1">
+                <span className="text-slate-400 text-[10px] uppercase font-bold block">Order Creation API</span>
+                <code className="text-emerald-300 font-mono text-[11px] font-bold block truncate">
+                  /api/payment/create-order
+                </code>
+                <span className="text-[10px] text-slate-400">Generates encrypted gateway order</span>
+              </div>
+
+              <div className="p-3 bg-slate-800/80 rounded-xl border border-slate-700 space-y-1">
+                <span className="text-slate-400 text-[10px] uppercase font-bold block">Signature Verification</span>
+                <code className="text-sky-300 font-mono text-[11px] font-bold block truncate">
+                  /api/payment/verify
+                </code>
+                <span className="text-[10px] text-slate-400">Prevents fake client-side success</span>
+              </div>
+            </div>
           </div>
         </div>
       )}

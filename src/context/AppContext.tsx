@@ -10,6 +10,7 @@ import {
   CartItem,
   Order,
   CustomerUser,
+  LoyaltyPointsTransaction,
   SupportTicket,
   Role,
   AdminUser,
@@ -28,6 +29,7 @@ import {
   PayoutStatus,
   Brand,
   HeroBanner,
+  StoryItem,
 } from '../types';
 import {
   CITIES_AND_PINCODES,
@@ -44,6 +46,7 @@ import {
   INITIAL_WEBSITE_SETTINGS,
   INITIAL_BRANDS,
   INITIAL_HERO_BANNERS,
+  INITIAL_STORIES,
 } from '../data/mockData';
 import {
   calculateDistanceKm,
@@ -134,7 +137,18 @@ interface AppContextType {
   resetCustomerPassword: (identifier: string, otp: string, newPass: string) => { success: boolean; error?: string };
   customerLogout: () => void;
   updateCustomerProfile: (updates: Partial<CustomerUser>) => void;
+  themeMode: 'light' | 'dark' | 'system';
+  isDarkMode: boolean;
+  setThemeMode: (mode: 'light' | 'dark' | 'system') => void;
+  toggleDarkMode: () => void;
   registeredCustomers: CustomerUser[];
+  redeemLoyaltyPoints: (points: number) => { success: boolean; discount?: number; error?: string };
+  addLoyaltyBonus: (customerId: string, points: number, reason: string) => void;
+  loyaltyBalance: number;
+  loyaltyTier: 'Silver' | 'Gold' | 'Platinum';
+  loyaltyPointsHistory: LoyaltyPointsTransaction[];
+  calculatePointsForAmount: (amount: number, tier?: 'Silver' | 'Gold' | 'Platinum') => number;
+  awardLoyaltyPointsForOrder: (orderId: string, orderTotal: number, customerId?: string) => { pointsEarned: number; newBalance: number };
 
   // Customer Management (Admin)
   addCustomer: (cust: Omit<CustomerUser, 'id'>) => CustomerUser;
@@ -324,6 +338,16 @@ interface AppContextType {
   // Toast / Notification banner
   toastMessage: string | null;
   showToast: (msg: string) => void;
+
+  // 9:16 Stories & Mobile Device Preview System
+  stories: StoryItem[];
+  activeStoryIndex: number | null;
+  setActiveStoryIndex: (idx: number | null) => void;
+  openStory: (storyId: string) => void;
+  closeStory: () => void;
+  isMobileDevicePreview: boolean;
+  setIsMobileDevicePreview: (active: boolean) => void;
+  toggleMobileDevicePreview: () => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -360,7 +384,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (path === '/checkout') return 'checkout';
     if (path === '/order-tracking') return 'order-tracking';
     if (path === '/support') return 'support';
-    if (['/about-us', '/privacy-policy', '/terms-conditions', '/refund-policy', '/shipping-policy', '/cancellation-policy', '/gst-compliance'].includes(path)) {
+    if (['/about-us', '/privacy-policy', '/terms-conditions', '/refund-policy', '/shipping-policy', '/cancellation-policy', '/gst-compliance', '/help-desk', '/policies', '/legal', '/about', '/privacy', '/terms'].includes(path)) {
       return 'cms-page';
     }
     return 'home';
@@ -370,7 +394,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [currentView, setCurrentViewState] = useState<string>(getInitialView);
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
   const [selectedShopId, setSelectedShopId] = useState<string | null>(null);
-  const [selectedCmsPage, setSelectedCmsPage] = useState<string | null>(null);
+  const [selectedCmsPage, setSelectedCmsPage] = useState<string | null>(() => {
+    const p = getInitialPath();
+    if (['/about-us', '/privacy-policy', '/terms-conditions', '/refund-policy', '/shipping-policy', '/cancellation-policy', '/gst-compliance', '/help-desk'].includes(p)) {
+      return p.replace('/', '');
+    }
+    if (p === '/about') return 'about-us';
+    if (p === '/privacy') return 'privacy-policy';
+    if (p === '/terms') return 'terms-conditions';
+    if (p === '/policies' || p === '/legal') return 'about-us';
+    return null;
+  });
   const [selectedTrackingOrderId, setSelectedTrackingOrderId] = useState<string | null>(null);
   const [selectedBrandSlug, setSelectedBrandSlug] = useState<string | null>(() => {
     const p = getInitialPath();
@@ -400,6 +434,71 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   });
 
   const [currentRole, setCurrentRole] = useState<Role>(() => authSession.role || 'customer');
+
+  // Theme & Dark Mode State (light | dark | system)
+  const [themeMode, setThemeModeState] = useState<'light' | 'dark' | 'system'>(() => {
+    try {
+      const saved = localStorage.getItem('hk_theme_mode');
+      if (saved === 'light' || saved === 'dark' || saved === 'system') return saved;
+      const authSaved = localStorage.getItem('hk_auth_session');
+      if (authSaved) {
+        const parsed = JSON.parse(authSaved);
+        if (parsed?.customer?.themePreference) return parsed.customer.themePreference;
+      }
+    } catch (e) {}
+    return 'system';
+  });
+
+  const [isSystemDark, setIsSystemDark] = useState<boolean>(() => {
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return;
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (e: MediaQueryListEvent) => {
+      setIsSystemDark(e.matches);
+    };
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  const isDarkMode = themeMode === 'dark' || (themeMode === 'system' && isSystemDark);
+
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    const root = document.documentElement;
+    if (isDarkMode) {
+      root.classList.add('dark');
+      root.setAttribute('data-theme', 'dark');
+    } else {
+      root.classList.remove('dark');
+      root.setAttribute('data-theme', 'light');
+    }
+    localStorage.setItem('hk_theme_mode', themeMode);
+  }, [isDarkMode, themeMode]);
+
+  const setThemeMode = (mode: 'light' | 'dark' | 'system') => {
+    setThemeModeState(mode);
+    localStorage.setItem('hk_theme_mode', mode);
+    const targetCust = authSession.customer || registeredCustomers[0];
+    if (targetCust) {
+      const updatedCust = { ...targetCust, themePreference: mode };
+      if (authSession.customer) {
+        setAuthSession(prev => ({ ...prev, customer: updatedCust }));
+      }
+      setRegisteredCustomers(prev => prev.map(c => (c.id === updatedCust.id ? updatedCust : c)));
+    }
+  };
+
+  const toggleDarkMode = () => {
+    const next = isDarkMode ? 'light' : 'dark';
+    setThemeMode(next);
+    showToast(`Switched to ${next === 'dark' ? 'Dark' : 'Light'} Mode`);
+  };
 
   // Admin Credentials Storage
   const [adminCredentials, setAdminCredentials] = useState<{ email: string; password: string }>(() => {
@@ -788,6 +887,40 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return INITIAL_HERO_BANNERS;
   });
 
+  // 9:16 Stories & Mobile Screen Simulator State
+  const [stories, setStories] = useState<StoryItem[]>(() => {
+    const saved = localStorage.getItem('hk_stories');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    return INITIAL_STORIES;
+  });
+
+  const [activeStoryIndex, setActiveStoryIndex] = useState<number | null>(null);
+  const [isMobileDevicePreview, setIsMobileDevicePreview] = useState<boolean>(false);
+
+  const openStory = (storyId: string) => {
+    const idx = stories.findIndex(s => s.id === storyId);
+    if (idx !== -1) {
+      setActiveStoryIndex(idx);
+    } else {
+      setActiveStoryIndex(0);
+    }
+  };
+
+  const closeStory = () => {
+    setActiveStoryIndex(null);
+  };
+
+  const toggleMobileDevicePreview = () => {
+    setIsMobileDevicePreview(prev => !prev);
+  };
+
   // Advertisements State
   const [advertisements, setAdvertisements] = useState<Advertisement[]>(() => {
     const saved = localStorage.getItem('hk_advertisements');
@@ -1086,8 +1219,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     else if (path === '/checkout') setCurrentViewState('checkout');
     else if (path === '/order-tracking') setCurrentViewState('order-tracking');
     else if (path === '/support') setCurrentViewState('support');
-    else if (['/about-us', '/privacy-policy', '/terms-conditions', '/refund-policy', '/shipping-policy', '/cancellation-policy', '/gst-compliance'].includes(path)) {
-      setSelectedCmsPage(path.replace('/', ''));
+    else if (['/about-us', '/privacy-policy', '/terms-conditions', '/refund-policy', '/shipping-policy', '/cancellation-policy', '/gst-compliance', '/help-desk', '/policies', '/legal'].includes(path)) {
+      const slug = path === '/policies' || path === '/legal' ? 'about-us' : path.replace('/', '');
+      setSelectedCmsPage(slug);
       setCurrentViewState('cms-page');
     }
 
@@ -1116,9 +1250,24 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     else if (view === 'checkout') navigate('/checkout');
     else if (view === 'order-tracking') navigate('/order-tracking');
     else if (view === 'support') navigate('/support');
-    else if (['about-us', 'privacy-policy', 'terms-conditions', 'refund-policy', 'shipping-policy', 'cancellation-policy', 'gst-compliance'].includes(view)) {
+    else if (['about-us', 'privacy-policy', 'terms-conditions', 'refund-policy', 'shipping-policy', 'cancellation-policy', 'gst-compliance', 'help-desk'].includes(view)) {
       setSelectedCmsPage(view);
       navigate(`/${view}`);
+    } else if (view === 'about') {
+      setSelectedCmsPage('about-us');
+      navigate('/about-us');
+    } else if (view === 'privacy') {
+      setSelectedCmsPage('privacy-policy');
+      navigate('/privacy-policy');
+    } else if (view === 'terms') {
+      setSelectedCmsPage('terms-conditions');
+      navigate('/terms-conditions');
+    } else if (view === 'returns') {
+      setSelectedCmsPage('refund-policy');
+      navigate('/refund-policy');
+    } else if (view === 'delivery') {
+      setSelectedCmsPage('shipping-policy');
+      navigate('/shipping-policy');
     }
   };
 
@@ -1148,8 +1297,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         else if (path === '/checkout') setCurrentViewState('checkout');
         else if (path === '/order-tracking') setCurrentViewState('order-tracking');
         else if (path === '/support') setCurrentViewState('support');
-        else if (['/about-us', '/privacy-policy', '/terms-conditions', '/refund-policy', '/shipping-policy', '/cancellation-policy', '/gst-compliance'].includes(path)) {
-          setSelectedCmsPage(path.replace('/', ''));
+        else if (['/about-us', '/privacy-policy', '/terms-conditions', '/refund-policy', '/shipping-policy', '/cancellation-policy', '/gst-compliance', '/help-desk', '/policies', '/legal'].includes(path)) {
+          const slug = path === '/policies' || path === '/legal' ? 'about-us' : path.replace('/', '');
+          setSelectedCmsPage(slug);
           setCurrentViewState('cms-page');
         }
       }
@@ -1318,11 +1468,105 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const updateCustomerProfile = (updates: Partial<CustomerUser>) => {
-    if (!authSession.customer) return;
-    const updatedCust = { ...authSession.customer, ...updates };
-    setAuthSession(prev => ({ ...prev, customer: updatedCust }));
+    const baseCust = authSession.customer || registeredCustomers[0];
+    if (!baseCust) return;
+    const updatedCust = { ...baseCust, ...updates };
+    if (authSession.customer) {
+      setAuthSession(prev => ({ ...prev, customer: updatedCust }));
+    }
     setRegisteredCustomers(prev => prev.map(c => (c.id === updatedCust.id ? updatedCust : c)));
+    if (updates.themePreference) {
+      setThemeModeState(updates.themePreference);
+      localStorage.setItem('hk_theme_mode', updates.themePreference);
+    }
     showToast('Customer profile updated successfully.');
+  };
+
+  // --- LOYALTY POINTS SYSTEM METHODS ---
+  const redeemLoyaltyPoints = (pointsToRedeem: number) => {
+    const activeCustomer = authSession.customer || customerUser;
+    if (!activeCustomer) {
+      return { success: false, error: 'Please log in to redeem loyalty points.' };
+    }
+    const currentBal = activeCustomer.loyaltyPoints || 0;
+    if (pointsToRedeem <= 0) {
+      return { success: false, error: 'Enter a valid points amount to redeem.' };
+    }
+    if (pointsToRedeem > currentBal) {
+      return { success: false, error: `Insufficient points. You have ${currentBal} points available.` };
+    }
+
+    const discountValue = pointsToRedeem; // 1 Point = ₹1 Rupee Store Voucher
+    const newBal = currentBal - pointsToRedeem;
+    const newTier: 'Silver' | 'Gold' | 'Platinum' = newBal >= 1500 ? 'Platinum' : newBal >= 500 ? 'Gold' : 'Silver';
+    const nowFormatted = new Date().toLocaleString('en-IN', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+
+    const tx: LoyaltyPointsTransaction = {
+      id: `lp_tx_red_${Date.now()}`,
+      points: -pointsToRedeem,
+      type: 'redeemed',
+      description: `Redeemed ${pointsToRedeem} points for ₹${discountValue} instant shopping voucher`,
+      date: nowFormatted,
+      balanceAfter: newBal,
+    };
+
+    const updatedCust: CustomerUser = {
+      ...activeCustomer,
+      loyaltyPoints: newBal,
+      loyaltyTier: newTier,
+      loyaltyPointsHistory: [tx, ...(activeCustomer.loyaltyPointsHistory || [])],
+    };
+
+    if (authSession.customer) {
+      setAuthSession(prev => ({ ...prev, customer: updatedCust }));
+    }
+    setRegisteredCustomers(prev => prev.map(c => (c.id === updatedCust.id ? updatedCust : c)));
+    showToast(`Redeemed ${pointsToRedeem} Points! ₹${discountValue} Harwalkart Voucher generated! 🪙🎉`);
+    return { success: true, discount: discountValue };
+  };
+
+  const addLoyaltyBonus = (customerId: string, points: number, reason: string) => {
+    setRegisteredCustomers(prev =>
+      prev.map(c => {
+        if (c.id === customerId) {
+          const newBal = (c.loyaltyPoints || 0) + points;
+          const newTier: 'Silver' | 'Gold' | 'Platinum' = newBal >= 1500 ? 'Platinum' : newBal >= 500 ? 'Gold' : 'Silver';
+          const nowFormatted = new Date().toLocaleString('en-IN', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+          });
+          const tx: LoyaltyPointsTransaction = {
+            id: `lp_tx_bon_${Date.now()}`,
+            points,
+            type: 'bonus',
+            description: reason,
+            date: nowFormatted,
+            balanceAfter: newBal,
+          };
+          const updated: CustomerUser = {
+            ...c,
+            loyaltyPoints: newBal,
+            loyaltyTier: newTier,
+            loyaltyPointsHistory: [tx, ...(c.loyaltyPointsHistory || [])],
+          };
+          if (authSession.customer?.id === customerId) {
+            setAuthSession(s => ({ ...s, customer: updated }));
+          }
+          return updated;
+        }
+        return c;
+      })
+    );
+    showToast(`Awarded ${points} Bonus Loyalty Points! 🌟`);
   };
 
   // --- SELLER AUTHENTICATION METHODS ---
@@ -3027,9 +3271,84 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     showToast('Customer support reply recorded.');
   };
 
-  // Wishlist
+  // Customer & Wishlist
   const customerUser = authSession.customer || registeredCustomers[0];
   const wishlist = customerUser?.wishlist || [];
+
+  // Active Customer Loyalty Data (Real-time managed in AppContext)
+  const loyaltyBalance: number = customerUser?.loyaltyPoints ?? 340;
+  const loyaltyTier: 'Silver' | 'Gold' | 'Platinum' = customerUser?.loyaltyTier || (loyaltyBalance >= 1500 ? 'Platinum' : loyaltyBalance >= 500 ? 'Gold' : 'Silver');
+  const loyaltyPointsHistory: LoyaltyPointsTransaction[] = customerUser?.loyaltyPointsHistory || [];
+
+  const calculatePointsForAmount = (amount: number, tier?: 'Silver' | 'Gold' | 'Platinum') => {
+    const activeTier = tier || loyaltyTier;
+    const multiplier = activeTier === 'Platinum' ? 1.5 : activeTier === 'Gold' ? 1.25 : 1.0;
+    return Math.max(1, Math.round(Math.floor(amount / 10) * multiplier));
+  };
+
+  const awardLoyaltyPointsForOrder = (orderId: string, orderTotal: number, customerId?: string) => {
+    const targetCust = customerId
+      ? (registeredCustomers.find(c => c.id === customerId) || authSession.customer || customerUser)
+      : (authSession.customer || customerUser || registeredCustomers[0]);
+
+    if (!targetCust) return { pointsEarned: 0, newBalance: 0 };
+
+    const tier = targetCust.loyaltyTier || 'Silver';
+    const multiplier = tier === 'Platinum' ? 1.5 : tier === 'Gold' ? 1.25 : 1.0;
+    const earned = Math.max(1, Math.round(Math.floor(orderTotal / 10) * multiplier));
+    const currentBal = targetCust.loyaltyPoints ?? 340;
+    const newBal = currentBal + earned;
+    const newTier: 'Silver' | 'Gold' | 'Platinum' = newBal >= 1500 ? 'Platinum' : newBal >= 500 ? 'Gold' : 'Silver';
+
+    const nowFormatted = new Date().toLocaleString('en-IN', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+
+    const tx: LoyaltyPointsTransaction = {
+      id: `lp_tx_earn_${Date.now()}_${Math.random().toString(36).substring(2, 5)}`,
+      orderId,
+      orderAmount: orderTotal,
+      points: earned,
+      type: 'earned',
+      description: `Earned ${earned} points on Order #${orderId} (${multiplier}x ${tier} rate for ₹${orderTotal})`,
+      date: nowFormatted,
+      balanceAfter: newBal,
+    };
+
+    const updatedCust: CustomerUser = {
+      ...targetCust,
+      loyaltyPoints: newBal,
+      loyaltyTier: newTier,
+      loyaltyPointsHistory: [tx, ...(targetCust.loyaltyPointsHistory || [])],
+    };
+
+    if (authSession.customer && authSession.customer.id === targetCust.id) {
+      setAuthSession(prev => ({ ...prev, customer: updatedCust }));
+    }
+    setRegisteredCustomers(prev => {
+      const exists = prev.some(c => c.id === updatedCust.id);
+      if (exists) {
+        return prev.map(c => (c.id === updatedCust.id ? updatedCust : c));
+      }
+      return [updatedCust, ...prev];
+    });
+
+    try {
+      if (authSession.customer && authSession.customer.id === targetCust.id) {
+        localStorage.setItem('hk_auth_session', JSON.stringify({ ...authSession, customer: updatedCust }));
+      }
+      const updatedList = registeredCustomers.some(c => c.id === updatedCust.id)
+        ? registeredCustomers.map(c => (c.id === updatedCust.id ? updatedCust : c))
+        : [updatedCust, ...registeredCustomers];
+      localStorage.setItem('hk_registered_customers', JSON.stringify(updatedList));
+    } catch {}
+
+    return { pointsEarned: earned, newBalance: newBal };
+  };
 
   const toggleWishlist = (productId: string) => {
     if (!authSession.customer) {
@@ -3126,6 +3445,24 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const sellerNetSettlementTotal = Math.round(enrichedItems.reduce((acc, cur) => acc + (cur.netSellerAmount || 0), 0) * 100) / 100;
 
     const isCod = orderDetails.paymentMethod === 'cod';
+    const isPaid = orderDetails.paymentStatus === 'PAID' || (!isCod && orderDetails.paymentStatus !== 'FAILED' && orderDetails.paymentStatus !== 'CANCELLED');
+
+    const paymentStatus = orderDetails.paymentStatus || (isCod ? 'COD_PENDING' : 'PAID');
+    const paymentDesc = isCod
+      ? `Order placed with Cash on Delivery (₹${orderDetails.total})`
+      : `Payment of ₹${orderDetails.total} verified via ${orderDetails.paymentTransaction?.paymentMethodUsed || 'Online Payment'}${orderDetails.paymentTransaction?.gatewayPaymentId ? ` (Txn ID: ${orderDetails.paymentTransaction.gatewayPaymentId})` : ''}`;
+
+    // --- LOYALTY POINTS REWARD CALCULATION ---
+    // Customers earn 1 loyalty point for every ₹10 spent on the order value
+    const activeCustomer = authSession.customer || customerUser || registeredCustomers[0];
+    const currentTier = activeCustomer?.loyaltyTier || 'Silver';
+    const tierMultiplier = currentTier === 'Platinum' ? 1.5 : currentTier === 'Gold' ? 1.25 : 1.0;
+    
+    // Automatically calculate points earned from order value with tier multiplier (1 pt per ₹10 spent)
+    const calculatedPoints = Math.max(1, Math.round(Math.floor(orderDetails.total / 10) * tierMultiplier));
+    const pointsEarned = orderDetails.loyaltyPointsEarned && orderDetails.loyaltyPointsEarned > 0
+      ? orderDetails.loyaltyPointsEarned
+      : calculatedPoints;
 
     const newOrder: Order = {
       id: `HK-ORD-${Math.floor(10000 + Math.random() * 90000)}`,
@@ -3140,16 +3477,92 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       items: enrichedItems,
       sellerCommissionTotal,
       sellerNetSettlementTotal,
+      loyaltyPointsEarned: pointsEarned,
+      loyaltyPointsUsed: orderDetails.loyaltyPointsUsed || 0,
       status: 'confirmed',
-      paymentStatus: isCod ? 'pending' : (orderDetails.paymentStatus || 'paid'),
+      paymentMethod: orderDetails.paymentMethod,
+      paymentStatus,
+      paymentTransaction: orderDetails.paymentTransaction,
       trackingSteps: [
-        { title: 'Order Placed', description: isCod ? `Order placed with Cash on Delivery (₹${orderDetails.total})` : `Order placed via ${orderDetails.paymentMethod?.toUpperCase() || 'ONLINE'}`, timestamp: 'Just now', completed: true, current: false },
-        { title: 'Order Confirmed', description: 'Order confirmed by Harwalkart Central Hub and assigned sellers', timestamp: 'Just now', completed: true, current: true },
+        { title: 'Order Placed', description: `${paymentDesc} • Earned ${pointsEarned} Loyalty Points 🪙`, timestamp: 'Just now', completed: true, current: false },
+        { title: 'Order Confirmed', description: isCod ? 'Order confirmed with Cash on Delivery' : 'Order & Online Payment confirmed by Harwalkart Central Hub', timestamp: 'Just now', completed: true, current: true },
         { title: 'Preparing / Packed', description: 'Sellers packaging 100% pure transparent packaging items safely', timestamp: 'Pending', completed: false, current: false },
         { title: 'Out for Delivery', description: isCod ? `Delivery rider dispatched. Please keep ₹${orderDetails.total} cash ready.` : 'Delivery rider dispatched for contactless delivery.', timestamp: 'Pending', completed: false, current: false },
         { title: isCod ? 'Delivered & COD Collected' : 'Delivered Successfully', description: isCod ? 'Handed over and Cash on Delivery collected.' : 'Handed over to customer safely.', timestamp: 'Pending', completed: false, current: false },
       ],
     };
+
+    // Credit loyalty points to active customer account and deduct redeemed points
+    const currentBal = activeCustomer?.loyaltyPoints ?? 340;
+    const pointsUsed = orderDetails.loyaltyPointsUsed || 0;
+    const updatedBalance = Math.max(0, currentBal - pointsUsed + pointsEarned);
+    const newTier: 'Silver' | 'Gold' | 'Platinum' = updatedBalance >= 1500 ? 'Platinum' : updatedBalance >= 500 ? 'Gold' : 'Silver';
+    const nowFormatted = new Date().toLocaleString('en-IN', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+
+    const newTransactions: LoyaltyPointsTransaction[] = [];
+    if (pointsUsed > 0) {
+      newTransactions.push({
+        id: `lp_tx_red_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+        orderId: newOrder.id,
+        orderAmount: orderDetails.total,
+        points: -pointsUsed,
+        type: 'redeemed',
+        description: `Redeemed ${pointsUsed} points on Order #${newOrder.id}`,
+        date: nowFormatted,
+        balanceAfter: Math.max(0, currentBal - pointsUsed),
+      });
+    }
+    newTransactions.push({
+      id: `lp_tx_earn_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+      orderId: newOrder.id,
+      orderAmount: orderDetails.total,
+      points: pointsEarned,
+      type: 'earned',
+      description: `Earned ${pointsEarned} points on Order #${newOrder.id} (${tierMultiplier}x ${currentTier} tier rate for ₹${orderDetails.total})`,
+      date: nowFormatted,
+      balanceAfter: updatedBalance,
+    });
+
+    const updatedCustomer: CustomerUser = {
+      ...activeCustomer,
+      loyaltyPoints: updatedBalance,
+      loyaltyTier: newTier,
+      loyaltyPointsHistory: [...newTransactions, ...(activeCustomer?.loyaltyPointsHistory || [])],
+    };
+
+    // Update in-memory session and registered customer records
+    if (authSession.customer) {
+      setAuthSession(prev => ({
+        ...prev,
+        customer: updatedCustomer,
+      }));
+    }
+    setRegisteredCustomers(prev => {
+      const exists = prev.some(c => c.id === updatedCustomer.id);
+      if (exists) {
+        return prev.map(c => (c.id === updatedCustomer.id ? updatedCustomer : c));
+      }
+      return [updatedCustomer, ...prev];
+    });
+
+    // Immediate localStorage persistence for seamless state durability
+    try {
+      if (authSession.customer) {
+        localStorage.setItem('hk_auth_session', JSON.stringify({ ...authSession, customer: updatedCustomer }));
+      }
+      const updatedCustList = registeredCustomers.some(c => c.id === updatedCustomer.id)
+        ? registeredCustomers.map(c => (c.id === updatedCustomer.id ? updatedCustomer : c))
+        : [updatedCustomer, ...registeredCustomers];
+      localStorage.setItem('hk_registered_customers', JSON.stringify(updatedCustList));
+    } catch (e) {
+      console.error('Failed to sync loyalty points to localStorage', e);
+    }
 
     // Update sellers' wallet balances and total earnings with net settlement
     const sellerEarningsMap: Record<string, { gross: number; net: number }> = {};
@@ -3192,6 +3605,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setOrders(prev => [newOrder, ...prev]);
     clearCart();
     setSelectedTrackingOrderId(newOrder.id);
+    showToast(`Order #${newOrder.id} confirmed! You earned ${pointsEarned} Harwalkart Loyalty Points! 🪙✨`);
 
     fetch('/api/orders', {
       method: 'POST',
@@ -3314,7 +3728,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         resetCustomerPassword,
         customerLogout,
         updateCustomerProfile,
+        themeMode,
+        isDarkMode,
+        setThemeMode,
+        toggleDarkMode,
         registeredCustomers,
+        redeemLoyaltyPoints,
+        addLoyaltyBonus,
+        loyaltyBalance,
+        loyaltyTier,
+        loyaltyPointsHistory,
+        calculatePointsForAmount,
+        awardLoyaltyPointsForOrder,
         sellerLogin,
         initiateSellerRegister,
         verifySellerRegistrationOtp,
@@ -3442,6 +3867,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         deleteSupportTicket,
         toastMessage,
         showToast,
+        stories,
+        activeStoryIndex,
+        setActiveStoryIndex,
+        openStory,
+        closeStory,
+        isMobileDevicePreview,
+        setIsMobileDevicePreview,
+        toggleMobileDevicePreview,
       }}
     >
       {children}

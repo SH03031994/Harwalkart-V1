@@ -300,10 +300,7 @@ export const Footer: React.FC = () => {
             </li>
             <li>
               <button
-                onClick={() => {
-                  setCurrentView('support');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
+                onClick={() => handleCmsClick('help-desk')}
                 className="hover:text-amber-400 text-amber-300 font-semibold transition-colors cursor-pointer"
               >
                 Help & Contact Desk

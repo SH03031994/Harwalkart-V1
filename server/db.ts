@@ -581,36 +581,49 @@ export function getOrderById(id: string) {
   return db.orders.find(o => o.id === id) || null;
 }
 
-export function createOrder(orderData: Omit<Order, 'id' | 'date' | 'status' | 'trackingSteps'> & { paymentMethod: string; paymentStatus?: string }): Order {
+export function createOrder(
+  orderData: Omit<Order, 'id' | 'date' | 'status' | 'trackingSteps'> & {
+    id?: string;
+    paymentMethod: Order['paymentMethod'];
+    paymentStatus?: Order['paymentStatus'];
+    paymentTransaction?: Order['paymentTransaction'];
+  }
+): Order {
   const db = loadDatabase();
-  const orderId = `HK-ORD-${Math.floor(10000 + Math.random() * 90000)}`;
+  const orderId = orderData.id || `HK-ORD-${Math.floor(10000 + Math.random() * 90000)}`;
   const now = new Date();
   const dateStr = now.toISOString().replace('T', ' ').substring(0, 16);
 
   const isCod = orderData.paymentMethod === 'cod';
-  const initialStatus = 'confirmed';
-  const paymentStatus = orderData.paymentStatus || (isCod ? 'pending' : 'paid');
+  const initialStatus = orderData.paymentStatus === 'FAILED' || orderData.paymentStatus === 'CANCELLED' ? 'cancelled' : 'confirmed';
+  const paymentStatus: Order['paymentStatus'] = orderData.paymentStatus || (isCod ? 'COD_PENDING' : 'PAID');
+
+  const paymentDesc = isCod
+    ? `Order placed with Cash on Delivery (₹${orderData.total})`
+    : `Payment of ₹${orderData.total} verified via ${orderData.paymentTransaction?.paymentMethodUsed || 'Online Payment'}${orderData.paymentTransaction?.gatewayPaymentId ? ` (ID: ${orderData.paymentTransaction.gatewayPaymentId})` : ''}`;
 
   const newOrder: Order = {
     ...orderData,
     id: orderId,
     date: dateStr,
     status: initialStatus,
-    paymentStatus: paymentStatus as 'paid' | 'pending',
+    paymentMethod: orderData.paymentMethod,
+    paymentStatus,
+    paymentTransaction: orderData.paymentTransaction,
     trackingSteps: [
       {
         title: 'Order Placed',
-        description: isCod ? `Order placed with Cash on Delivery (₹${orderData.total})` : `Order placed & payment verified via ${orderData.paymentMethod.toUpperCase()}`,
+        description: paymentDesc,
         timestamp: 'Just now',
         completed: true,
         current: false,
       },
       {
         title: 'Order Confirmed',
-        description: 'Order confirmed by Harwalkart Central Hub and assigned sellers',
+        description: isCod ? 'Order confirmed with Cash on Delivery' : 'Order & Online Payment confirmed by Harwalkart Central Hub',
         timestamp: 'Just now',
-        completed: true,
-        current: true,
+        completed: initialStatus !== 'cancelled',
+        current: initialStatus !== 'cancelled',
       },
       {
         title: 'Preparing / Packed',
@@ -638,17 +651,54 @@ export function createOrder(orderData: Omit<Order, 'id' | 'date' | 'status' | 't
 
   db.orders.unshift(newOrder);
 
-  // Update seller wallet / order stats
-  newOrder.items.forEach(item => {
-    const seller = db.sellers.find(s => s.id === item.sellerId);
-    if (seller) {
-      seller.totalEarnings = (seller.totalEarnings || 0) + (item.netSellerAmount || item.price * item.quantity * 0.98);
-      seller.walletBalance = (seller.walletBalance || 0) + (item.netSellerAmount || item.price * item.quantity * 0.98);
-    }
-  });
+  // Update seller wallet / order stats if order is confirmed/paid/cod
+  if (initialStatus !== 'cancelled') {
+    newOrder.items.forEach(item => {
+      const seller = db.sellers.find(s => s.id === item.sellerId);
+      if (seller) {
+        seller.totalEarnings = (seller.totalEarnings || 0) + (item.netSellerAmount || item.price * item.quantity * 0.98);
+        seller.walletBalance = (seller.walletBalance || 0) + (item.netSellerAmount || item.price * item.quantity * 0.98);
+      }
+    });
+  }
 
   saveDatabase();
   return newOrder;
+}
+
+export function updateOrderPaymentStatus(
+  orderId: string,
+  paymentStatus: Order['paymentStatus'],
+  transactionDetails?: Partial<Order['paymentTransaction']>
+): Order | null {
+  const db = loadDatabase();
+  const idx = db.orders.findIndex(o => o.id === orderId);
+  if (idx === -1) return null;
+
+  const order = db.orders[idx];
+  order.paymentStatus = paymentStatus;
+
+  if (transactionDetails) {
+    order.paymentTransaction = {
+      ...(order.paymentTransaction || {
+        gateway: 'razorpay',
+        mode: 'test',
+        signatureVerified: true,
+        currency: 'INR',
+        amount: order.total,
+      }),
+      ...transactionDetails,
+    };
+  }
+
+  if (paymentStatus === 'PAID' && order.status === 'placed') {
+    order.status = 'confirmed';
+  } else if (paymentStatus === 'FAILED' || paymentStatus === 'CANCELLED') {
+    order.status = 'cancelled';
+  }
+
+  saveDatabase();
+  return order;
 }
 
 export function updateOrderStatus(orderId: string, status: Order['status'], details?: { riderName?: string; riderPhone?: string; note?: string }): Order | null {

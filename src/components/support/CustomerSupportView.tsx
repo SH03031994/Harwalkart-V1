@@ -11,10 +11,12 @@ import {
   CheckCircle2,
   Building2,
   MapPin,
+  FileText,
+  ArrowRight,
 } from 'lucide-react';
 
 export const CustomerSupportView: React.FC = () => {
-  const { customerUser, addSupportTicket, showToast, websiteSettings } = useApp();
+  const { customerUser, addSupportTicket, showToast, websiteSettings, setCurrentView, setSelectedCmsPage } = useApp();
 
   const [name, setName] = useState(customerUser.name || '');
   const [email, setEmail] = useState(customerUser.email || '');
@@ -99,6 +101,35 @@ export const CustomerSupportView: React.FC = () => {
             </p>
           </div>
         </div>
+      </div>
+
+      {/* Official Legal & Compliance Hub Link */}
+      <div className="bg-gradient-to-r from-amber-50 via-amber-100/40 to-white p-4 sm:p-5 rounded-2xl border border-amber-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-bold shrink-0">
+            <FileText className="w-5 h-5" />
+          </div>
+          <div>
+            <h4 className="text-xs font-black text-slate-950 uppercase tracking-wide">
+              Official Policies & Legal Documentation
+            </h4>
+            <p className="text-xs text-slate-600">
+              Read our 7-Day Refund Guarantee, DPDP Privacy Policy, GST Framework & Terms.
+            </p>
+          </div>
+        </div>
+
+        <button
+          onClick={() => {
+            setSelectedCmsPage('about-us');
+            setCurrentView('cms-page');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          className="flex items-center gap-1.5 px-4 py-2 bg-slate-950 hover:bg-slate-800 text-amber-400 rounded-xl text-xs font-bold transition-colors cursor-pointer shrink-0 shadow-xs"
+        >
+          <span>Open Legal Policies</span>
+          <ArrowRight className="w-3.5 h-3.5" />
+        </button>
       </div>
 
       {/* Message Form */}

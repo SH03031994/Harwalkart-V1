@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { AppProvider, useApp } from './context/AppContext';
 import { Header } from './components/common/Header';
+import { CustomerBottomNav } from './components/common/CustomerBottomNav';
 import { Footer } from './components/common/Footer';
 import { HomeView } from './components/home/HomeView';
 import { KitchenShaktiSection } from './components/home/KitchenShaktiSection';
@@ -43,7 +44,7 @@ const AppContent: React.FC = () => {
   }, [currentView]);
 
   return (
-    <div className="min-h-screen bg-slate-100/70 text-slate-900 flex flex-col font-sans selection:bg-amber-400 selection:text-slate-950">
+    <div className="min-h-screen bg-slate-100/70 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans selection:bg-amber-400 selection:text-slate-950 transition-colors duration-200">
       {/* Toast Notification Alert */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 bg-slate-950 text-white px-5 py-3 rounded-2xl shadow-2xl border border-amber-400/50 flex items-center gap-3 text-xs font-bold animate-in slide-in-from-bottom-5">
@@ -76,7 +77,7 @@ const AppContent: React.FC = () => {
         )}
 
         {/* CMS Legal & Policy Pages */}
-        {(['about', 'privacy', 'terms', 'delivery', 'returns', 'cms-page'].includes(currentView)) && (
+        {(['about', 'privacy', 'terms', 'delivery', 'returns', 'cms-page', 'about-us', 'privacy-policy', 'terms-conditions', 'refund-policy', 'shipping-policy', 'gst-compliance', 'help-desk', 'policies', 'legal'].includes(currentView)) && (
           <CmsPageView />
         )}
 
@@ -118,6 +119,9 @@ const AppContent: React.FC = () => {
 
       {/* Main Global Footer */}
       <Footer />
+
+      {/* Mobile Customer Bottom Navigation Bar */}
+      <CustomerBottomNav />
 
       {/* Global Interactive Modals & Floating Switcher */}
       <PanelSwitcher />

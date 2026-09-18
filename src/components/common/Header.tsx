@@ -18,6 +18,9 @@ import {
   Flame,
   CheckCircle2,
   Package,
+  Sun,
+  Moon,
+  Monitor,
 } from 'lucide-react';
 
 export const Header: React.FC = () => {
@@ -32,6 +35,7 @@ export const Header: React.FC = () => {
     setSelectedCategory,
     categories,
     brands,
+    products,
     selectedBrandSlug,
     setSelectedBrandSlug,
     cartCount,
@@ -46,6 +50,11 @@ export const Header: React.FC = () => {
     setSelectedProductId,
     setSelectedShopId,
     navigate,
+    navigateToBrand,
+    themeMode,
+    setThemeMode,
+    toggleDarkMode,
+    isDarkMode,
   } = useApp();
 
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -53,6 +62,7 @@ export const Header: React.FC = () => {
   const [isBrandMenuOpen, setIsBrandMenuOpen] = useState(false);
   const [isSearchCategoryOpen, setIsSearchCategoryOpen] = useState(false);
   const [activeSearchCategoryName, setActiveSearchCategoryName] = useState('All Categories');
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
 
   const handleNavClick = (view: string) => {
     setCurrentView(view);
@@ -73,13 +83,48 @@ export const Header: React.FC = () => {
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSearchFocused(false);
     if (currentView !== 'products') {
       setCurrentView('products');
     }
   };
 
+  // Search Suggestions matching logic
+  const searchTrimmed = searchQuery.trim().toLowerCase();
+  const matchingProducts = searchTrimmed
+    ? products
+        .filter(
+          p =>
+            p.approved &&
+            (p.name.toLowerCase().includes(searchTrimmed) ||
+              p.brand.toLowerCase().includes(searchTrimmed) ||
+              p.category.toLowerCase().includes(searchTrimmed) ||
+              p.subCategory?.toLowerCase().includes(searchTrimmed) ||
+              p.hindiName?.toLowerCase().includes(searchTrimmed))
+        )
+        .slice(0, 4)
+    : [];
+
+  const matchingBrands = searchTrimmed
+    ? brands.filter(
+        b =>
+          b.isActive &&
+          (b.name.toLowerCase().includes(searchTrimmed) ||
+            b.hindiName?.toLowerCase().includes(searchTrimmed) ||
+            b.category.toLowerCase().includes(searchTrimmed))
+      )
+    : [];
+
+  const matchingCategories = searchTrimmed
+    ? categories.filter(c => c.name.toLowerCase().includes(searchTrimmed))
+    : [];
+
+  const hasSuggestions =
+    searchTrimmed.length > 0 &&
+    (matchingProducts.length > 0 || matchingBrands.length > 0 || matchingCategories.length > 0);
+
   return (
-    <header className="sticky top-0 z-40 bg-white shadow-xs border-b border-slate-200">
+    <header className="sticky top-0 z-40 bg-white dark:bg-slate-900 shadow-xs border-b border-slate-200 dark:border-slate-800 transition-colors duration-200">
       {/* ================= 1. TOP BLACK NOTIFICATION BAR ================= */}
       <div className="bg-slate-950 text-slate-200 text-xs py-2 px-4 border-b border-slate-800">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
@@ -156,6 +201,27 @@ export const Header: React.FC = () => {
               <HelpCircle className="w-3.5 h-3.5 text-amber-400" />
               <span>Help & Support</span>
             </button>
+
+            <span className="text-slate-700">|</span>
+
+            {/* Theme Mode Quick Switch */}
+            <button
+              onClick={toggleDarkMode}
+              className="flex items-center gap-1.5 hover:text-amber-400 transition-colors cursor-pointer text-xs"
+              title={`Theme: ${themeMode} (click to toggle)`}
+            >
+              {isDarkMode ? (
+                <>
+                  <Sun className="w-3.5 h-3.5 text-amber-400" />
+                  <span className="text-amber-300">Light Mode</span>
+                </>
+              ) : (
+                <>
+                  <Moon className="w-3.5 h-3.5 text-slate-400 group-hover:text-amber-400" />
+                  <span>Dark Mode</span>
+                </>
+              )}
+            </button>
           </div>
         </div>
       </div>
@@ -175,37 +241,44 @@ export const Header: React.FC = () => {
         <div className="flex-1 max-w-2xl relative">
           <form
             onSubmit={handleSearchSubmit}
-            className="flex items-center w-full bg-slate-50 border border-slate-300 hover:border-slate-400 focus-within:border-amber-500 focus-within:ring-2 focus-within:ring-amber-200/50 rounded-2xl overflow-hidden transition-all shadow-xs"
+            className="flex items-center w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600 focus-within:border-amber-500 focus-within:ring-2 focus-within:ring-amber-200/50 rounded-2xl overflow-hidden transition-all shadow-xs"
           >
             {/* Search Input */}
             <input
               id="main-search-input"
               type="text"
               value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              placeholder="Search turmeric, basmati rice, local dairy..."
-              className="flex-1 px-4 py-2.5 text-xs sm:text-sm bg-transparent outline-hidden text-slate-900 placeholder:text-slate-400 font-medium"
+              onChange={e => {
+                setSearchQuery(e.target.value);
+                setIsSearchFocused(true);
+              }}
+              onFocus={() => setIsSearchFocused(true)}
+              placeholder="Search turmeric, basmati rice, local dairy, brands..."
+              className="flex-1 px-4 py-2.5 text-xs sm:text-sm bg-transparent outline-hidden text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 font-medium"
             />
 
             {searchQuery && (
               <button
                 type="button"
-                onClick={() => setSearchQuery('')}
-                className="text-slate-400 hover:text-slate-600 px-2 cursor-pointer"
+                onClick={() => {
+                  setSearchQuery('');
+                  setIsSearchFocused(false);
+                }}
+                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 px-2 cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             )}
 
             {/* Category Dropdown inside Search Bar */}
-            <div className="relative border-l border-slate-200 hidden sm:block">
+            <div className="relative border-l border-slate-200 dark:border-slate-700 hidden sm:block">
               <button
                 type="button"
                 onClick={() => setIsSearchCategoryOpen(!isSearchCategoryOpen)}
-                className="px-3 py-2.5 text-xs font-semibold text-slate-700 hover:text-slate-950 flex items-center gap-1.5 cursor-pointer whitespace-nowrap bg-slate-100/70 hover:bg-slate-100"
+                className="px-3 py-2.5 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white flex items-center gap-1.5 cursor-pointer whitespace-nowrap bg-slate-100/70 dark:bg-slate-700/60 hover:bg-slate-100 dark:hover:bg-slate-700"
               >
                 <span>{activeSearchCategoryName}</span>
-                <ChevronDown className="w-3.5 h-3.5 text-slate-500" />
+                <ChevronDown className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
               </button>
 
               {isSearchCategoryOpen && (
@@ -214,11 +287,11 @@ export const Header: React.FC = () => {
                     className="fixed inset-0 z-30"
                     onClick={() => setIsSearchCategoryOpen(false)}
                   />
-                  <div className="absolute right-0 mt-1 w-52 bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-40 max-h-60 overflow-y-auto">
+                  <div className="absolute right-0 mt-1 w-52 bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-800 py-1.5 z-40 max-h-60 overflow-y-auto">
                     <button
                       type="button"
                       onClick={() => handleCategorySelect('all', 'All Categories')}
-                      className="w-full text-left px-3.5 py-1.5 text-xs font-bold text-slate-800 hover:bg-amber-50 hover:text-amber-900 cursor-pointer"
+                      className="w-full text-left px-3.5 py-1.5 text-xs font-bold text-slate-800 dark:text-slate-200 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:text-amber-900 dark:hover:text-amber-400 cursor-pointer"
                     >
                       All Categories
                     </button>
@@ -227,7 +300,7 @@ export const Header: React.FC = () => {
                         key={cat.id}
                         type="button"
                         onClick={() => handleCategorySelect(cat.id, cat.name)}
-                        className="w-full text-left px-3.5 py-1.5 text-xs font-medium text-slate-700 hover:bg-amber-50 hover:text-amber-900 cursor-pointer"
+                        className="w-full text-left px-3.5 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:text-amber-900 dark:hover:text-amber-400 cursor-pointer"
                       >
                         {cat.name}
                       </button>
@@ -246,6 +319,134 @@ export const Header: React.FC = () => {
               <Search className="w-4 h-4 text-slate-950" />
             </button>
           </form>
+
+          {/* Live Search Suggestions Dropdown */}
+          {isSearchFocused && searchTrimmed.length > 0 && (
+            <>
+              <div
+                className="fixed inset-0 z-30"
+                onClick={() => setIsSearchFocused(false)}
+              />
+              <div className="absolute left-0 right-0 top-full mt-2 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden z-40 divide-y divide-slate-100 dark:divide-slate-800 max-h-[75vh] overflow-y-auto animate-in fade-in zoom-in-95 duration-150">
+                {/* Brand matches */}
+                {matchingBrands.length > 0 && (
+                  <div className="p-3 bg-amber-50/50 dark:bg-amber-950/30">
+                    <span className="text-[10px] font-black uppercase text-amber-800 dark:text-amber-400 tracking-wider">
+                      Flagship Brands
+                    </span>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {matchingBrands.map(b => (
+                        <button
+                          key={b.id}
+                          type="button"
+                          onClick={() => {
+                            setIsSearchFocused(false);
+                            navigateToBrand(b.slug);
+                          }}
+                          className="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-slate-800 border border-amber-300 dark:border-amber-700 hover:border-amber-500 rounded-xl text-xs font-bold text-slate-900 dark:text-white shadow-2xs hover:bg-amber-50 dark:hover:bg-slate-700 cursor-pointer transition-all"
+                        >
+                          <img src={b.logoUrl} alt={b.name} className="w-4 h-4 object-contain" />
+                          <span>{b.name}</span>
+                          <span className="text-[10px] text-slate-400">({b.category})</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Category matches */}
+                {matchingCategories.length > 0 && (
+                  <div className="p-3 bg-slate-50 dark:bg-slate-800/50">
+                    <span className="text-[10px] font-black uppercase text-slate-600 dark:text-slate-400 tracking-wider">
+                      Categories
+                    </span>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {matchingCategories.map(cat => (
+                        <button
+                          key={cat.id}
+                          type="button"
+                          onClick={() => {
+                            handleCategorySelect(cat.id, cat.name);
+                            setIsSearchFocused(false);
+                          }}
+                          className="px-3 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-amber-400 rounded-lg text-xs font-semibold text-slate-800 dark:text-slate-200 cursor-pointer hover:bg-amber-50 dark:hover:bg-slate-700"
+                        >
+                          {cat.name}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Product matches */}
+                {matchingProducts.length > 0 ? (
+                  <div className="p-3 space-y-2">
+                    <span className="text-[10px] font-black uppercase text-slate-500 dark:text-slate-400 tracking-wider">
+                      Products
+                    </span>
+                    {matchingProducts.map(prod => (
+                      <button
+                        key={prod.id}
+                        type="button"
+                        onClick={() => {
+                          setIsSearchFocused(false);
+                          setSelectedProductId(prod.id);
+                          setCurrentView('product-detail');
+                        }}
+                        className="w-full flex items-center justify-between p-2 rounded-xl hover:bg-amber-50/70 dark:hover:bg-slate-800 transition-colors text-left cursor-pointer group"
+                      >
+                        <div className="flex items-center gap-3 min-w-0 pr-2">
+                          <img
+                            src={prod.images[0]}
+                            alt={prod.name}
+                            className="w-10 h-10 object-cover rounded-lg border border-slate-200 dark:border-slate-700 shrink-0"
+                          />
+                          <div className="truncate">
+                            <p className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 truncate">
+                              {prod.name}
+                            </p>
+                            <p className="text-[10px] text-slate-500 dark:text-slate-400">
+                              {prod.brand} • {prod.unit}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="text-right shrink-0">
+                          <span className="text-xs font-black text-slate-950 dark:text-white">₹{prod.price}</span>
+                          {prod.mrp > prod.price && (
+                            <span className="block text-[10px] text-slate-400 line-through">₹{prod.mrp}</span>
+                          )}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  !hasSuggestions && (
+                    <div className="p-6 text-center text-xs text-slate-500 dark:text-slate-400">
+                      <p className="font-bold text-slate-700 dark:text-slate-300">No matching items found for &quot;{searchQuery}&quot;</p>
+                      <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-1">
+                        Try searching for turmeric, rice, ghee, spices, or flagship brands like KitchenShakti.
+                      </p>
+                    </div>
+                  )
+                )}
+
+                {/* Direct Search All CTA */}
+                <div className="p-2.5 bg-slate-900 dark:bg-slate-950 text-white flex items-center justify-between">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsSearchFocused(false);
+                      setCurrentView('products');
+                    }}
+                    className="w-full text-center text-xs font-black text-amber-400 hover:text-amber-300 py-1 cursor-pointer flex items-center justify-center gap-1.5"
+                  >
+                    <Search className="w-3.5 h-3.5" />
+                    <span>View all matching results for &quot;{searchQuery}&quot;</span>
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
         </div>
 
         {/* Action Icons (Right): Location, Wishlist, Cart, My Account */}
@@ -253,13 +454,13 @@ export const Header: React.FC = () => {
           {/* 1. Location Action Icon */}
           <button
             onClick={() => setIsLocationModalOpen(true)}
-            className="flex flex-col items-center justify-center text-slate-700 hover:text-amber-600 transition-colors cursor-pointer group"
+            className="flex flex-col items-center justify-center text-slate-700 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer group"
             title="Choose Location / PIN"
           >
             <div className="relative p-1">
               <MapPin className="w-5 h-5 text-amber-500 group-hover:scale-110 transition-transform" />
             </div>
-            <span className="text-[11px] font-bold text-slate-800 group-hover:text-amber-700 hidden sm:inline">
+            <span className="text-[11px] font-bold text-slate-800 dark:text-slate-300 group-hover:text-amber-600 dark:group-hover:text-amber-400 hidden sm:inline">
               Location
             </span>
           </button>
@@ -270,18 +471,18 @@ export const Header: React.FC = () => {
             onClick={() => {
               navigate('/customer/dashboard');
             }}
-            className="flex flex-col items-center justify-center text-slate-700 hover:text-rose-600 transition-colors cursor-pointer group"
+            className="flex flex-col items-center justify-center text-slate-700 dark:text-slate-300 hover:text-rose-600 transition-colors cursor-pointer group"
             title="My Wishlist"
           >
             <div className="relative p-1">
-              <Heart className="w-5 h-5 text-slate-800 group-hover:text-rose-600 group-hover:scale-110 transition-transform" />
+              <Heart className="w-5 h-5 text-slate-800 dark:text-slate-300 group-hover:text-rose-600 group-hover:scale-110 transition-transform" />
               {wishlist.length > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs">
                   {wishlist.length}
                 </span>
               )}
             </div>
-            <span className="text-[11px] font-bold text-slate-800 group-hover:text-rose-600 hidden sm:inline">
+            <span className="text-[11px] font-bold text-slate-800 dark:text-slate-300 group-hover:text-rose-600 hidden sm:inline">
               Wishlist
             </span>
           </button>
@@ -290,18 +491,18 @@ export const Header: React.FC = () => {
           <button
             id="cart-header-btn"
             onClick={() => handleNavClick('cart')}
-            className="flex flex-col items-center justify-center text-slate-700 hover:text-amber-600 transition-colors cursor-pointer group"
+            className="flex flex-col items-center justify-center text-slate-700 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer group"
             title="Shopping Cart"
           >
             <div className="relative p-1">
-              <ShoppingCart className="w-5 h-5 text-slate-800 group-hover:text-amber-600 group-hover:scale-110 transition-transform" />
+              <ShoppingCart className="w-5 h-5 text-slate-800 dark:text-slate-300 group-hover:text-amber-600 group-hover:scale-110 transition-transform" />
               {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-amber-500 text-slate-950 text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-xs">
                   {cartCount}
                 </span>
               )}
             </div>
-            <span className="text-[11px] font-bold text-slate-800 group-hover:text-amber-700 hidden sm:inline">
+            <span className="text-[11px] font-bold text-slate-800 dark:text-slate-300 group-hover:text-amber-600 dark:group-hover:text-amber-400 hidden sm:inline">
               Cart
             </span>
           </button>
@@ -311,13 +512,13 @@ export const Header: React.FC = () => {
             <button
               id="user-account-dropdown-btn"
               onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-              className="flex flex-col items-center justify-center text-slate-700 hover:text-amber-600 transition-colors cursor-pointer group"
+              className="flex flex-col items-center justify-center text-slate-700 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer group"
               title="My Account"
             >
               <div className="relative p-1">
-                <User className="w-5 h-5 text-slate-800 group-hover:text-amber-600 group-hover:scale-110 transition-transform" />
+                <User className="w-5 h-5 text-slate-800 dark:text-slate-300 group-hover:text-amber-600 group-hover:scale-110 transition-transform" />
               </div>
-              <span className="text-[11px] font-bold text-slate-800 group-hover:text-amber-700 hidden sm:inline">
+              <span className="text-[11px] font-bold text-slate-800 dark:text-slate-300 group-hover:text-amber-600 dark:group-hover:text-amber-400 hidden sm:inline">
                 My Account
               </span>
             </button>
@@ -329,16 +530,16 @@ export const Header: React.FC = () => {
                   className="fixed inset-0 z-40"
                   onClick={() => setIsUserMenuOpen(false)}
                 />
-                <div className="absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-slate-200 py-3 z-50 animate-in fade-in zoom-in-95">
+                <div className="absolute right-0 mt-2 w-72 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 py-3 z-50 animate-in fade-in zoom-in-95">
                   {/* Active Profile Info */}
-                  <div className="px-4 py-2 border-b border-slate-100">
+                  <div className="px-4 py-2 border-b border-slate-100 dark:border-slate-800">
                     <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">
                       Account Status
                     </p>
                     {authSession.isAuthenticated ? (
                       <div className="mt-1">
                         <div className="flex items-center gap-1.5">
-                          <p className="text-sm font-black text-slate-900 truncate">
+                          <p className="text-sm font-black text-slate-900 dark:text-white truncate">
                             {authSession.admin?.name || authSession.seller?.shopName || authSession.customer?.name}
                           </p>
                           {authSession.role === 'admin' && (
@@ -347,22 +548,22 @@ export const Header: React.FC = () => {
                             </span>
                           )}
                         </div>
-                        <p className="text-xs text-slate-500 truncate">
+                        <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
                           {authSession.admin?.email || authSession.seller?.email || (authSession.customer?.phone ? `+91 ${authSession.customer.phone}` : authSession.customer?.email)}
                         </p>
                       </div>
                     ) : (
                       <div className="mt-1">
-                        <p className="text-sm font-bold text-slate-900">Welcome to Harwalkart</p>
-                        <p className="text-xs text-slate-500">Sign in to track orders & manage wishlist</p>
+                        <p className="text-sm font-bold text-slate-900 dark:text-white">Welcome to Harwalkart</p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">Sign in to track orders & manage wishlist</p>
                       </div>
                     )}
                   </div>
 
                   {/* 1. ADMIN USER CONSOLE (If logged in as Admin) */}
                   {authSession.role === 'admin' && authSession.isAuthenticated ? (
-                    <div className="py-2 px-3 border-b border-slate-100">
-                      <div className="text-[10px] font-black uppercase text-red-700 tracking-wider px-2 mb-1.5 flex items-center justify-between">
+                    <div className="py-2 px-3 border-b border-slate-100 dark:border-slate-800">
+                      <div className="text-[10px] font-black uppercase text-red-700 dark:text-red-400 tracking-wider px-2 mb-1.5 flex items-center justify-between">
                         <span>Administrator Master Hub</span>
                         <span className="w-2 h-2 rounded-full bg-red-600 animate-ping"></span>
                       </div>
@@ -384,7 +585,7 @@ export const Header: React.FC = () => {
                               setIsUserMenuOpen(false);
                               navigate('/admin/dashboard');
                             }}
-                            className="text-left px-2 py-1.5 text-[11px] font-bold text-slate-700 hover:bg-slate-100 rounded-lg cursor-pointer truncate"
+                            className="text-left px-2 py-1.5 text-[11px] font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg cursor-pointer truncate"
                           >
                             ✓ KYC Approvals
                           </button>
@@ -393,7 +594,7 @@ export const Header: React.FC = () => {
                               setIsUserMenuOpen(false);
                               navigate('/admin/dashboard');
                             }}
-                            className="text-left px-2 py-1.5 text-[11px] font-bold text-slate-700 hover:bg-slate-100 rounded-lg cursor-pointer truncate"
+                            className="text-left px-2 py-1.5 text-[11px] font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg cursor-pointer truncate"
                           >
                             💳 Settlements
                           </button>
@@ -404,7 +605,7 @@ export const Header: React.FC = () => {
                             setIsUserMenuOpen(false);
                             adminLogout();
                           }}
-                          className="w-full text-left px-3 py-1.5 text-xs font-bold text-rose-600 hover:bg-rose-50 rounded-xl flex items-center gap-2 cursor-pointer mt-1"
+                          className="w-full text-left px-3 py-1.5 text-xs font-bold text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-xl flex items-center gap-2 cursor-pointer mt-1"
                         >
                           <LogOut className="w-4 h-4" />
                           <span>Sign Out of Admin Console</span>
@@ -413,8 +614,8 @@ export const Header: React.FC = () => {
                     </div>
                   ) : (
                     /* Customer Panel Access */
-                    <div className="py-2 px-3">
-                      <div className="text-[10px] font-black uppercase text-amber-800 tracking-wider px-2 mb-1">
+                    <div className="py-2 px-3 border-b border-slate-100 dark:border-slate-800">
+                      <div className="text-[10px] font-black uppercase text-amber-800 dark:text-amber-400 tracking-wider px-2 mb-1">
                         Customer Panel
                       </div>
                       {authSession.role === 'customer' && authSession.isAuthenticated ? (
@@ -424,7 +625,7 @@ export const Header: React.FC = () => {
                               setIsUserMenuOpen(false);
                               navigate('/customer/dashboard');
                             }}
-                            className="w-full text-left px-3 py-2 text-xs font-bold text-slate-800 hover:bg-amber-50 hover:text-amber-900 rounded-xl flex items-center gap-2 cursor-pointer"
+                            className="w-full text-left px-3 py-2 text-xs font-bold text-slate-800 dark:text-slate-200 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:text-amber-900 dark:hover:text-amber-400 rounded-xl flex items-center gap-2 cursor-pointer"
                           >
                             <User className="w-4 h-4 text-amber-600" />
                             <span>Customer Dashboard (Orders & Profile)</span>
@@ -437,7 +638,7 @@ export const Header: React.FC = () => {
                                 setIsUserMenuOpen(false);
                                 navigate('/admin/dashboard');
                               }}
-                              className="w-full text-left px-3 py-1.5 text-xs font-bold text-red-600 hover:bg-red-50 rounded-xl flex items-center gap-2 cursor-pointer"
+                              className="w-full text-left px-3 py-1.5 text-xs font-bold text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-xl flex items-center gap-2 cursor-pointer"
                             >
                               <ShieldCheck className="w-4 h-4 text-red-600" />
                               <span>Switch to Admin Console</span>
@@ -449,7 +650,7 @@ export const Header: React.FC = () => {
                               setIsUserMenuOpen(false);
                               customerLogout();
                             }}
-                            className="w-full text-left px-3 py-1.5 text-xs font-bold text-rose-600 hover:bg-rose-50 rounded-xl flex items-center gap-2 cursor-pointer"
+                            className="w-full text-left px-3 py-1.5 text-xs font-bold text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-xl flex items-center gap-2 cursor-pointer"
                           >
                             <LogOut className="w-4 h-4" />
                             <span>Sign Out</span>
@@ -471,7 +672,7 @@ export const Header: React.FC = () => {
                               setIsUserMenuOpen(false);
                               navigate('/customer/register');
                             }}
-                            className="flex-1 py-2 px-3 bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold text-xs rounded-xl text-center cursor-pointer"
+                            className="flex-1 py-2 px-3 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-bold text-xs rounded-xl text-center cursor-pointer"
                           >
                             Register
                           </button>
@@ -480,9 +681,55 @@ export const Header: React.FC = () => {
                     </div>
                   )}
 
+                  {/* Quick Theme Switcher in Dropdown */}
+                  <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-800">
+                    <div className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-wider px-2 mb-1.5 flex items-center justify-between">
+                      <span>Display Theme</span>
+                      <span className="text-[10px] font-bold text-amber-600 dark:text-amber-400 capitalize">{themeMode}</span>
+                    </div>
+                    <div className="grid grid-cols-3 gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
+                      <button
+                        type="button"
+                        onClick={() => setThemeMode('light')}
+                        className={`flex items-center justify-center gap-1 py-1.5 px-2 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
+                          themeMode === 'light'
+                            ? 'bg-white text-slate-950 shadow-xs'
+                            : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                        }`}
+                      >
+                        <Sun className="w-3 h-3 text-amber-500" />
+                        <span>Light</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setThemeMode('dark')}
+                        className={`flex items-center justify-center gap-1 py-1.5 px-2 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
+                          themeMode === 'dark'
+                            ? 'bg-slate-950 text-white shadow-xs'
+                            : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                        }`}
+                      >
+                        <Moon className="w-3 h-3 text-indigo-400" />
+                        <span>Dark</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setThemeMode('system')}
+                        className={`flex items-center justify-center gap-1 py-1.5 px-2 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
+                          themeMode === 'system'
+                            ? 'bg-amber-500 text-slate-950 shadow-xs'
+                            : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                        }`}
+                      >
+                        <Monitor className="w-3 h-3" />
+                        <span>Auto</span>
+                      </button>
+                    </div>
+                  </div>
+
                   {/* Seller & Business Links */}
-                  <div className="border-t border-slate-100 pt-2 px-3">
-                    <div className="text-[10px] font-black uppercase text-slate-400 tracking-wider px-2 mb-1">
+                  <div className="pt-2 px-3">
+                    <div className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-wider px-2 mb-1">
                       Business & Seller Hub
                     </div>
                     <button
@@ -494,7 +741,7 @@ export const Header: React.FC = () => {
                           navigate('/seller/login');
                         }
                       }}
-                      className="w-full text-left px-3 py-1.5 text-xs font-bold text-slate-700 hover:bg-amber-50 hover:text-amber-900 rounded-xl flex items-center gap-2 cursor-pointer"
+                      className="w-full text-left px-3 py-1.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:text-amber-900 dark:hover:text-amber-400 rounded-xl flex items-center gap-2 cursor-pointer"
                     >
                       <Store className="w-4 h-4 text-amber-600" />
                       <span>{authSession.role === 'seller' && authSession.isAuthenticated ? 'Seller Dashboard' : 'Seller Portal / Login'}</span>
@@ -508,7 +755,7 @@ export const Header: React.FC = () => {
       </div>
 
       {/* ================= 3. NAVIGATION RIBBON (EXACT REFERENCE BAR) ================= */}
-      <div className="bg-white border-t border-slate-200 px-4">
+      <div className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-4 transition-colors">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3 sm:gap-6 py-1.5 overflow-x-auto scrollbar-none">
             {/* Left: Yellow "All Categories" Button */}
@@ -529,22 +776,22 @@ export const Header: React.FC = () => {
                     className="fixed inset-0 z-30"
                     onClick={() => setIsCategoryMenuOpen(false)}
                   />
-                  <div className="absolute left-0 mt-2 w-64 bg-white rounded-2xl shadow-2xl border border-slate-200 py-2 z-40 animate-in fade-in zoom-in-95">
-                    <div className="px-4 py-2 text-xs font-black uppercase text-amber-800 tracking-wider border-b border-slate-100">
+                  <div className="absolute left-0 mt-2 w-64 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 py-2 z-40 animate-in fade-in zoom-in-95">
+                    <div className="px-4 py-2 text-xs font-black uppercase text-amber-800 dark:text-amber-400 tracking-wider border-b border-slate-100 dark:border-slate-800">
                       Product Categories
                     </div>
                     <button
                       onClick={() => handleCategorySelect('all', 'All Categories')}
-                      className="w-full text-left px-4 py-2.5 text-xs font-bold text-slate-800 hover:bg-amber-50 hover:text-amber-900 flex items-center justify-between cursor-pointer"
+                      className="w-full text-left px-4 py-2.5 text-xs font-bold text-slate-800 dark:text-slate-200 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:text-amber-900 dark:hover:text-amber-400 flex items-center justify-between cursor-pointer"
                     >
                       <span>All Products</span>
-                      <span className="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md">View All</span>
+                      <span className="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded-md">View All</span>
                     </button>
                     {categories.map(cat => (
                       <button
                         key={cat.id}
                         onClick={() => handleCategorySelect(cat.id, cat.name)}
-                        className="w-full text-left px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-amber-50 hover:text-amber-900 flex items-center justify-between cursor-pointer"
+                        className="w-full text-left px-4 py-2.5 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:text-amber-900 dark:hover:text-amber-400 flex items-center justify-between cursor-pointer"
                       >
                         <span>{cat.name}</span>
                       </button>
@@ -562,7 +809,7 @@ export const Header: React.FC = () => {
                 className={`px-3 py-2 text-xs sm:text-sm font-bold transition-all relative cursor-pointer ${
                   currentView === 'home'
                     ? 'text-amber-500 font-extrabold after:content-[""] after:absolute after:bottom-0 after:left-3 after:right-3 after:h-0.5 after:bg-amber-500'
-                    : 'text-slate-700 hover:text-slate-950'
+                    : 'text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white'
                 }`}
               >
                 Home
@@ -574,7 +821,7 @@ export const Header: React.FC = () => {
                 className={`px-3 py-2 text-xs sm:text-sm font-bold transition-all cursor-pointer ${
                   currentView === 'shops'
                     ? 'text-amber-500 font-extrabold after:content-[""] after:absolute after:bottom-0 after:left-3 after:right-3 after:h-0.5 after:bg-amber-500'
-                    : 'text-slate-700 hover:text-slate-950'
+                    : 'text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white'
                 }`}
               >
                 Explore Shops
@@ -586,8 +833,8 @@ export const Header: React.FC = () => {
                   onClick={() => setIsBrandMenuOpen(!isBrandMenuOpen)}
                   className={`px-3 py-2 text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
                     currentView === 'brand-detail' || isBrandMenuOpen
-                      ? 'text-amber-600 font-extrabold'
-                      : 'text-slate-700 hover:text-slate-950'
+                      ? 'text-amber-500 font-extrabold'
+                      : 'text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white'
                   }`}
                 >
                   <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
@@ -604,10 +851,10 @@ export const Header: React.FC = () => {
                       className="fixed inset-0 z-30"
                       onClick={() => setIsBrandMenuOpen(false)}
                     />
-                    <div className="absolute left-0 mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-slate-200 py-2 z-40 animate-in fade-in zoom-in-95">
-                      <div className="px-4 py-2 text-xs font-black uppercase text-amber-800 tracking-wider border-b border-slate-100 flex items-center justify-between">
+                    <div className="absolute left-0 mt-2 w-72 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 py-2 z-40 animate-in fade-in zoom-in-95">
+                      <div className="px-4 py-2 text-xs font-black uppercase text-amber-800 dark:text-amber-400 tracking-wider border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
                         <span>Harwalkart Product Brands</span>
-                        <span className="text-[10px] bg-amber-100 text-amber-900 px-1.5 py-0.5 rounded font-black">Official</span>
+                        <span className="text-[10px] bg-amber-100 dark:bg-amber-950/80 text-amber-900 dark:text-amber-300 px-1.5 py-0.5 rounded font-black border border-amber-200 dark:border-amber-800">Official</span>
                       </div>
                       {brands.map(brand => (
                         <button
@@ -617,9 +864,9 @@ export const Header: React.FC = () => {
                             setCurrentView('brand-detail');
                             setIsBrandMenuOpen(false);
                           }}
-                          className="w-full text-left px-4 py-2.5 hover:bg-amber-50 flex items-center gap-3 transition-colors cursor-pointer group"
+                          className="w-full text-left px-4 py-2.5 hover:bg-amber-50 dark:hover:bg-slate-800 flex items-center gap-3 transition-colors cursor-pointer group"
                         >
-                          <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 p-1 flex items-center justify-center shadow-2xs group-hover:border-amber-400 shrink-0">
+                          <div className="w-10 h-10 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-1 flex items-center justify-center shadow-2xs group-hover:border-amber-400 shrink-0">
                             <img
                               src={brand.logoUrl}
                               alt={brand.name}
@@ -627,10 +874,10 @@ export const Header: React.FC = () => {
                             />
                           </div>
                           <div className="min-w-0">
-                            <div className="text-xs font-black text-slate-900 group-hover:text-amber-800 truncate">
+                            <div className="text-xs font-black text-slate-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 truncate">
                               {brand.name}
                             </div>
-                            <div className="text-[10px] text-slate-500 truncate">
+                            <div className="text-[10px] text-slate-500 dark:text-slate-400 truncate">
                               {brand.category}
                             </div>
                           </div>
@@ -646,8 +893,8 @@ export const Header: React.FC = () => {
                 onClick={() => handleNavClick('kitchen-shakti')}
                 className={`px-3 py-2 text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap ${
                   currentView === 'kitchen-shakti'
-                    ? 'text-amber-600 font-extrabold after:content-[""] after:absolute after:bottom-0 after:left-3 after:right-3 after:h-0.5 after:bg-amber-500'
-                    : 'text-slate-700 hover:text-slate-950'
+                    ? 'text-amber-500 font-extrabold after:content-[""] after:absolute after:bottom-0 after:left-3 after:right-3 after:h-0.5 after:bg-amber-500'
+                    : 'text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white'
                 }`}
               >
                 <span>Kitchen Shakti Range</span>
@@ -662,7 +909,7 @@ export const Header: React.FC = () => {
                   setSelectedCategory('all');
                   handleNavClick('products');
                 }}
-                className="px-3 py-2 text-xs sm:text-sm font-bold text-slate-700 hover:text-slate-950 transition-all flex items-center gap-1.5 cursor-pointer"
+                className="px-3 py-2 text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white transition-all flex items-center gap-1.5 cursor-pointer"
               >
                 <span>Offers</span>
                 <span className="bg-red-500 text-white text-[10px] font-black uppercase px-1.5 py-0.5 rounded-md shadow-2xs">
@@ -676,7 +923,7 @@ export const Header: React.FC = () => {
                   setSelectedCategory('all');
                   handleNavClick('products');
                 }}
-                className="px-3 py-2 text-xs sm:text-sm font-bold text-slate-700 hover:text-slate-950 transition-all cursor-pointer whitespace-nowrap"
+                className="px-3 py-2 text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white transition-all cursor-pointer whitespace-nowrap"
               >
                 New Arrivals
               </button>

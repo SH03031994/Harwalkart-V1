@@ -174,22 +174,39 @@ export const AdminOrdersTab: React.FC = () => {
               <div className="p-3 bg-white rounded-xl border border-slate-200/80 space-y-1">
                 <div className="flex items-center gap-1.5 text-slate-400 font-bold text-[10px] uppercase">
                   <DollarSign className="w-3 h-3 text-emerald-600" />
-                  <span>Settlement Breakdown</span>
+                  <span>Payment & Settlement</span>
                 </div>
-                <div className="flex justify-between text-slate-600">
+                <div className="flex justify-between text-slate-600 text-[11px]">
                   <span>Subtotal:</span>
                   <span className="font-bold text-slate-800">₹{o.subtotal}</span>
                 </div>
-                <div className="flex justify-between text-emerald-700 font-bold">
-                  <span>Platform Commission:</span>
+                <div className="flex justify-between text-emerald-700 font-bold text-[11px]">
+                  <span>Commission (2%):</span>
                   <span>₹{o.sellerCommissionTotal || Math.round(o.total * 0.02)}</span>
                 </div>
-                <div className="flex justify-between text-slate-700">
-                  <span>Payment:</span>
+                <div className="flex items-center justify-between text-[11px]">
+                  <span>Method:</span>
                   <span className="font-bold uppercase text-[10px] bg-slate-100 px-1.5 py-0.5 rounded">
-                    {o.paymentMethod}
+                    {o.paymentMethod === 'cod' ? 'Cash on Delivery' : 'Online Gateway'}
                   </span>
                 </div>
+                <div className="flex items-center justify-between text-[11px]">
+                  <span>Status:</span>
+                  {o.paymentStatus === 'PAID' || o.paymentStatus === 'paid' ? (
+                    <span className="font-bold text-emerald-700 bg-emerald-100 text-[10px] px-2 py-0.5 rounded-full">
+                      PAID ✓
+                    </span>
+                  ) : (
+                    <span className="font-bold text-amber-800 bg-amber-100 text-[10px] px-2 py-0.5 rounded-full">
+                      COD PENDING
+                    </span>
+                  )}
+                </div>
+                {o.paymentTransaction?.gatewayPaymentId && (
+                  <div className="text-[10px] text-slate-500 font-mono truncate pt-0.5 border-t border-slate-100">
+                    Txn: {o.paymentTransaction.gatewayPaymentId}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -295,6 +312,33 @@ export const AdminOrdersTab: React.FC = () => {
                 <div className="flex justify-between text-base font-black text-slate-950 pt-2 border-t border-slate-200">
                   <span>Grand Total:</span>
                   <span>₹{selectedOrder.total}</span>
+                </div>
+
+                <div className="p-2.5 bg-white rounded-lg border border-slate-200 text-[11px] space-y-1 mt-2">
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">Payment Mode:</span>
+                    <span className="font-bold text-slate-900 uppercase">
+                      {selectedOrder.paymentMethod === 'cod' ? 'Cash on Delivery' : 'Online Gateway'}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-500">Payment Status:</span>
+                    <span className="font-bold text-slate-900">
+                      {selectedOrder.paymentStatus || (selectedOrder.paymentMethod === 'cod' ? 'COD_PENDING' : 'PAID')}
+                    </span>
+                  </div>
+                  {selectedOrder.paymentTransaction?.gatewayPaymentId && (
+                    <div className="flex justify-between font-mono">
+                      <span className="text-slate-500">Transaction ID:</span>
+                      <span className="text-slate-800 font-bold">{selectedOrder.paymentTransaction.gatewayPaymentId}</span>
+                    </div>
+                  )}
+                  {selectedOrder.paymentTransaction?.paymentMethodUsed && (
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Method:</span>
+                      <span className="text-slate-700">{selectedOrder.paymentTransaction.paymentMethodUsed}</span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

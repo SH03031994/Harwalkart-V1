@@ -107,6 +107,21 @@ export interface CustomerUser {
     isDefault: boolean;
   }[];
   wishlist: string[]; // product IDs
+  loyaltyPoints?: number;
+  loyaltyTier?: 'Silver' | 'Gold' | 'Platinum';
+  loyaltyPointsHistory?: LoyaltyPointsTransaction[];
+  themePreference?: 'light' | 'dark' | 'system';
+}
+
+export interface LoyaltyPointsTransaction {
+  id: string;
+  orderId?: string;
+  orderAmount?: number;
+  points: number;
+  type: 'earned' | 'redeemed' | 'bonus' | 'tier_bonus';
+  description: string;
+  date: string;
+  balanceAfter: number;
 }
 
 export interface AdminUser {
@@ -330,6 +345,38 @@ export interface OrderItem {
 
 export type OrderStatus = 'placed' | 'confirmed' | 'preparing' | 'out_for_delivery' | 'delivered' | 'cancelled';
 
+export type PaymentStatus =
+  | 'PENDING'
+  | 'PAYMENT_PROCESSING'
+  | 'PAID'
+  | 'FAILED'
+  | 'CANCELLED'
+  | 'COD_PENDING'
+  | 'pending'
+  | 'paid'
+  | 'failed'
+  | 'refunded'
+  | 'cancelled';
+
+export type PaymentMethod = 'online' | 'cod' | 'upi' | 'card' | 'netbanking' | 'wallet';
+
+export interface PaymentTransactionDetails {
+  gateway: 'razorpay' | 'cod';
+  mode: 'test' | 'live';
+  gatewayOrderId?: string;
+  gatewayPaymentId?: string;
+  gatewaySignature?: string;
+  verifiedAt?: string;
+  signatureVerified: boolean;
+  currency: string;
+  amount: number; // in Rupees
+  paymentMethodUsed?: string; // e.g. 'UPI - Google Pay', 'Credit Card (Visa)', 'HDFC NetBanking'
+  bankName?: string;
+  vpa?: string;
+  failureReason?: string;
+  webhookReceivedAt?: string;
+}
+
 export interface Order {
   id: string;
   date: string;
@@ -339,6 +386,8 @@ export interface Order {
   discount: number;
   taxAmount: number;
   total: number;
+  loyaltyPointsEarned?: number;
+  loyaltyPointsUsed?: number;
   sellerCommissionTotal?: number; // total 2% Harwalkart commission
   sellerNetSettlementTotal?: number; // total net payable to sellers
   status: OrderStatus;
@@ -352,8 +401,9 @@ export interface Order {
     state: string;
     landmark?: string;
   };
-  paymentMethod: 'upi' | 'card' | 'netbanking' | 'cod';
-  paymentStatus: 'paid' | 'pending';
+  paymentMethod: PaymentMethod;
+  paymentStatus: PaymentStatus;
+  paymentTransaction?: PaymentTransactionDetails;
   estimatedDelivery: string;
   trackingSteps: {
     title: string;
@@ -610,5 +660,32 @@ export interface PaymentSettings {
   enableNetbanking: boolean;
   merchantName?: string;
   gatewayMode?: 'sandbox' | 'disabled' | 'live';
+}
+
+export interface StoryItem {
+  id: string;
+  title: string;
+  subTitle?: string;
+  brandName?: string;
+  brandSlug?: string;
+  category?: string;
+  avatarUrl: string;
+  mediaType: 'image' | 'video';
+  mediaUrl: string;
+  durationSeconds?: number;
+  highlightText?: string;
+  badge?: string;
+  isUnread?: boolean;
+  linkedProductId?: string;
+  linkedProduct?: {
+    id: string;
+    name: string;
+    price: number;
+    mrp: number;
+    image: string;
+    packagingType?: string;
+  };
+  ctaText?: string;
+  ctaAction?: string;
 }
 
