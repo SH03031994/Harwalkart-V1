@@ -70,8 +70,8 @@ export const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
         {/* Brand & About */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="bg-white inline-block p-2 rounded-xl">
-            <Logo size="md" />
+          <div className="bg-black/90 inline-block p-2.5 px-3 rounded-xl border border-slate-800 shadow-inner">
+            <Logo size="md" variant="light" />
           </div>
           <p className="text-sm text-slate-400 max-w-sm leading-relaxed">
             <span className="text-amber-400 font-semibold">HARWALKART</span> - <span className="italic text-white">“Har Din Ka Hissa.”</span>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { ProductCard } from './ProductCard';
+import { DynamicDeliveryEstimator } from './DynamicDeliveryEstimator';
 import { INITIAL_REVIEWS } from '../../data/mockData';
 import {
   Star,
@@ -42,8 +43,6 @@ export const ProductDetailView: React.FC = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [activeMediaTab, setActiveMediaTab] = useState<'photos' | 'video'>('photos');
   const [quantity, setQuantity] = useState(1);
-  const [checkPincode, setCheckPincode] = useState(currentLocation.pincode);
-  const [pinStatus, setPinStatus] = useState<string | null>(null);
 
   // Review submission state
   const [reviews, setReviews] = useState(INITIAL_REVIEWS.filter(r => r.productId === product.id));
@@ -52,20 +51,6 @@ export const ProductDetailView: React.FC = () => {
   const [newUserName, setNewUserName] = useState('');
 
   const isLiked = isInWishlist(product.id);
-
-  // Check pin code delivery logic
-  const handleVerifyPincode = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!/^\d{6}$/.test(checkPincode.trim())) {
-      setPinStatus('invalid');
-      return;
-    }
-    const isServiceable =
-      product.serviceablePincodes.includes('*') ||
-      product.serviceablePincodes.includes(checkPincode.trim());
-
-    setPinStatus(isServiceable ? 'available' : 'unavailable');
-  };
 
   const handleAddReview = (e: React.FormEvent) => {
     e.preventDefault();
@@ -313,43 +298,8 @@ export const ProductDetailView: React.FC = () => {
               </div>
             )}
 
-            {/* PIN Code Delivery Checker */}
-            <div className="space-y-1.5">
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-                Check Delivery at your PIN Code
-              </label>
-              <form onSubmit={handleVerifyPincode} className="flex gap-2 max-w-sm">
-                <input
-                  type="text"
-                  maxLength={6}
-                  value={checkPincode}
-                  onChange={e => {
-                    setCheckPincode(e.target.value.replace(/\D/g, ''));
-                    setPinStatus(null);
-                  }}
-                  placeholder="Enter 6-digit PIN code"
-                  className="flex-1 px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900"
-                />
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl cursor-pointer"
-                >
-                  Check
-                </button>
-              </form>
-
-              {pinStatus === 'available' && (
-                <p className="text-xs font-bold text-emerald-700 flex items-center gap-1 mt-1">
-                  <Truck className="w-3.5 h-3.5 text-emerald-600" />
-                  Eligible for delivery at {checkPincode}! Estimated: {product.isHarwalkartDirect ? '2-3 Business Days (Express)' : 'Today by 7:00 PM'}
-                </p>
-              )}
-              {pinStatus === 'unavailable' && (
-                <p className="text-xs font-semibold text-rose-600 mt-1">
-                  Sorry, this local shop currently does not deliver to PIN {checkPincode}. Try our Kitchen Shakti Pan-India range!
-                </p>
-              )}
-            </div>
+            {/* Dynamic Delivery Estimation Component */}
+            <DynamicDeliveryEstimator product={product} seller={seller} />
 
             {/* Quantity Selector & Action CTAs */}
             <div className="pt-3 border-t border-slate-200 space-y-3">

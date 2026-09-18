@@ -29,10 +29,15 @@ export const CartView: React.FC = () => {
     removeCoupon,
     setCurrentView,
     currentLocation,
+    websiteSettings,
   } = useApp();
 
   const [couponInput, setCouponInput] = useState('');
   const [couponFeedback, setCouponFeedback] = useState<{ success: boolean; message: string } | null>(null);
+
+  const freeDeliveryThreshold = websiteSettings?.freeDeliveryThreshold ?? 3000;
+  const remainingForFreeDelivery = Math.max(0, freeDeliveryThreshold - cartSubtotal);
+  const freeDeliveryProgress = Math.min(100, Math.round((cartSubtotal / freeDeliveryThreshold) * 100));
 
   const handleApplyCoupon = (code: string) => {
     const res = applyCoupon(code);
@@ -91,21 +96,39 @@ export const CartView: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Cart Item List (8 Cols) */}
         <div className="lg:col-span-8 space-y-4">
-          {/* Delivering to Pill */}
-          <div className="bg-amber-50 border border-amber-200 rounded-2xl p-3.5 flex items-center justify-between text-xs">
-            <div className="flex items-center gap-2">
-              <Truck className="w-4 h-4 text-amber-700" />
-              <span className="text-slate-700">Delivering to:</span>
-              <strong className="text-slate-900">{currentLocation.area}, {currentLocation.city} ({currentLocation.pincode})</strong>
+          {/* Delivering to Pill & Free Delivery Progress */}
+          <div className="bg-amber-50 border border-amber-200 rounded-2xl p-3.5 space-y-2 text-xs">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <Truck className="w-4 h-4 text-amber-700" />
+                <span className="text-slate-700">Delivering to:</span>
+                <strong className="text-slate-900">{currentLocation.area}, {currentLocation.city} ({currentLocation.pincode})</strong>
+              </div>
+              {cartDeliveryFee === 0 ? (
+                <span className="bg-emerald-600 text-white font-bold px-2.5 py-1 rounded-lg text-[10px] uppercase shadow-xs">
+                  🎉 Free Delivery Unlocked (&gt; ₹{freeDeliveryThreshold})
+                </span>
+              ) : (
+                <span className="text-slate-600 font-semibold text-[11px]">
+                  Add <strong className="text-amber-700 font-black">₹{remainingForFreeDelivery}</strong> more for <strong className="text-emerald-700">FREE Delivery</strong>
+                </span>
+              )}
             </div>
-            {cartDeliveryFee === 0 ? (
-              <span className="bg-emerald-600 text-white font-bold px-2 py-0.5 rounded-md text-[10px] uppercase">
-                Free Delivery Applied
-              </span>
-            ) : (
-              <span className="text-slate-500 text-[11px]">
-                Add ₹{499 - cartSubtotal} more for FREE Delivery
-              </span>
+
+            {/* Delivery Progress Bar */}
+            {cartDeliveryFee > 0 && (
+              <div className="space-y-1 pt-1">
+                <div className="w-full bg-amber-200/60 rounded-full h-2 overflow-hidden">
+                  <div
+                    className="bg-gradient-to-r from-amber-500 to-emerald-500 h-full rounded-full transition-all duration-300"
+                    style={{ width: `${freeDeliveryProgress}%` }}
+                  />
+                </div>
+                <div className="flex justify-between items-center text-[10px] text-slate-500 font-medium">
+                  <span>Cart: ₹{cartSubtotal}</span>
+                  <span>Free Shipping at ₹{freeDeliveryThreshold}</span>
+                </div>
+              </div>
             )}
           </div>
 

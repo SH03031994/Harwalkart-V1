@@ -322,6 +322,8 @@ export interface ProductVideoAd {
   shares: number;
   status: 'active' | 'pending' | 'completed' | 'rejected';
   createdAt: string;
+  templateId?: string;
+  templateBadge?: string;
 }
 
 export interface CartItem {

@@ -949,6 +949,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           parsed.officialAddress = INITIAL_WEBSITE_SETTINGS.officialAddress;
           parsed.registeredAddress = INITIAL_WEBSITE_SETTINGS.registeredAddress;
         }
+        // Upgrade legacy default threshold to Rs. 3000
+        if (parsed.freeDeliveryThreshold === 499 || parsed.freeDeliveryThreshold === undefined) {
+          parsed.freeDeliveryThreshold = 3000;
+        }
         return { ...INITIAL_WEBSITE_SETTINGS, ...parsed };
       } catch (e) {
         console.error(e);
@@ -3403,7 +3407,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const cartSubtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-  const cartDeliveryFee = cartSubtotal >= 499 || cartSubtotal === 0 ? 0 : 40;
+  const freeThreshold = websiteSettings?.freeDeliveryThreshold ?? 3000;
+  const standardFee = websiteSettings?.standardDeliveryFee ?? 40;
+  const cartDeliveryFee = cartSubtotal >= freeThreshold || cartSubtotal === 0 ? 0 : standardFee;
   const cartDiscount = appliedCoupon === 'HARWAL100' && cartSubtotal >= 499 ? 100 : 0;
   const cartTotal = Math.max(0, cartSubtotal + cartDeliveryFee - cartDiscount);
 

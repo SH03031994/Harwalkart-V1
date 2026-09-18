@@ -19,9 +19,11 @@ import {
   LogOut,
   Sparkles,
   Image as ImageIcon,
+  BarChart3,
 } from 'lucide-react';
 
 import { AdminOverviewTab } from './tabs/AdminOverviewTab';
+import { AdminAnalyticsTab } from './tabs/AdminAnalyticsTab';
 import { AdminCompanyProductsTab } from './tabs/AdminCompanyProductsTab';
 import { AdminSellerApprovalsTab } from './tabs/AdminSellerApprovalsTab';
 import { AdminSellersTab } from './tabs/AdminSellersTab';
@@ -38,6 +40,9 @@ import { AdminVideosTab } from './tabs/AdminVideosTab';
 import { AdminAdsTab } from './tabs/AdminAdsTab';
 import { AdminSupportTab } from './tabs/AdminSupportTab';
 import { AdminSettingsTab } from './tabs/AdminSettingsTab';
+import { MasterControlBar } from './MasterControlBar';
+import { MasterControlModal } from './MasterControlModal';
+import { AdminOmniSearch } from './AdminOmniSearch';
 
 export const AdminDashboard: React.FC = () => {
   const {
@@ -55,10 +60,12 @@ export const AdminDashboard: React.FC = () => {
     cityHubs,
     authSession,
     adminLogout,
+    websiteSettings,
   } = useApp();
 
   const [activeTab, setActiveTab] = useState<
     | 'overview'
+    | 'analytics'
     | 'company_products'
     | 'seller_approvals'
     | 'sellers'
@@ -77,6 +84,8 @@ export const AdminDashboard: React.FC = () => {
     | 'settings'
   >('company_products');
 
+  const [isMasterModalOpen, setIsMasterModalOpen] = useState(false);
+
   const pendingSellers = sellers.filter(s => s.status === 'pending');
   const pendingProducts = products.filter(p => !p.approved);
   const pendingWithdrawals = withdrawalRequests.filter(w => w.status === 'pending');
@@ -88,7 +97,7 @@ export const AdminDashboard: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 space-y-6 animate-in fade-in">
       {/* Admin Header Banner */}
-      <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 text-white p-6 rounded-3xl shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border border-slate-800">
+      <div className="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 text-white p-6 rounded-3xl shadow-xl flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 border border-slate-800">
         <div className="flex items-center gap-4">
           <div className="bg-white/10 p-2 rounded-2xl border border-white/10 shrink-0">
             <Logo size="md" variant="light" />
@@ -101,36 +110,64 @@ export const AdminDashboard: React.FC = () => {
               </span>
             </div>
             <p className="text-xs text-slate-400 mt-0.5">
-              Authorized Owner / Admin: <span className="text-amber-400 font-bold">{authSession.admin?.name || 'SharanKumar Harwalkar'}</span> ({authSession.admin?.email || 'jaishreeramenterprises24@gmail.com'})
+              Authorized Owner: <span className="text-amber-400 font-bold">{authSession.admin?.name || 'SharanKumar Harwalkar'}</span> ({authSession.admin?.email || 'jaishreeramenterprises24@gmail.com'})
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        {/* Center Omni-Search Bar */}
+        <div className="w-full lg:max-w-xs">
+          <AdminOmniSearch setActiveTab={setActiveTab} />
+        </div>
+
+        <div className="flex items-center gap-3 w-full lg:w-auto justify-between lg:justify-end">
           <div className="bg-slate-800/90 px-4 py-2 rounded-2xl border border-slate-700 text-xs text-right">
             <span className="text-slate-400 block text-[10px] uppercase font-bold">Marketplace Status</span>
-            <span className="text-emerald-400 font-black">100% LIVE • PAN-INDIA</span>
+            <span className="text-emerald-400 font-black">
+              {websiteSettings.maintenanceModeEnabled ? '⚠️ MAINTENANCE' : '100% LIVE • PAN-INDIA'}
+            </span>
           </div>
           <button
             onClick={adminLogout}
             className="px-3.5 py-2.5 bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 text-xs font-bold rounded-xl flex items-center gap-1.5 cursor-pointer transition-colors"
           >
             <LogOut className="w-4 h-4" />
-            <span>Admin Logout</span>
+            <span>Logout</span>
           </button>
         </div>
       </div>
 
+      {/* Master Control Command Bar */}
+      <MasterControlBar onOpenMasterModal={() => setIsMasterModalOpen(true)} />
+
       {/* KPI Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-xs space-y-1">
-          <span className="text-xs text-slate-500 font-bold uppercase">Total Platform GMV</span>
+        <div
+          onClick={() => setActiveTab('analytics')}
+          className="bg-white p-5 rounded-3xl border border-slate-200 shadow-xs space-y-1 hover:border-amber-400 transition-all cursor-pointer group"
+          title="Click to view detailed Analytics & Insights"
+        >
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-slate-500 font-bold uppercase">Total Platform GMV</span>
+            <span className="text-[10px] text-amber-600 font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+              View Analytics →
+            </span>
+          </div>
           <div className="text-2xl font-black text-slate-950">₹{totalGmv.toLocaleString()}</div>
           <span className="text-[11px] text-emerald-600 font-bold">Harwalkart + Local Stores</span>
         </div>
 
-        <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-xs space-y-1">
-          <span className="text-xs text-slate-500 font-bold uppercase">Platform Revenue</span>
+        <div
+          onClick={() => setActiveTab('analytics')}
+          className="bg-white p-5 rounded-3xl border border-slate-200 shadow-xs space-y-1 hover:border-emerald-400 transition-all cursor-pointer group"
+          title="Click to view platform revenue breakdown"
+        >
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-slate-500 font-bold uppercase">Platform Revenue</span>
+            <span className="text-[10px] text-emerald-600 font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+              Breakdown →
+            </span>
+          </div>
           <div className="text-2xl font-black text-emerald-600">₹{platformCommission.toLocaleString()}</div>
           <span className="text-[11px] text-slate-500">Commission & Video Ads</span>
         </div>
@@ -162,6 +199,22 @@ export const AdminDashboard: React.FC = () => {
               <TrendingUp className="w-4 h-4" />
               <span>Admin Overview</span>
             </div>
+          </button>
+
+          <button
+            id="admin-nav-analytics"
+            onClick={() => setActiveTab('analytics')}
+            className={`w-full flex items-center justify-between p-3 rounded-2xl transition-colors cursor-pointer ${
+              activeTab === 'analytics' ? 'bg-amber-500 text-slate-950 shadow-xs font-black' : 'text-slate-700 hover:bg-slate-100'
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              <BarChart3 className="w-4 h-4 text-emerald-600" />
+              <span>Analytics &amp; Insights</span>
+            </div>
+            <span className="text-[10px] bg-emerald-500 text-white font-black px-1.5 py-0.5 rounded-full">
+              LIVE
+            </span>
           </button>
 
           <button
@@ -404,7 +457,13 @@ export const AdminDashboard: React.FC = () => {
 
         {/* Content Area (9 Cols) */}
         <div className="lg:col-span-9 space-y-6">
-          {activeTab === 'overview' && <AdminOverviewTab setActiveTab={setActiveTab} />}
+          {activeTab === 'overview' && (
+            <AdminOverviewTab
+              setActiveTab={setActiveTab}
+              onOpenMasterModal={() => setIsMasterModalOpen(true)}
+            />
+          )}
+          {activeTab === 'analytics' && <AdminAnalyticsTab setActiveTab={setActiveTab} />}
           {activeTab === 'company_products' && <AdminCompanyProductsTab />}
           {activeTab === 'seller_approvals' && <AdminSellerApprovalsTab />}
           {activeTab === 'sellers' && <AdminSellersTab />}
@@ -423,6 +482,13 @@ export const AdminDashboard: React.FC = () => {
           {activeTab === 'settings' && <AdminSettingsTab />}
         </div>
       </div>
+
+      {/* Universal Master Control Center Modal */}
+      <MasterControlModal
+        isOpen={isMasterModalOpen}
+        onClose={() => setIsMasterModalOpen(false)}
+        setActiveTab={setActiveTab}
+      />
     </div>
   );
 };

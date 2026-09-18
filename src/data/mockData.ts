@@ -2053,7 +2053,7 @@ export const INITIAL_WEBSITE_SETTINGS: WebsiteSettings = {
   localDeliveryRadiusKm: 15,
   standardDeliveryFee: 40,
   expressDeliveryFee: 65,
-  freeDeliveryThreshold: 499,
+  freeDeliveryThreshold: 3000,
   localDeliveryTime: '15-45 mins',
   enablePanIndiaDelivery: true,
   panIndiaDeliveryTime: '3-5 business days',

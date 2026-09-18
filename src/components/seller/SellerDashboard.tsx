@@ -8,6 +8,7 @@ import { SellerProductsManager } from './SellerProductsManager';
 import { SellerAddProduct } from './SellerAddProduct';
 import { SellerSettlements } from './SellerSettlements';
 import { SellerOrders } from './SellerOrders';
+import { SellerVideoAds } from './SellerVideoAds';
 import {
   LayoutDashboard,
   Package,
@@ -38,6 +39,8 @@ import {
   UploadCloud,
   FileCheck,
   AlertTriangle,
+  Video,
+  Sparkles,
 } from 'lucide-react';
 
 type SellerTab =
@@ -45,6 +48,7 @@ type SellerTab =
   | 'products'
   | 'add_product'
   | 'orders'
+  | 'video_ads'
   | 'commission'
   | 'settlement'
   | 'legal'
@@ -132,6 +136,7 @@ export const SellerDashboard: React.FC = () => {
     { id: 'products', label: 'My Products', icon: Package, badge: `${sellerProducts.length}` },
     { id: 'add_product', label: 'Add Product', icon: PlusCircle },
     { id: 'orders', label: 'Orders', icon: ShoppingBag, badge: `${sellerOrders.length}` },
+    { id: 'video_ads', label: 'Video Ads & Templates', icon: Video, badge: 'HOT' },
     { id: 'commission', label: 'Commission & Earnings', icon: Percent, badge: '2%' },
     { id: 'settlement', label: 'Settlement', icon: Wallet, badge: `₹${Math.floor(activeSeller.walletBalance)}` },
     { id: 'legal', label: 'Legal & Policies', icon: FileText },
@@ -505,6 +510,13 @@ export const SellerDashboard: React.FC = () => {
 
                   <div className="flex flex-wrap gap-2">
                     <button
+                      onClick={() => setActiveTab('video_ads')}
+                      className="px-4 py-2.5 bg-gradient-to-r from-amber-500 to-rose-500 hover:from-amber-400 hover:to-rose-400 text-slate-950 font-bold text-xs rounded-xl transition cursor-pointer shadow-xs flex items-center gap-1.5"
+                    >
+                      <Video className="w-4 h-4" />
+                      Video Ads &amp; Templates
+                    </button>
+                    <button
                       onClick={() => setActiveTab('add_product')}
                       className="px-4 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs rounded-xl transition cursor-pointer shadow-xs flex items-center gap-1.5"
                     >
@@ -581,7 +593,21 @@ export const SellerDashboard: React.FC = () => {
               </div>
 
               {/* Quick Actions Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div
+                  onClick={() => setActiveTab('video_ads')}
+                  className="bg-gradient-to-br from-amber-500/10 via-rose-500/10 to-amber-500/5 p-5 rounded-2xl border border-amber-300 dark:border-amber-700 shadow-xs hover:border-amber-500 transition cursor-pointer space-y-2 group"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="p-2.5 bg-amber-500 text-slate-950 rounded-xl">
+                      <Video className="w-5 h-5" />
+                    </span>
+                    <span className="text-xs font-black text-amber-700 group-hover:underline">Launch →</span>
+                  </div>
+                  <h3 className="font-black text-slate-900 text-sm">Video Ad Templates</h3>
+                  <p className="text-xs text-slate-600">Promote your products using ready-to-use video reels to local shoppers.</p>
+                </div>
+
                 <div
                   onClick={() => setActiveTab('products')}
                   className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs hover:border-amber-400 transition cursor-pointer space-y-2 group"
@@ -714,6 +740,14 @@ export const SellerDashboard: React.FC = () => {
 
           {/* TAB 4: ORDERS */}
           {activeTab === 'orders' && <SellerOrders seller={activeSeller} orders={orders} />}
+
+          {/* TAB: VIDEO ADS & TEMPLATES */}
+          {activeTab === 'video_ads' && (
+            <SellerVideoAds
+              seller={activeSeller}
+              onNavigateToAddProduct={() => setActiveTab('add_product')}
+            />
+          )}
 
           {/* TAB 5: COMMISSION & EARNINGS */}
           {activeTab === 'commission' && (

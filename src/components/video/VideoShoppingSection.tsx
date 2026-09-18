@@ -124,9 +124,16 @@ export const VideoShoppingSection: React.FC = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-black/40 flex flex-col justify-between p-3.5 pointer-events-none">
                   {/* Top Bar inside video */}
                   <div className="flex items-center justify-between pointer-events-auto">
-                    <div className="bg-slate-900/80 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-bold text-amber-400 flex items-center gap-1 border border-slate-700">
-                      <MapPin className="w-3 h-3 text-amber-400" />
-                      <span>{ad.locationArea}</span>
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <div className="bg-slate-900/80 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-bold text-amber-400 flex items-center gap-1 border border-slate-700">
+                        <MapPin className="w-3 h-3 text-amber-400" />
+                        <span>{ad.locationArea}</span>
+                      </div>
+                      {ad.templateBadge && (
+                        <span className="bg-rose-600/90 text-white font-black text-[9px] uppercase px-2 py-0.5 rounded-full shadow-xs">
+                          {ad.templateBadge}
+                        </span>
+                      )}
                     </div>
 
                     <div className="flex items-center gap-1.5">

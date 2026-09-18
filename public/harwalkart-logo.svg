@@ -1,153 +1,123 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300" width="100%" height="100%">
   <defs>
-    <!-- Purple Gradient for dynamic swoosh -->
-    <linearGradient id="purpleSwoosh" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#2D0A4E" />
-      <stop offset="100%" stop-color="#4A0E4E" />
+    <!-- Purple Gradient for dynamic swoosh under 'H' -->
+    <linearGradient id="harwalPurple" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#26023B" />
+      <stop offset="50%" stop-color="#3B075E" />
+      <stop offset="100%" stop-color="#4F0A6B" />
     </linearGradient>
     
-    <!-- Yellow Gradient for rich golden luster -->
-    <linearGradient id="goldYellow" x1="0%" y1="0%" x2="100%" y2="0%">
+    <!-- Golden Yellow Gradient matching official brand asset -->
+    <linearGradient id="harwalGold" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#FFB800" />
-      <stop offset="100%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#FFAA00" />
     </linearGradient>
+
+    <!-- Mask for hollow shopping cart wheels -->
+    <mask id="wheelCutouts">
+      <rect width="1000" height="300" fill="white" />
+      <circle cx="892" cy="226" r="5.5" fill="black" />
+      <circle cx="936" cy="226" r="5.5" fill="black" />
+    </mask>
   </defs>
 
-  <g id="harwalkart-logo-vector">
+  <g id="harwalkart-official-logo">
     <!-- ==================== 1. LETTER 'H' ==================== -->
-    <!-- Left vertical bar of H (Rounded Capsule) -->
+    <!-- Left vertical bar of H (White Rounded Capsule) -->
     <rect 
-      x="30" 
-      y="80" 
-      width="45" 
-      height="130" 
-      rx="16" 
-      ry="16" 
+      x="36" 
+      y="70" 
+      width="46" 
+      height="140" 
+      rx="18" 
+      ry="18" 
       fill="#FFFFFF" 
-      stroke="#E2E8F0" 
-      stroke-width="2.5" 
+      stroke="#CBD5E1" 
+      stroke-width="2" 
     />
 
-    <!-- Right vertical bar of H (Solid Golden Yellow) -->
+    <!-- Right vertical bar of H (Solid Golden Yellow Capsule) -->
     <rect 
-      x="110" 
-      y="80" 
-      width="44" 
-      height="130" 
-      rx="16" 
-      ry="16" 
-      fill="url(#goldYellow)" 
+      x="122" 
+      y="70" 
+      width="46" 
+      height="140" 
+      rx="18" 
+      ry="18" 
+      fill="url(#harwalGold)" 
     />
 
-    <!-- Purple Swoosh Crescent under the arch -->
+    <!-- Purple Crescent under the H swoosh arch -->
     <path 
-      d="M 12 170 C 40 145, 90 142, 153 198 C 120 162, 70 152, 28 174 Z" 
-      fill="url(#purpleSwoosh)" 
+      d="M 16 168 C 44 140, 96 136, 172 196 C 138 160, 84 150, 36 172 Z" 
+      fill="url(#harwalPurple)" 
     />
 
-    <!-- Dynamic Golden-Yellow Upward Swoosh / Arch -->
+    <!-- Dynamic Golden-Yellow Upward Swoosh / Arch across H -->
     <path 
-      d="M 12 170 C 35 125, 90 120, 175 165 C 158 152, 130 135, 105 132 C 60 128, 25 152, 12 170 Z" 
-      fill="url(#goldYellow)" 
+      d="M 16 168 C 40 116, 102 112, 196 164 C 176 148, 142 130, 116 126 C 68 122, 30 148, 16 168 Z" 
+      fill="url(#harwalGold)" 
     />
 
     <!-- ==================== 2. TEXT 'arwal' ==================== -->
-    <!-- 'arwal' in crisp geometric typography with white fill & subtle border -->
-    <g id="text-arwal">
+    <g id="text-arwal" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5" stroke-linejoin="round">
       <!-- 'a' -->
-      <path 
-        d="M 195 135 C 175 135, 160 150, 160 175 C 160 198, 175 210, 195 210 C 208 210, 218 202, 222 195 L 222 208 L 244 208 L 244 138 L 222 138 L 222 150 C 218 142, 208 135, 195 135 Z M 202 154 C 214 154, 222 163, 222 175 C 222 187, 214 193, 202 193 C 190 193, 182 185, 182 175 C 182 163, 190 154, 202 154 Z" 
-        fill="#FFFFFF" 
-        stroke="#CBD5E1" 
-        stroke-width="2" 
-        stroke-linejoin="round"
-      />
+      <path d="M 226 126 C 202 126, 186 144, 186 171 C 186 198, 202 214, 226 214 C 240 214, 252 205, 258 196 L 258 212 L 282 212 L 282 130 L 258 130 L 258 144 C 252 135, 240 126, 226 126 Z M 234 148 C 248 148, 258 158, 258 171 C 258 184, 248 192, 234 192 C 220 192, 210 183, 210 171 C 210 158, 220 148, 234 148 Z" />
       <!-- 'r' -->
-      <path 
-        d="M 258 138 L 280 138 L 280 152 C 285 142, 296 135, 308 136 L 308 160 C 293 158, 280 168, 280 184 L 280 208 L 258 208 Z" 
-        fill="#FFFFFF" 
-        stroke="#CBD5E1" 
-        stroke-width="2" 
-        stroke-linejoin="round"
-      />
+      <path d="M 296 130 L 320 130 L 320 146 C 326 135, 338 127, 352 128 L 352 155 C 335 152, 320 163, 320 181 L 320 212 L 296 212 Z" />
       <!-- 'w' -->
-      <path 
-        d="M 318 138 L 338 208 L 358 152 L 378 208 L 398 138 L 376 138 L 366 182 L 348 138 L 328 138 Z" 
-        fill="#FFFFFF" 
-        stroke="#CBD5E1" 
-        stroke-width="2" 
-        stroke-linejoin="round"
-      />
+      <path d="M 360 130 L 382 212 L 404 146 L 426 212 L 448 130 L 424 130 L 414 184 L 394 130 L 374 130 Z" />
       <!-- 'a' -->
-      <path 
-        d="M 435 135 C 415 135, 400 150, 400 175 C 400 198, 415 210, 435 210 C 448 210, 458 202, 462 195 L 462 208 L 484 208 L 484 138 L 462 138 L 462 150 C 458 142, 448 135, 435 135 Z M 442 154 C 454 154, 462 163, 462 175 C 462 187, 454 193, 442 193 C 430 193, 422 185, 422 175 C 422 163, 430 154, 442 154 Z" 
-        fill="#FFFFFF" 
-        stroke="#CBD5E1" 
-        stroke-width="2" 
-        stroke-linejoin="round"
-      />
+      <path d="M 488 126 C 464 126, 448 144, 448 171 C 448 198, 464 214, 488 214 C 502 214, 514 205, 520 196 L 520 212 L 544 212 L 544 130 L 520 130 L 520 144 C 514 135, 502 126, 488 126 Z M 496 148 C 510 148, 520 158, 520 171 C 520 184, 510 192, 496 192 C 482 192, 472 183, 472 171 C 472 158, 482 148, 496 148 Z" />
       <!-- 'l' -->
-      <rect 
-        x="498" 
-        y="80" 
-        width="22" 
-        height="128" 
-        rx="10" 
-        ry="10" 
-        fill="#FFFFFF" 
-        stroke="#CBD5E1" 
-        stroke-width="2" 
-      />
+      <rect x="558" y="70" width="24" height="142" rx="12" ry="12" />
     </g>
 
     <!-- ==================== 3. TEXT 'kart' ==================== -->
-    <g id="text-kart" fill="url(#goldYellow)">
+    <g id="text-kart" fill="url(#harwalGold)">
       <!-- 'k' -->
-      <path 
-        d="M 532 80 L 554 80 L 554 154 L 582 138 L 608 138 L 574 168 L 610 208 L 582 208 L 554 176 L 554 208 L 532 208 Z" 
-      />
+      <path d="M 596 70 L 620 70 L 620 148 L 650 128 L 680 128 L 642 163 L 682 212 L 652 212 L 620 174 L 620 212 L 596 212 Z" />
       <!-- 'a' -->
-      <path 
-        d="M 645 135 C 625 135, 610 150, 610 175 C 610 198, 625 210, 645 210 C 658 210, 668 202, 672 195 L 672 208 L 694 208 L 694 138 L 672 138 L 672 150 C 668 142, 658 135, 645 135 Z M 652 154 C 664 154, 672 163, 672 175 C 672 187, 664 193, 652 193 C 640 193, 632 185, 632 175 C 632 163, 640 154, 652 154 Z" 
-      />
+      <path d="M 718 126 C 694 126, 678 144, 678 171 C 678 198, 694 214, 718 214 C 732 214, 744 205, 750 196 L 750 212 L 774 212 L 774 130 L 750 130 L 750 144 C 744 135, 732 126, 718 126 Z M 726 148 C 740 148, 750 158, 750 171 C 750 184, 740 192, 726 192 C 712 192, 702 183, 702 171 C 702 158, 712 148, 726 148 Z" />
       <!-- 'r' -->
-      <path 
-        d="M 708 138 L 730 138 L 730 152 C 735 142, 746 135, 758 136 L 758 160 C 743 158, 730 168, 730 184 L 730 208 L 708 208 Z" 
-      />
+      <path d="M 788 130 L 812 130 L 812 146 C 818 135, 830 127, 844 128 L 844 155 C 827 152, 812 163, 812 181 L 812 212 L 788 212 Z" />
       <!-- 't' -->
-      <path 
-        d="M 770 110 L 792 110 L 792 138 L 812 138 L 812 156 L 792 156 L 792 192 C 792 196, 796 200, 802 200 L 812 200 L 812 208 C 804 210, 794 210, 786 208 C 775 204, 770 196, 770 186 L 770 156 L 760 156 L 760 138 L 770 138 Z" 
-      />
+      <path d="M 854 98 L 878 98 L 878 130 L 898 130 L 898 149 L 878 149 L 878 190 C 878 197, 882 201, 890 201 L 898 201 L 898 212 C 889 214, 878 214, 868 210 C 858 204, 854 195, 854 182 L 854 149 L 844 149 L 844 130 L 854 130 Z" />
     </g>
 
-    <!-- ==================== 4. SHOPPING CART WITH SPEED LINES ==================== -->
-    <g id="shopping-cart-icon">
-      <!-- Speed / Motion Lines (3 horizontal rounded dashes) -->
-      <line x1="822" y1="168" x2="856" y2="168" stroke="url(#goldYellow)" stroke-width="7" stroke-linecap="round" />
-      <line x1="816" y1="182" x2="864" y2="182" stroke="url(#goldYellow)" stroke-width="7" stroke-linecap="round" />
-      <line x1="828" y1="196" x2="854" y2="196" stroke="url(#goldYellow)" stroke-width="7" stroke-linecap="round" />
+    <!-- ==================== 4. BIG BOTTOM SMILE SWOOSH ==================== -->
+    <!-- Prominent sweeping golden arc beneath 'arwalkart' reaching under the cart -->
+    <path 
+      d="M 216 206 C 360 258, 640 268, 868 198 C 640 286, 360 274, 216 206 Z" 
+      fill="url(#harwalGold)" 
+    />
 
-      <!-- Cart Handle & Basket Body Outline -->
+    <!-- ==================== 5. SHOPPING CART WITH SPEED LINES ==================== -->
+    <g id="shopping-cart-icon" fill="url(#harwalGold)">
+      <!-- 3 Horizontal Speed / Motion Lines Behind Cart -->
+      <line x1="810" y1="172" x2="856" y2="172" stroke="url(#harwalGold)" stroke-width="6.5" stroke-linecap="round" />
+      <line x1="802" y1="186" x2="864" y2="186" stroke="url(#harwalGold)" stroke-width="6.5" stroke-linecap="round" />
+      <line x1="816" y1="200" x2="854" y2="200" stroke="url(#harwalGold)" stroke-width="6.5" stroke-linecap="round" />
+
+      <!-- Cart Handle & Body Outline -->
       <path 
-        d="M 795 86 C 802 86, 808 92, 812 100 L 826 130 L 974 130 C 984 130, 990 138, 986 146 L 964 190 C 960 196, 952 200, 944 200 L 860 200" 
+        d="M 814 114 C 822 114, 828 119, 832 127 L 846 156 L 970 156 C 980 156, 986 164, 982 172 L 962 208 C 958 214, 950 218, 942 218 L 866 218" 
         fill="none" 
-        stroke="url(#goldYellow)" 
-        stroke-width="9" 
+        stroke="url(#harwalGold)" 
+        stroke-width="8" 
         stroke-linecap="round" 
         stroke-linejoin="round" 
       />
 
       <!-- Cart Inner Wire Slats -->
-      <line x1="846" y1="154" x2="964" y2="154" stroke="url(#goldYellow)" stroke-width="6" stroke-linecap="round" />
-      <line x1="854" y1="176" x2="946" y2="176" stroke="url(#goldYellow)" stroke-width="6" stroke-linecap="round" />
+      <line x1="854" y1="176" x2="964" y2="176" stroke="url(#harwalGold)" stroke-width="5.5" stroke-linecap="round" />
+      <line x1="862" y1="196" x2="946" y2="196" stroke="url(#harwalGold)" stroke-width="5.5" stroke-linecap="round" />
 
-      <!-- Wheel 1 (Left) -->
-      <circle cx="890" cy="226" r="14" fill="url(#goldYellow)" />
-      <circle cx="890" cy="226" r="5.5" fill="#0F172A" />
-
-      <!-- Wheel 2 (Right) -->
-      <circle cx="936" cy="226" r="14" fill="url(#goldYellow)" />
-      <circle cx="936" cy="226" r="5.5" fill="#0F172A" />
+      <!-- Wheels (Hollow rings) -->
+      <g mask="url(#wheelCutouts)">
+        <circle cx="892" cy="226" r="13" />
+        <circle cx="936" cy="226" r="13" />
+      </g>
     </g>
   </g>
 </svg>
