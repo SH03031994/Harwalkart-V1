@@ -20,6 +20,7 @@ import {
   Sparkles,
   Image as ImageIcon,
   BarChart3,
+  Bike,
 } from 'lucide-react';
 
 import { AdminOverviewTab } from './tabs/AdminOverviewTab';
@@ -38,6 +39,7 @@ import { AdminPaymentsTab } from './tabs/AdminPaymentsTab';
 import { AdminPincodesTab } from './tabs/AdminPincodesTab';
 import { AdminVideosTab } from './tabs/AdminVideosTab';
 import { AdminAdsTab } from './tabs/AdminAdsTab';
+import { AdminDeliveryPartnersTab } from './tabs/AdminDeliveryPartnersTab';
 import { AdminSupportTab } from './tabs/AdminSupportTab';
 import { AdminSettingsTab } from './tabs/AdminSettingsTab';
 import { MasterControlBar } from './MasterControlBar';
@@ -58,6 +60,7 @@ export const AdminDashboard: React.FC = () => {
     heroBanners,
     advertisements,
     cityHubs,
+    deliveryPartners,
     authSession,
     adminLogout,
     websiteSettings,
@@ -69,6 +72,7 @@ export const AdminDashboard: React.FC = () => {
     | 'company_products'
     | 'seller_approvals'
     | 'sellers'
+    | 'delivery_partners'
     | 'customers'
     | 'products'
     | 'product_approvals'
@@ -260,6 +264,22 @@ export const AdminDashboard: React.FC = () => {
               <Store className="w-4 h-4" />
               <span>All Sellers ({sellers.length})</span>
             </div>
+          </button>
+
+          <button
+            id="admin-nav-delivery-partners"
+            onClick={() => setActiveTab('delivery_partners')}
+            className={`w-full flex items-center justify-between p-3 rounded-2xl transition-colors cursor-pointer ${
+              activeTab === 'delivery_partners' ? 'bg-amber-500 text-slate-950 shadow-xs font-black' : 'text-slate-700 hover:bg-slate-100'
+            }`}
+          >
+            <div className="flex items-center gap-2.5">
+              <Bike className="w-4 h-4" />
+              <span>Delivery Fleet ({deliveryPartners.length})</span>
+            </div>
+            <span className="text-[10px] bg-slate-900/10 px-1.5 py-0.5 rounded-full font-bold">
+              {deliveryPartners.filter(p => p.status === 'active').length} Live
+            </span>
           </button>
 
           <button
@@ -467,6 +487,7 @@ export const AdminDashboard: React.FC = () => {
           {activeTab === 'company_products' && <AdminCompanyProductsTab />}
           {activeTab === 'seller_approvals' && <AdminSellerApprovalsTab />}
           {activeTab === 'sellers' && <AdminSellersTab />}
+          {activeTab === 'delivery_partners' && <AdminDeliveryPartnersTab />}
           {activeTab === 'customers' && <AdminCustomersTab />}
           {activeTab === 'products' && <AdminProductsTab />}
           {activeTab === 'product_approvals' && <AdminProductApprovalsTab />}

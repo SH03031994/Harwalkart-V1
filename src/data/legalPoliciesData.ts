@@ -438,11 +438,11 @@ export const POLICIES_LEGAL_DOCS: Record<string, LegalPolicyDoc> = {
       },
       {
         id: 'charges-tiers',
-        heading: '3. Shipping Charges & Free Delivery Thresholds',
+        heading: '3. Shipping Charges & Delivery Rates',
         content: [
           'We maintain transparent, fair shipping charges with zero hidden handling surcharges:',
-          '• Local Store Orders: Nominal delivery fee of ₹20 to ₹40 depending on travel distance. Orders above ₹3,000 enjoy FREE Delivery from participating stores.',
-          '• Kitchen Shakti Direct Orders: Flat standard shipping of ₹49 for small orders. Orders above ₹399 or spice value packs qualify for 100% FREE Pan-India Shipping.',
+          '• Local Store Orders: Nominal delivery fee of ₹20 to ₹40 depending on travel distance and courier partner.',
+          '• Kitchen Shakti Direct Orders: Flat standard doorstep shipping of ₹40 pan-India.',
           '• All delivery fees are transparently itemized in your order summary before payment.'
         ]
       },

@@ -10,6 +10,7 @@ import {
   ChevronUp,
   ChevronDown,
   CheckCircle,
+  Bike,
 } from 'lucide-react';
 
 export const PanelSwitcher: React.FC = () => {
@@ -17,6 +18,7 @@ export const PanelSwitcher: React.FC = () => {
     authSession,
     customerLogin,
     sellerLogin,
+    deliveryPartnerLogin,
     navigate,
     showToast,
   } = useApp();
@@ -35,6 +37,12 @@ export const PanelSwitcher: React.FC = () => {
     showToast('Seller Portal: Viewing Sharma Kirana Store (Approved)');
   };
 
+  const handleQuickDelivery = () => {
+    deliveryPartnerLogin('rider_del_101');
+    navigate('/delivery/dashboard');
+    showToast('Delivery Fleet: Viewing as Rajesh Kumar (Honda Activa)');
+  };
+
   return (
     <aside aria-label="Portal Navigation Panel" className="fixed bottom-4 left-4 z-50">
       {/* Floating Toggle Pill */}
@@ -42,7 +50,7 @@ export const PanelSwitcher: React.FC = () => {
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="flex items-center gap-2 text-xs font-black text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
-          title="Switch between Customer and Seller Portals"
+          title="Switch between Marketplace Portals"
         >
           <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
           <span className="hidden sm:inline">PORTALS:</span>
@@ -52,6 +60,8 @@ export const PanelSwitcher: React.FC = () => {
                 ? '🛍️ Customer View'
                 : authSession.role === 'seller'
                 ? '🏪 Seller View'
+                : authSession.role === 'delivery'
+                ? '🛵 Delivery Fleet'
                 : '🛡️ Admin Console'
               : '⚡ Switch Portal'}
           </span>
@@ -88,6 +98,19 @@ export const PanelSwitcher: React.FC = () => {
             <span className="hidden md:inline text-[11px]">Seller</span>
           </button>
 
+          <button
+            onClick={handleQuickDelivery}
+            className={`p-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 cursor-pointer ${
+              authSession.role === 'delivery' && authSession.isAuthenticated
+                ? 'bg-emerald-500 text-slate-950 font-black'
+                : 'text-slate-300 hover:bg-slate-800 hover:text-emerald-400'
+            }`}
+            title="Delivery Partner Panel"
+          >
+            <Bike className="w-3.5 h-3.5" />
+            <span className="hidden md:inline text-[11px]">Delivery</span>
+          </button>
+
           {/* Admin link shown ONLY if currently authenticated as admin */}
           {authSession.role === 'admin' && authSession.isAuthenticated && (
             <button
@@ -104,14 +127,14 @@ export const PanelSwitcher: React.FC = () => {
 
       {/* Expanded Popup Menu */}
       {isOpen && (
-        <div className="absolute bottom-14 left-0 w-80 sm:w-96 bg-slate-950 text-white rounded-3xl shadow-2xl border border-slate-800 p-4 animate-in fade-in slide-in-from-bottom-2 z-50">
+        <div className="absolute bottom-14 left-0 w-80 sm:w-96 bg-slate-950 text-white rounded-3xl shadow-2xl border border-slate-800 p-4 animate-in fade-in slide-in-from-bottom-2 z-50 max-h-[85vh] overflow-y-auto">
           <div className="flex items-center justify-between pb-3 border-b border-slate-800 mb-3">
             <div>
               <h4 className="text-xs font-black uppercase text-amber-400 tracking-wider">
                 HARWALKART Marketplace Portals
               </h4>
               <p className="text-[11px] text-slate-400">
-                Explore Customer and Merchant features
+                Switch between Customer, Seller, and Delivery Fleet panels
               </p>
             </div>
             <button
@@ -205,7 +228,57 @@ export const PanelSwitcher: React.FC = () => {
               </div>
             </div>
 
-            {/* Admin Panel Card - ONLY visible if authenticated admin */}
+            {/* 3. Delivery Partner Fleet Panel */}
+            <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-3 hover:border-emerald-500/50 transition-colors">
+              <div className="flex items-center justify-between mb-1.5">
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-black">
+                    <Bike className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h5 className="text-xs font-bold text-white">3. Delivery Partner Panel</h5>
+                    <p className="text-[10px] text-slate-400">Pickups, OTP Delivery, Wallet & Earnings</p>
+                  </div>
+                </div>
+                {authSession.role === 'delivery' && authSession.isAuthenticated && (
+                  <span className="flex items-center gap-1 text-[10px] text-emerald-400 font-bold bg-emerald-950 px-2 py-0.5 rounded-md border border-emerald-800">
+                    <CheckCircle className="w-3 h-3" /> Active
+                  </span>
+                )}
+              </div>
+              <div className="flex gap-2 pt-1">
+                <button
+                  onClick={() => {
+                    handleQuickDelivery();
+                    setIsOpen(false);
+                  }}
+                  className="flex-1 py-1.5 px-2 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs rounded-xl flex items-center justify-center gap-1 cursor-pointer transition-all"
+                >
+                  <span>Open Rider Panel</span>
+                  <ArrowRight className="w-3 h-3" />
+                </button>
+                <button
+                  onClick={() => {
+                    navigate('/delivery/register');
+                    setIsOpen(false);
+                  }}
+                  className="py-1.5 px-2.5 bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-700/60 text-emerald-300 font-bold text-xs rounded-xl cursor-pointer"
+                >
+                  Register
+                </button>
+                <button
+                  onClick={() => {
+                    navigate('/delivery/login');
+                    setIsOpen(false);
+                  }}
+                  className="py-1.5 px-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs rounded-xl cursor-pointer"
+                >
+                  Sign In
+                </button>
+              </div>
+            </div>
+
+            {/* 4. Admin Panel Card - ONLY visible if authenticated admin */}
             {authSession.role === 'admin' && authSession.isAuthenticated && (
               <div className="bg-slate-900/90 border border-red-500/50 rounded-2xl p-3">
                 <div className="flex items-center justify-between mb-1.5">

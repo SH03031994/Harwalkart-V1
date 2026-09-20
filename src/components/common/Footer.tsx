@@ -229,6 +229,33 @@ export const Footer: React.FC = () => {
               </div>
             </li>
 
+            {/* Delivery Fleet Partner Panel */}
+            <li className="space-y-1 pt-1">
+              <span className="font-bold text-emerald-400 text-[11px] block">Delivery Partner Portal:</span>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => navigate('/delivery/login')}
+                  className="hover:text-white transition-colors cursor-pointer text-slate-400"
+                >
+                  Rider Login
+                </button>
+                <span className="text-slate-700">•</span>
+                <button
+                  onClick={() => navigate('/delivery/register')}
+                  className="hover:text-emerald-300 transition-colors cursor-pointer text-emerald-400 font-semibold"
+                >
+                  Join Fleet (Register)
+                </button>
+                <span className="text-slate-700">•</span>
+                <button
+                  onClick={() => navigate('/delivery/dashboard')}
+                  className="hover:text-white transition-colors cursor-pointer text-slate-400"
+                >
+                  Fleet Panel
+                </button>
+              </div>
+            </li>
+
             {/* Admin Console Link ONLY if already authenticated as Admin */}
             {authSession.role === 'admin' && authSession.isAuthenticated && (
               <li className="space-y-1 pt-1">

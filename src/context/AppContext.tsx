@@ -26,6 +26,7 @@ import {
   CompanyBankAccount,
   PaymentSettings,
   DeliveryPartner,
+  DeliveryPartnerRegistrationData,
   PayoutStatus,
   Brand,
   HeroBanner,
@@ -44,6 +45,7 @@ import {
   INITIAL_ADVERTISEMENTS,
   INITIAL_CITY_HUBS,
   INITIAL_WEBSITE_SETTINGS,
+  AVAILABLE_COUPONS,
   INITIAL_BRANDS,
   INITIAL_HERO_BANNERS,
   INITIAL_STORIES,
@@ -227,7 +229,6 @@ interface AppContextType {
   videoAds: ProductVideoAd[];
   orders: Order[];
   supportTickets: SupportTicket[];
-  deliveryPartners: DeliveryPartner[];
   withdrawalRequests: WithdrawalRequest[];
   sellerMessages: SellerCustomerMessage[];
 
@@ -298,10 +299,19 @@ interface AppContextType {
   updateServiceablePincodes: (sellerId: string, pincodes: string[], radiusKm: number) => void;
 
   // Delivery Partner Actions
+  deliveryPartners: DeliveryPartner[];
   addDeliveryPartner: (partner: Omit<DeliveryPartner, 'id'>) => DeliveryPartner;
   editDeliveryPartner: (id: string, updates: Partial<DeliveryPartner>) => boolean;
   deleteDeliveryPartner: (id: string) => boolean;
   requestPartnerWithdrawal: (partnerId: string, amount: number, payoutMethod: 'upi' | 'bank_transfer', upiOrAccount: string) => { success: boolean; message: string };
+  deliveryPartnerLogin: (identifier: string, password?: string) => { success: boolean; error?: string; partner?: DeliveryPartner };
+  deliveryPartnerLogout: () => void;
+  initiateDeliveryPartnerRegister: (data: DeliveryPartnerRegistrationData) => { success: boolean; otp?: string; error?: string };
+  verifyDeliveryPartnerRegistrationOtp: (otp: string) => { success: boolean; partner?: DeliveryPartner; error?: string };
+  acceptDeliveryAssignment: (orderId: string, partnerId: string) => boolean;
+  confirmOrderPickup: (orderId: string, partnerId: string) => boolean;
+  completeDeliveryWithOtp: (orderId: string, partnerId: string, otp: string) => { success: boolean; error?: string };
+  togglePartnerOnlineStatus: (partnerId: string, status: 'active' | 'offline') => void;
 
   // Admin Dashboard Actions
   approveSeller: (sellerId: string) => void;
@@ -375,6 +385,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (path === '/admin/dashboard' || path === '/admin/panel') return 'admin-dashboard';
     if (path === '/admin/login') return 'admin-login';
     if (path === '/admin/forgot-password') return 'admin-forgot-password';
+    if (path === '/delivery/dashboard' || path === '/delivery/panel') return 'delivery-dashboard';
+    if (path === '/delivery/login') return 'delivery-login';
+    if (path === '/delivery/register') return 'delivery-register';
     if (path === '/products') return 'products';
     if (path === '/shops') return 'shops';
     if (path === '/kitchen-shakti') return 'kitchen-shakti';
@@ -796,6 +809,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Temporary Pending Registrations & OTPs
   const [pendingCustomerRegistration, setPendingCustomerRegistration] = useState<CustomerRegistrationPayload | null>(null);
   const [pendingSellerRegistration, setPendingSellerRegistration] = useState<SellerRegistrationPayload | null>(null);
+  const [pendingDeliveryPartnerRegistration, setPendingDeliveryPartnerRegistration] = useState<DeliveryPartnerRegistrationData | null>(null);
   const [activeOtpNotice, setActiveOtpNotice] = useState<{ code: string; recipient: string; purpose: string } | null>(null);
   const clearActiveOtpNotice = () => setActiveOtpNotice(null);
 
@@ -849,7 +863,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     ];
   });
 
-  const [appliedCoupon, setAppliedCoupon] = useState<string | null>('HARWAL100');
+  const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
 
@@ -949,9 +963,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           parsed.officialAddress = INITIAL_WEBSITE_SETTINGS.officialAddress;
           parsed.registeredAddress = INITIAL_WEBSITE_SETTINGS.registeredAddress;
         }
-        // Upgrade legacy default threshold to Rs. 3000
-        if (parsed.freeDeliveryThreshold === 499 || parsed.freeDeliveryThreshold === undefined) {
-          parsed.freeDeliveryThreshold = 3000;
+        // Free delivery offer removed: standard delivery rates apply
+        parsed.enableFreeDelivery = false;
+        parsed.freeDeliveryThreshold = 0;
+        // Remove deprecated coupon offer and free delivery announcement text
+        if (
+          parsed.announcementBannerText &&
+          (parsed.announcementBannerText.includes('HARWAL100') ||
+            parsed.announcementBannerText.includes('Free Delivery') ||
+            parsed.announcementBannerText.includes('3,000'))
+        ) {
+          parsed.announcementBannerText = INITIAL_WEBSITE_SETTINGS.announcementBannerText;
         }
         return { ...INITIAL_WEBSITE_SETTINGS, ...parsed };
       } catch (e) {
@@ -1207,6 +1229,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     else if (path === '/admin/dashboard') setCurrentViewState('admin-dashboard');
     else if (path === '/admin/login') setCurrentViewState('admin-login');
     else if (path === '/admin/forgot-password') setCurrentViewState('admin-forgot-password');
+    else if (path === '/delivery/dashboard' || path === '/delivery/panel') setCurrentViewState('delivery-dashboard');
+    else if (path === '/delivery/login') setCurrentViewState('delivery-login');
+    else if (path === '/delivery/register') setCurrentViewState('delivery-register');
     else if (path === '/products') setCurrentViewState('products');
     else if (path === '/shops') setCurrentViewState('shops');
     else if (path === '/kitchen-shakti') {
@@ -1245,6 +1270,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     else if (view === 'account') navigate('/customer/dashboard');
     else if (view === 'seller-panel') navigate('/seller/dashboard');
     else if (view === 'admin-panel') navigate('/admin/dashboard');
+    else if (view === 'delivery-panel' || view === 'delivery-dashboard') navigate('/delivery/dashboard');
+    else if (view === 'delivery-login') navigate('/delivery/login');
+    else if (view === 'delivery-register') navigate('/delivery/register');
     else if (view === 'products') navigate('/products');
     else if (view === 'shops') navigate('/shops');
     else if (view === 'kitchen-shakti') navigateToBrand('kitchen-shakti');
@@ -1293,6 +1321,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         else if (path === '/admin/dashboard' || path === '/admin/panel') setCurrentViewState('admin-dashboard');
         else if (path === '/admin/login') setCurrentViewState('admin-login');
         else if (path === '/admin/forgot-password') setCurrentViewState('admin-forgot-password');
+        else if (path === '/delivery/dashboard' || path === '/delivery/panel') setCurrentViewState('delivery-dashboard');
+        else if (path === '/delivery/login') setCurrentViewState('delivery-login');
+        else if (path === '/delivery/register') setCurrentViewState('delivery-register');
         else if (path === '/products') setCurrentViewState('products');
         else if (path === '/shops') setCurrentViewState('shops');
         else if (path === '/kitchen-shakti') setCurrentViewState('kitchen-shakti');
@@ -2580,6 +2611,309 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return { success: true, message: 'Withdrawal request submitted successfully.' };
   };
 
+  const deliveryPartnerLogin = (identifier: string, password?: string) => {
+    const cleanId = identifier.trim().toLowerCase();
+    const partner = deliveryPartners.find(
+      p =>
+        p.id.toLowerCase() === cleanId ||
+        p.email.toLowerCase() === cleanId ||
+        p.phone.trim() === cleanId ||
+        p.name.toLowerCase().includes(cleanId)
+    );
+
+    if (!partner) {
+      return { success: false, error: 'No registered delivery partner found with this Mobile, Email, or Rider ID.' };
+    }
+
+    const newSession: AuthSession = {
+      role: 'delivery',
+      isAuthenticated: true,
+      customer: null,
+      seller: null,
+      admin: null,
+      deliveryPartner: partner,
+    };
+
+    setAuthSession(newSession);
+    setCurrentRole('delivery');
+    try {
+      localStorage.setItem('hk_auth_session', JSON.stringify(newSession));
+    } catch (e) {}
+
+    showToast(`Welcome back, Rider ${partner.name}! Ready for hyperlocal deliveries. 🛵`);
+    navigate('/delivery/dashboard');
+    return { success: true, partner };
+  };
+
+  const deliveryPartnerLogout = () => {
+    const emptySession: AuthSession = {
+      role: null,
+      isAuthenticated: false,
+      customer: null,
+      seller: null,
+      admin: null,
+      deliveryPartner: null,
+    };
+    setAuthSession(emptySession);
+    try {
+      localStorage.setItem('hk_auth_session', JSON.stringify(emptySession));
+    } catch (e) {}
+    showToast('Delivery Partner logged out.');
+    navigate('/delivery/login');
+  };
+
+  const initiateDeliveryPartnerRegister = (data: DeliveryPartnerRegistrationData) => {
+    // Validation
+    if (!data.name.trim()) return { success: false, error: 'Please enter your full legal name as per Driving License/Aadhaar.' };
+    if (!data.phone.trim() || data.phone.trim().length < 10) return { success: false, error: 'Please enter a valid 10-digit mobile number.' };
+    if (!data.email.trim() || !data.email.includes('@')) return { success: false, error: 'Please enter a valid email address.' };
+    if (!data.city.trim()) return { success: false, error: 'Please specify your operational delivery city.' };
+    if (!data.pincode.trim() || data.pincode.trim().length !== 6) return { success: false, error: 'Please enter a valid 6-digit Indian PIN code.' };
+    if (!data.vehicleNumber.trim()) return { success: false, error: 'Please enter your vehicle registration number (e.g., DL-01-AB-1234).' };
+    if (!data.licenseNumber.trim()) return { success: false, error: 'Please enter your Driving License number.' };
+
+    const cleanPhone = data.phone.trim();
+    const cleanEmail = data.email.toLowerCase().trim();
+    const cleanVeh = data.vehicleNumber.toUpperCase().trim();
+
+    // Check if phone or email or vehicle number already exists
+    const existing = deliveryPartners.find(
+      p => p.phone.trim() === cleanPhone || p.email.toLowerCase().trim() === cleanEmail || p.vehicleNumber.toUpperCase().trim() === cleanVeh
+    );
+    if (existing) {
+      return { success: false, error: 'A delivery partner with this mobile number, email, or vehicle number already exists. Please login instead.' };
+    }
+
+    const generatedOtp = '123456';
+    setPendingDeliveryPartnerRegistration(data);
+    setActiveOtpNotice({
+      code: generatedOtp,
+      recipient: cleanPhone,
+      purpose: 'Delivery Partner Mobile & Fleet Verification',
+    });
+    showToast(`Verification OTP 123456 sent to +91 ${cleanPhone}!`);
+    return { success: true, otp: generatedOtp };
+  };
+
+  const verifyDeliveryPartnerRegistrationOtp = (otp: string) => {
+    if (!pendingDeliveryPartnerRegistration) {
+      return { success: false, error: 'No pending delivery partner registration found. Please submit the form again.' };
+    }
+    if (otp.trim() !== '123456' && otp.trim() !== activeOtpNotice?.code) {
+      return { success: false, error: 'Incorrect OTP. Please enter the 6-digit verification code sent to your phone (Demo OTP: 123456).' };
+    }
+
+    const data = pendingDeliveryPartnerRegistration;
+    const cleanPhone = data.phone.trim();
+    const newPartnerId = `rider_${Date.now().toString().slice(-4)}`;
+
+    const newPartner: DeliveryPartner = {
+      id: newPartnerId,
+      name: data.name.trim(),
+      phone: cleanPhone,
+      email: data.email.trim(),
+      city: data.city.trim(),
+      pincode: data.pincode.trim(),
+      vehicleType: data.vehicleType || 'Bike',
+      vehicleNumber: data.vehicleNumber.trim().toUpperCase(),
+      licenseNumber: data.licenseNumber.trim().toUpperCase(),
+      emergencyContact: data.emergencyContact?.trim() || '',
+      status: 'active',
+      walletBalance: 150, // Welcome joining bonus for immediate wallet gratification
+      totalEarnings: 150,
+      completedDeliveries: 0,
+      rating: 5.0,
+      upiId: data.upiId?.trim() || `${cleanPhone}@upi`,
+      bankDetails: data.bankDetails && data.bankDetails.accountNumber ? data.bankDetails : {
+        accountHolderName: data.name.trim(),
+        accountNumber: `XXXXXX${cleanPhone.slice(-4)}`,
+        ifscCode: 'HDFC0001234',
+        bankName: 'HDFC Bank Ltd',
+      },
+      joinedDate: new Date().toISOString().split('T')[0],
+    };
+
+    setDeliveryPartners(prev => [newPartner, ...prev]);
+
+    // Set authenticated session directly
+    const newSession: AuthSession = {
+      role: 'delivery',
+      isAuthenticated: true,
+      customer: null,
+      seller: null,
+      admin: null,
+      deliveryPartner: newPartner,
+    };
+    setAuthSession(newSession);
+    setCurrentRole('delivery');
+    try {
+      localStorage.setItem('hk_auth_session', JSON.stringify(newSession));
+    } catch (e) {}
+
+    setPendingDeliveryPartnerRegistration(null);
+    clearActiveOtpNotice();
+
+    showToast(`Welcome to Harwalkart Fleet, ${newPartner.name}! ₹150 Joining Bonus added to your wallet. 🛵💨`);
+    navigate('/delivery/dashboard');
+    return { success: true, partner: newPartner };
+  };
+
+  const togglePartnerOnlineStatus = (partnerId: string, status: 'active' | 'offline') => {
+    setDeliveryPartners(prev =>
+      prev.map(p => (p.id === partnerId ? { ...p, status } : p))
+    );
+    setAuthSession(prev => {
+      if (prev.deliveryPartner?.id === partnerId) {
+        return {
+          ...prev,
+          deliveryPartner: { ...prev.deliveryPartner, status },
+        };
+      }
+      return prev;
+    });
+    showToast(`Duty Status: ${status === 'active' ? 'ONLINE (Ready for pickup)' : 'OFFLINE (Shift paused)'}`);
+  };
+
+  const acceptDeliveryAssignment = (orderId: string, partnerId: string) => {
+    const partner = deliveryPartners.find(p => p.id === partnerId);
+    if (!partner) return false;
+
+    const generatedOtp = String(Math.floor(1000 + Math.random() * 9000));
+
+    setOrders(prev =>
+      prev.map(ord => {
+        if (ord.id === orderId) {
+          const updatedSteps = ord.trackingSteps.map(st => {
+            if (st.title.toLowerCase().includes('preparing') || st.title.toLowerCase().includes('packed')) {
+              return { ...st, completed: true, current: false };
+            }
+            if (st.title.toLowerCase().includes('out for delivery')) {
+              return { ...st, current: true, description: `Assigned to ${partner.name} (${partner.vehicleType} - ${partner.vehicleNumber})` };
+            }
+            return st;
+          });
+
+          return {
+            ...ord,
+            status: ord.status === 'placed' || ord.status === 'confirmed' ? 'preparing' : ord.status,
+            assignedPartnerId: partner.id,
+            assignedPartnerName: partner.name,
+            assignedPartnerPhone: partner.phone,
+            assignedPartnerVehicle: `${partner.vehicleType} (${partner.vehicleNumber})`,
+            deliveryOtp: ord.deliveryOtp || generatedOtp,
+            pickupStatus: 'pending' as const,
+            deliveryFeeEarned: 50,
+            trackingSteps: updatedSteps,
+          };
+        }
+        return ord;
+      })
+    );
+
+    showToast(`Order #${orderId} accepted! Please proceed to merchant store.`);
+    return true;
+  };
+
+  const confirmOrderPickup = (orderId: string, partnerId: string) => {
+    const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    setOrders(prev =>
+      prev.map(ord => {
+        if (ord.id === orderId) {
+          const updatedSteps = ord.trackingSteps.map(st => {
+            if (st.title.toLowerCase().includes('out for delivery')) {
+              return {
+                ...st,
+                completed: true,
+                current: true,
+                timestamp: now,
+                description: `Package picked up by ${ord.assignedPartnerName || 'Rider'}. En route to customer.`,
+              };
+            }
+            return st;
+          });
+
+          return {
+            ...ord,
+            status: 'out_for_delivery' as const,
+            pickupStatus: 'out_for_delivery' as const,
+            trackingSteps: updatedSteps,
+          };
+        }
+        return ord;
+      })
+    );
+
+    showToast(`Order #${orderId} picked up from store! Drive safely.`);
+    return true;
+  };
+
+  const completeDeliveryWithOtp = (orderId: string, partnerId: string, inputOtp: string) => {
+    const targetOrder = orders.find(o => o.id === orderId);
+    if (!targetOrder) return { success: false, error: 'Order not found in records.' };
+
+    const validOtp = targetOrder.deliveryOtp || '1234';
+    if (inputOtp.trim() !== validOtp && inputOtp.trim() !== '1234') {
+      return { success: false, error: `Invalid Delivery OTP. Please enter the 4-digit OTP provided by customer (Demo OTP: ${validOtp}).` };
+    }
+
+    const fee = targetOrder.deliveryFeeEarned || 50;
+    const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    setOrders(prev =>
+      prev.map(ord => {
+        if (ord.id === orderId) {
+          const updatedSteps = ord.trackingSteps.map(st => {
+            if (st.title.toLowerCase().includes('delivered')) {
+              return { ...st, completed: true, current: true, timestamp: now, description: 'Handed over successfully with customer OTP verification.' };
+            }
+            return { ...st, current: false };
+          });
+
+          return {
+            ...ord,
+            status: 'delivered' as const,
+            pickupStatus: 'delivered' as const,
+            paymentStatus: ord.paymentMethod === 'cod' ? ('paid' as const) : ord.paymentStatus,
+            trackingSteps: updatedSteps,
+          };
+        }
+        return ord;
+      })
+    );
+
+    setDeliveryPartners(prev =>
+      prev.map(p => {
+        if (p.id === partnerId) {
+          return {
+            ...p,
+            walletBalance: p.walletBalance + fee,
+            totalEarnings: p.totalEarnings + fee,
+            completedDeliveries: p.completedDeliveries + 1,
+          };
+        }
+        return p;
+      })
+    );
+
+    setAuthSession(prev => {
+      if (prev.deliveryPartner && prev.deliveryPartner.id === partnerId) {
+        return {
+          ...prev,
+          deliveryPartner: {
+            ...prev.deliveryPartner,
+            walletBalance: prev.deliveryPartner.walletBalance + fee,
+            totalEarnings: prev.deliveryPartner.totalEarnings + fee,
+            completedDeliveries: prev.deliveryPartner.completedDeliveries + 1,
+          },
+        };
+      }
+      return prev;
+    });
+
+    showToast(`Order #${orderId} Delivered! ₹${fee} credited to Rider Wallet. 🛵💨`);
+    return { success: true };
+  };
+
   // Withdrawals & Payout Management
   const approveWithdrawal = (withdrawalId: string, adminNotes?: string) => {
     const today = new Date().toISOString().split('T')[0];
@@ -3407,23 +3741,38 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const cartSubtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
-  const freeThreshold = websiteSettings?.freeDeliveryThreshold ?? 3000;
+  const hasFreeDelivery = Boolean(websiteSettings?.enableFreeDelivery && websiteSettings?.freeDeliveryThreshold && websiteSettings.freeDeliveryThreshold > 0);
+  const freeThreshold = websiteSettings?.freeDeliveryThreshold ?? 0;
   const standardFee = websiteSettings?.standardDeliveryFee ?? 40;
-  const cartDeliveryFee = cartSubtotal >= freeThreshold || cartSubtotal === 0 ? 0 : standardFee;
-  const cartDiscount = appliedCoupon === 'HARWAL100' && cartSubtotal >= 499 ? 100 : 0;
+  const cartDeliveryFee = cartSubtotal === 0 ? 0 : (hasFreeDelivery && cartSubtotal >= freeThreshold ? 0 : standardFee);
+  const cartDiscount = (() => {
+    if (!appliedCoupon) return 0;
+    const activeCoupon = AVAILABLE_COUPONS.find(c => c.code.toUpperCase() === appliedCoupon.toUpperCase());
+    if (!activeCoupon || cartSubtotal < activeCoupon.minOrder) return 0;
+    if (activeCoupon.discountAmount) return activeCoupon.discountAmount;
+    if (activeCoupon.discountPercent) {
+      const pct = Math.round((cartSubtotal * activeCoupon.discountPercent) / 100);
+      return activeCoupon.maxDiscount ? Math.min(pct, activeCoupon.maxDiscount) : pct;
+    }
+    return 0;
+  })();
   const cartTotal = Math.max(0, cartSubtotal + cartDeliveryFee - cartDiscount);
 
   const applyCoupon = (code: string) => {
     const cleanCode = code.trim().toUpperCase();
-    if (cleanCode === 'HARWAL100') {
-      if (cartSubtotal >= 499) {
-        setAppliedCoupon('HARWAL100');
-        showToast('Coupon HARWAL100 applied: Flat ₹100 Discount! 🎉');
+    if (AVAILABLE_COUPONS.length === 0) {
+      return { success: false, message: 'All coupon offers have been disabled.' };
+    }
+    const matched = AVAILABLE_COUPONS.find(c => c.code.toUpperCase() === cleanCode);
+    if (matched) {
+      if (cartSubtotal >= matched.minOrder) {
+        setAppliedCoupon(matched.code);
+        showToast(`Coupon ${matched.code} applied! 🎉`);
         return { success: true, message: 'Coupon applied successfully!' };
       }
-      return { success: false, message: 'Minimum order amount for HARWAL100 is ₹499' };
+      return { success: false, message: `Minimum order amount for ${matched.code} is ₹${matched.minOrder}` };
     }
-    return { success: false, message: 'Invalid coupon code. Try HARWAL100' };
+    return { success: false, message: 'Invalid or expired coupon code.' };
   };
 
   const removeCoupon = () => {
@@ -3864,6 +4213,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         approveProduct,
         rejectProduct,
         deleteOrder,
+        deliveryPartners,
+        addDeliveryPartner,
+        editDeliveryPartner,
+        deleteDeliveryPartner,
+        requestPartnerWithdrawal,
+        deliveryPartnerLogin,
+        deliveryPartnerLogout,
+        initiateDeliveryPartnerRegister,
+        verifyDeliveryPartnerRegistrationOtp,
+        acceptDeliveryAssignment,
+        confirmOrderPickup,
+        completeDeliveryWithOtp,
+        togglePartnerOnlineStatus,
         addManualPayout,
         deleteWithdrawalRequest,
         addVideoAd,

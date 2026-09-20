@@ -181,7 +181,9 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({
             <div>
               <span className="text-[10px] text-slate-400 uppercase font-bold block">Free Shipping</span>
               <span className="font-black text-white">
-                &gt; ₹{websiteSettings.freeDeliveryThreshold}
+                {websiteSettings.enableFreeDelivery && websiteSettings.freeDeliveryThreshold > 0
+                  ? `> ₹${websiteSettings.freeDeliveryThreshold}`
+                  : 'Disabled'}
               </span>
             </div>
             <Truck className="w-4 h-4 text-sky-400" />

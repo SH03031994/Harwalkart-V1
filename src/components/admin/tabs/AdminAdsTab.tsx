@@ -273,7 +273,7 @@ export const AdminAdsTab: React.FC = () => {
                   value={formData.subtitle}
                   onChange={e => setFormData({ ...formData, subtitle: e.target.value })}
                   className="w-full p-2.5 border border-slate-200 rounded-xl"
-                  placeholder="e.g. 100% Pure Spices with Flat ₹100 Coupon"
+                  placeholder="e.g. 100% Pure Certified Spices Direct From Mill"
                 />
               </div>
 

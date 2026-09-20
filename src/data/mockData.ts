@@ -1366,27 +1366,17 @@ export const INITIAL_REVIEWS: ProductReview[] = [
   },
 ];
 
-export const AVAILABLE_COUPONS = [
-  {
-    code: 'HARWAL100',
-    description: 'Flat ₹100 Off on orders above ₹499',
-    minOrder: 499,
-    discountAmount: 100,
-  },
-  {
-    code: 'LOCALFIRST',
-    description: '15% Off on local shop products (Up to ₹75)',
-    minOrder: 299,
-    discountPercent: 15,
-    maxDiscount: 75,
-  },
-  {
-    code: 'SHAKTI50',
-    description: 'Flat ₹50 Off on Kitchen Shakti Spices Range',
-    minOrder: 249,
-    discountAmount: 50,
-  },
-];
+export interface AvailableCoupon {
+  code: string;
+  description: string;
+  minOrder: number;
+  discountAmount?: number;
+  discountPercent?: number;
+  maxDiscount?: number;
+}
+
+// All promotional coupon offers removed as requested
+export const AVAILABLE_COUPONS: AvailableCoupon[] = [];
 
 export const INITIAL_CUSTOMERS: CustomerUser[] = [
   {
@@ -2028,7 +2018,7 @@ export const INITIAL_WEBSITE_SETTINGS: WebsiteSettings = {
   showCategorySection: true,
   showTrendingSection: true,
   showKitchenShaktiSection: true,
-  announcementBannerText: '🎉 Welcome to HARWALKART! Enjoy Flat ₹100 Off on orders above ₹499 with code HARWAL100.',
+  announcementBannerText: '🎉 Welcome to HARWALKART! Fast hyperlocal delivery & 100% pure Kitchen Shakti spices across India.',
   isAnnouncementActive: true,
   footerAboutText: 'HARWALKART is India’s fast-growing multi-vendor retail platform empowering local kirana merchants, artisans, and in-house pure kitchen spices.',
   footerCopyrightText: '© 2026 HARWALKART (SharanKumar Harwalkar). All rights reserved.',
@@ -2053,7 +2043,8 @@ export const INITIAL_WEBSITE_SETTINGS: WebsiteSettings = {
   localDeliveryRadiusKm: 15,
   standardDeliveryFee: 40,
   expressDeliveryFee: 65,
-  freeDeliveryThreshold: 3000,
+  freeDeliveryThreshold: 0,
+  enableFreeDelivery: false,
   localDeliveryTime: '15-45 mins',
   enablePanIndiaDelivery: true,
   panIndiaDeliveryTime: '3-5 business days',

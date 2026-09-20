@@ -60,7 +60,7 @@ export const MasterControlModal: React.FC<MasterControlModalProps> = ({
   const [importJsonText, setImportJsonText] = useState('');
   const [importStatus, setImportStatus] = useState<string | null>(null);
   const [announcementText, setAnnouncementText] = useState(
-    websiteSettings.announcementBannerText || '🎉 Free Delivery on all Kitchen Shakti Spices above ₹199! Order Today.'
+    websiteSettings.announcementBannerText || '🎉 Welcome to HARWALKART! Fast hyperlocal delivery & 100% pure Kitchen Shakti spices.'
   );
   const [isAnnouncementActive, setIsAnnouncementActive] = useState(
     websiteSettings.isAnnouncementActive ?? true
@@ -456,30 +456,48 @@ export const MasterControlModal: React.FC<MasterControlModalProps> = ({
                 </div>
 
                 <div className="p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2">
-                  <label className="block text-xs font-black text-slate-900 dark:text-white uppercase">
-                    Free Delivery Threshold (₹)
-                  </label>
-                  <p className="text-[11px] text-slate-500">
-                    Cart total above which customer gets 100% Free Shipping.
-                  </p>
-                  <div className="flex items-center gap-3 pt-1">
-                    <span className="font-bold text-slate-600 dark:text-slate-300 text-sm">₹</span>
+                  <div className="flex items-center justify-between">
+                    <label className="block text-xs font-black text-slate-900 dark:text-white uppercase">
+                      Free Delivery Offer
+                    </label>
                     <input
-                      type="number"
-                      step="50"
-                      min="0"
-                      max="10000"
-                      value={websiteSettings.freeDeliveryThreshold}
+                      type="checkbox"
+                      checked={websiteSettings.enableFreeDelivery ?? false}
                       onChange={e => {
-                        const val = parseInt(e.target.value) || 0;
-                        updateWebsiteSettings({ freeDeliveryThreshold: val });
+                        const enabled = e.target.checked;
+                        updateWebsiteSettings({
+                          enableFreeDelivery: enabled,
+                          freeDeliveryThreshold: enabled ? (websiteSettings.freeDeliveryThreshold || 3000) : 0,
+                        });
                       }}
-                      className="w-28 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl font-bold text-sm text-slate-900 dark:text-white text-center"
+                      className="w-4 h-4 accent-amber-600 cursor-pointer"
                     />
-                    <span className="text-[11px] text-emerald-600 font-semibold">
-                      Standard: ₹3,000 Minimum Cart
-                    </span>
                   </div>
+                  <p className="text-[11px] text-slate-500">
+                    {websiteSettings.enableFreeDelivery
+                      ? 'Cart total above which customer gets 100% Free Shipping.'
+                      : 'Free delivery offer is currently DISABLED. Standard delivery applies to all orders.'}
+                  </p>
+                  {websiteSettings.enableFreeDelivery && (
+                    <div className="flex items-center gap-3 pt-1">
+                      <span className="font-bold text-slate-600 dark:text-slate-300 text-sm">₹</span>
+                      <input
+                        type="number"
+                        step="50"
+                        min="0"
+                        max="10000"
+                        value={websiteSettings.freeDeliveryThreshold}
+                        onChange={e => {
+                          const val = parseInt(e.target.value) || 0;
+                          updateWebsiteSettings({ freeDeliveryThreshold: val });
+                        }}
+                        className="w-28 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl font-bold text-sm text-slate-900 dark:text-white text-center"
+                      />
+                      <span className="text-[11px] text-emerald-600 font-semibold">
+                        Threshold: ₹{websiteSettings.freeDeliveryThreshold}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

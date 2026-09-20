@@ -35,9 +35,10 @@ export const CartView: React.FC = () => {
   const [couponInput, setCouponInput] = useState('');
   const [couponFeedback, setCouponFeedback] = useState<{ success: boolean; message: string } | null>(null);
 
-  const freeDeliveryThreshold = websiteSettings?.freeDeliveryThreshold ?? 3000;
+  const hasFreeDelivery = Boolean(websiteSettings?.enableFreeDelivery && websiteSettings?.freeDeliveryThreshold && websiteSettings.freeDeliveryThreshold > 0);
+  const freeDeliveryThreshold = websiteSettings?.freeDeliveryThreshold ?? 0;
   const remainingForFreeDelivery = Math.max(0, freeDeliveryThreshold - cartSubtotal);
-  const freeDeliveryProgress = Math.min(100, Math.round((cartSubtotal / freeDeliveryThreshold) * 100));
+  const freeDeliveryProgress = freeDeliveryThreshold > 0 ? Math.min(100, Math.round((cartSubtotal / freeDeliveryThreshold) * 100)) : 0;
 
   const handleApplyCoupon = (code: string) => {
     const res = applyCoupon(code);
@@ -96,7 +97,7 @@ export const CartView: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Cart Item List (8 Cols) */}
         <div className="lg:col-span-8 space-y-4">
-          {/* Delivering to Pill & Free Delivery Progress */}
+          {/* Delivering to Pill & Delivery Information */}
           <div className="bg-amber-50 border border-amber-200 rounded-2xl p-3.5 space-y-2 text-xs">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-2">
@@ -104,19 +105,25 @@ export const CartView: React.FC = () => {
                 <span className="text-slate-700">Delivering to:</span>
                 <strong className="text-slate-900">{currentLocation.area}, {currentLocation.city} ({currentLocation.pincode})</strong>
               </div>
-              {cartDeliveryFee === 0 ? (
-                <span className="bg-emerald-600 text-white font-bold px-2.5 py-1 rounded-lg text-[10px] uppercase shadow-xs">
-                  🎉 Free Delivery Unlocked (&gt; ₹{freeDeliveryThreshold})
-                </span>
+              {hasFreeDelivery ? (
+                cartDeliveryFee === 0 ? (
+                  <span className="bg-emerald-600 text-white font-bold px-2.5 py-1 rounded-lg text-[10px] uppercase shadow-xs">
+                    🎉 Free Delivery Unlocked (&gt; ₹{freeDeliveryThreshold})
+                  </span>
+                ) : (
+                  <span className="text-slate-600 font-semibold text-[11px]">
+                    Add <strong className="text-amber-700 font-black">₹{remainingForFreeDelivery}</strong> more for <strong className="text-emerald-700">FREE Delivery</strong>
+                  </span>
+                )
               ) : (
-                <span className="text-slate-600 font-semibold text-[11px]">
-                  Add <strong className="text-amber-700 font-black">₹{remainingForFreeDelivery}</strong> more for <strong className="text-emerald-700">FREE Delivery</strong>
+                <span className="text-slate-600 font-medium text-[11px]">
+                  Standard Delivery: <strong className="text-slate-900 font-bold">₹{cartDeliveryFee}</strong>
                 </span>
               )}
             </div>
 
-            {/* Delivery Progress Bar */}
-            {cartDeliveryFee > 0 && (
+            {/* Delivery Progress Bar (only if free delivery offer is enabled) */}
+            {hasFreeDelivery && cartDeliveryFee > 0 && (
               <div className="space-y-1 pt-1">
                 <div className="w-full bg-amber-200/60 rounded-full h-2 overflow-hidden">
                   <div
@@ -223,7 +230,7 @@ export const CartView: React.FC = () => {
               <div className="flex gap-2">
                 <input
                   type="text"
-                  placeholder="Enter code (e.g. HARWAL100)"
+                  placeholder="Enter promo or coupon code"
                   value={couponInput}
                   onChange={e => setCouponInput(e.target.value.toUpperCase())}
                   className="flex-1 px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold uppercase"
@@ -244,24 +251,26 @@ export const CartView: React.FC = () => {
             )}
 
             {/* Quick Available Coupons */}
-            <div className="pt-2 space-y-1.5">
-              <p className="text-[11px] text-slate-400 font-bold uppercase">Available Offers:</p>
-              {AVAILABLE_COUPONS.map(c => (
-                <div
-                  key={c.code}
-                  onClick={() => handleApplyCoupon(c.code)}
-                  className="p-2 rounded-xl bg-slate-50 hover:bg-amber-50/80 border border-slate-200 hover:border-amber-300 flex items-center justify-between cursor-pointer text-xs"
-                >
-                  <div>
-                    <span className="font-bold text-amber-800">{c.code}</span>
-                    <p className="text-[10px] text-slate-500">{c.description}</p>
+            {AVAILABLE_COUPONS.length > 0 && (
+              <div className="pt-2 space-y-1.5">
+                <p className="text-[11px] text-slate-400 font-bold uppercase">Available Offers:</p>
+                {AVAILABLE_COUPONS.map(c => (
+                  <div
+                    key={c.code}
+                    onClick={() => handleApplyCoupon(c.code)}
+                    className="p-2 rounded-xl bg-slate-50 hover:bg-amber-50/80 border border-slate-200 hover:border-amber-300 flex items-center justify-between cursor-pointer text-xs"
+                  >
+                    <div>
+                      <span className="font-bold text-amber-800">{c.code}</span>
+                      <p className="text-[10px] text-slate-500">{c.description}</p>
+                    </div>
+                    <span className="text-[10px] font-bold text-slate-700 hover:text-amber-800">
+                      Apply
+                    </span>
                   </div>
-                  <span className="text-[10px] font-bold text-slate-700 hover:text-amber-800">
-                    Apply
-                  </span>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Price Breakdown Card */}

@@ -302,7 +302,7 @@ export const AdminSettingsTab: React.FC = () => {
             </p>
             <div className="pt-2 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
               <span>Commission: {formData.defaultCommissionRate}%</span>
-              <span>Free Delivery: ₹{formData.freeDeliveryThreshold}</span>
+              <span>Free Delivery: {formData.enableFreeDelivery && formData.freeDeliveryThreshold > 0 ? `₹${formData.freeDeliveryThreshold}` : 'Disabled'}</span>
             </div>
           </div>
         </div>
@@ -628,7 +628,7 @@ export const AdminSettingsTab: React.FC = () => {
                     value={formData.announcementBannerText}
                     onChange={e => handleChange('announcementBannerText', e.target.value)}
                     className="w-full p-2.5 bg-white border border-amber-200 rounded-xl text-slate-900"
-                    placeholder="e.g. 🎉 Launch Discount: Use code HARWAL100 for Flat ₹100 Off!"
+                    placeholder="e.g. 🎉 Fast Delivery & 100% Pure Spices Across India!"
                   />
                 </div>
 
@@ -863,13 +863,23 @@ export const AdminSettingsTab: React.FC = () => {
                   </div>
 
                   <div className="space-y-1">
-                    <label className="font-bold text-slate-700">Free Delivery Minimum Cart (₹)</label>
+                    <div className="flex items-center justify-between">
+                      <label className="font-bold text-slate-700">Free Delivery Offer</label>
+                      <input
+                        type="checkbox"
+                        checked={formData.enableFreeDelivery ?? false}
+                        onChange={e => handleChange('enableFreeDelivery', e.target.checked)}
+                        className="w-4 h-4 accent-amber-600 cursor-pointer"
+                      />
+                    </div>
                     <input
                       type="number"
                       min={0}
                       value={formData.freeDeliveryThreshold}
                       onChange={e => handleChange('freeDeliveryThreshold', Number(e.target.value))}
-                      className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-emerald-600"
+                      placeholder="Min Cart (₹)"
+                      disabled={!formData.enableFreeDelivery}
+                      className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-emerald-600 disabled:opacity-50"
                     />
                   </div>
 

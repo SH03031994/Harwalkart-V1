@@ -1,7 +1,7 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { Role } from '../../types';
-import { ShieldAlert, ArrowRight, Lock, User, Store, Shield } from 'lucide-react';
+import { ShieldAlert, ArrowRight, Lock, User, Store, Shield, Bike } from 'lucide-react';
 
 interface AccessRestrictedNoticeProps {
   requiredRole: Role;
@@ -12,6 +12,15 @@ export const AccessRestrictedNotice: React.FC<AccessRestrictedNoticeProps> = ({ 
 
   const getRoleConfig = () => {
     switch (requiredRole) {
+      case 'delivery':
+        return {
+          title: 'Delivery Fleet Authentication Required',
+          description: 'You need an active Harwalkart Delivery Partner account to access the Fleet Dispatch & Orders Dashboard.',
+          loginPath: '/delivery/login',
+          registerPath: null,
+          color: 'emerald',
+          icon: <Bike className="w-8 h-8 text-emerald-500" />,
+        };
       case 'seller':
         return {
           title: 'Seller Authentication Required',

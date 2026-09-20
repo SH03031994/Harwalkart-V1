@@ -272,9 +272,10 @@ export const DynamicDeliveryEstimator: React.FC<DynamicDeliveryEstimatorProps> =
     const formattedDate = expectedDate.toLocaleDateString('en-IN', dayOptions);
 
     // Shipping cost calculation
-    const freeDeliveryThreshold = websiteSettings?.freeDeliveryThreshold ?? 3000;
-    const qualifiesFreeShipping = product.price >= freeDeliveryThreshold || isDirect;
-    const shippingFee = qualifiesFreeShipping ? 0 : (websiteSettings?.standardDeliveryFee ?? 30);
+    const hasFreeDelivery = Boolean(websiteSettings?.enableFreeDelivery && websiteSettings?.freeDeliveryThreshold && websiteSettings.freeDeliveryThreshold > 0);
+    const freeDeliveryThreshold = websiteSettings?.freeDeliveryThreshold ?? 0;
+    const qualifiesFreeShipping = Boolean(hasFreeDelivery && product.price >= freeDeliveryThreshold);
+    const shippingFee = qualifiesFreeShipping ? 0 : (websiteSettings?.standardDeliveryFee ?? 40);
 
     return {
       isServiceable,
@@ -474,7 +475,7 @@ export const DynamicDeliveryEstimator: React.FC<DynamicDeliveryEstimatorProps> =
                 </div>
               </div>
 
-              {/* Free delivery badge */}
+              {/* Delivery fee badge */}
               <div className="text-right">
                 <span
                   className={`text-xs font-black px-2.5 py-1 rounded-lg inline-block ${
@@ -487,9 +488,9 @@ export const DynamicDeliveryEstimator: React.FC<DynamicDeliveryEstimatorProps> =
                     ? 'FREE Delivery'
                     : `₹${deliveryCalculation.shippingFee} Delivery Fee`}
                 </span>
-                {!deliveryCalculation.qualifiesFreeShipping && (
+                {Boolean(websiteSettings?.enableFreeDelivery && websiteSettings?.freeDeliveryThreshold && websiteSettings.freeDeliveryThreshold > 0) && !deliveryCalculation.qualifiesFreeShipping && (
                   <span className="block text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold mt-0.5">
-                    Free for orders above ₹{websiteSettings?.freeDeliveryThreshold ?? 3000}
+                    Free for orders above ₹{websiteSettings?.freeDeliveryThreshold}
                   </span>
                 )}
               </div>

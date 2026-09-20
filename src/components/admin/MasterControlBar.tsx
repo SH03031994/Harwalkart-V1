@@ -73,10 +73,10 @@ export const MasterControlBar: React.FC<MasterControlBarProps> = ({ onOpenMaster
 
   const handleSaveThreshold = (e: React.FormEvent) => {
     e.preventDefault();
-    const val = parseInt(tempThreshold) || 3000;
-    updateWebsiteSettings({ freeDeliveryThreshold: val });
+    const val = parseInt(tempThreshold) || 0;
+    updateWebsiteSettings({ freeDeliveryThreshold: val, enableFreeDelivery: val > 0 });
     setIsEditingThreshold(false);
-    showToast(`Free Delivery threshold set to ₹${val}`);
+    showToast(val > 0 ? `Free Delivery threshold set to ₹${val}` : 'Free Delivery offer disabled');
   };
 
   const handleQuickBackup = () => {
@@ -321,7 +321,9 @@ export const MasterControlBar: React.FC<MasterControlBarProps> = ({ onOpenMaster
                 className="cursor-pointer hover:text-emerald-400 flex items-center justify-between"
               >
                 <span className="font-black text-[11px]">
-                  &gt; ₹{websiteSettings.freeDeliveryThreshold}
+                  {websiteSettings.enableFreeDelivery && websiteSettings.freeDeliveryThreshold > 0
+                    ? `> ₹${websiteSettings.freeDeliveryThreshold}`
+                    : 'Disabled'}
                 </span>
                 <span className="text-[9px] text-emerald-400 underline">Edit</span>
               </div>

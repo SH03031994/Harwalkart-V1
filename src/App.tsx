@@ -34,6 +34,9 @@ import { SellerForgotPassword } from './components/auth/SellerForgotPassword';
 import { AdminLogin } from './components/auth/AdminLogin';
 import { AdminForgotPassword } from './components/auth/AdminForgotPassword';
 import { AccessRestrictedNotice } from './components/auth/AccessRestrictedNotice';
+import { DeliveryPartnerLogin } from './components/delivery/DeliveryPartnerLogin';
+import { DeliveryPartnerRegister } from './components/delivery/DeliveryPartnerRegister';
+import { DeliveryPartnerDashboard } from './components/delivery/DeliveryPartnerDashboard';
 
 const AppContent: React.FC = () => {
   const { currentView, toastMessage, authSession } = useApp();
@@ -113,6 +116,17 @@ const AppContent: React.FC = () => {
             <AdminDashboard />
           ) : (
             <AccessRestrictedNotice requiredRole="admin" />
+          )
+        )}
+
+        {/* 4. DELIVERY FLEET PANEL VIEWS */}
+        {currentView === 'delivery-login' && <DeliveryPartnerLogin />}
+        {currentView === 'delivery-register' && <DeliveryPartnerRegister />}
+        {(currentView === 'delivery-dashboard' || currentView === 'delivery-panel') && (
+          authSession.role === 'delivery' && authSession.isAuthenticated ? (
+            <DeliveryPartnerDashboard />
+          ) : (
+            <AccessRestrictedNotice requiredRole="delivery" />
           )
         )}
       </main>

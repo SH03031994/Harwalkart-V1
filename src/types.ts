@@ -1,4 +1,4 @@
-export type Role = 'customer' | 'seller' | 'admin';
+export type Role = 'customer' | 'seller' | 'admin' | 'delivery';
 
 export type SellerType = 'gst' | 'local_without_gst';
 
@@ -142,6 +142,7 @@ export interface DeliveryPartner {
   vehicleType: 'Bike' | 'Scooter' | 'Electric EV' | 'Van';
   vehicleNumber: string;
   licenseNumber?: string;
+  emergencyContact?: string;
   status: 'active' | 'offline' | 'suspended';
   walletBalance: number;
   totalEarnings: number;
@@ -155,6 +156,26 @@ export interface DeliveryPartner {
     bankName: string;
   };
   joinedDate: string;
+}
+
+export interface DeliveryPartnerRegistrationData {
+  name: string;
+  phone: string;
+  email: string;
+  password?: string;
+  city: string;
+  pincode: string;
+  vehicleType: 'Bike' | 'Scooter' | 'Electric EV' | 'Van';
+  vehicleNumber: string;
+  licenseNumber: string;
+  emergencyContact?: string;
+  upiId?: string;
+  bankDetails?: {
+    accountHolderName?: string;
+    accountNumber: string;
+    ifscCode: string;
+    bankName: string;
+  };
 }
 
 export type PayoutStatus = 'pending' | 'approved' | 'rejected' | 'paid' | 'completed';
@@ -212,6 +233,7 @@ export interface AuthSession {
   customer: CustomerUser | null;
   seller: Seller | null;
   admin: AdminUser | null;
+  deliveryPartner?: DeliveryPartner | null;
 }
 
 export interface Brand {
@@ -407,6 +429,13 @@ export interface Order {
   paymentStatus: PaymentStatus;
   paymentTransaction?: PaymentTransactionDetails;
   estimatedDelivery: string;
+  assignedPartnerId?: string;
+  assignedPartnerName?: string;
+  assignedPartnerPhone?: string;
+  assignedPartnerVehicle?: string;
+  deliveryOtp?: string;
+  pickupStatus?: 'pending' | 'picked_up' | 'out_for_delivery' | 'delivered';
+  deliveryFeeEarned?: number;
   trackingSteps: {
     title: string;
     description: string;
@@ -550,6 +579,7 @@ export interface WebsiteSettings {
   standardDeliveryFee: number;
   expressDeliveryFee: number;
   freeDeliveryThreshold: number;
+  enableFreeDelivery?: boolean;
   localDeliveryTime: string;
   enablePanIndiaDelivery: boolean;
   panIndiaDeliveryTime: string;
