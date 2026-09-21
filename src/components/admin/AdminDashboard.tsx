@@ -21,6 +21,7 @@ import {
   Image as ImageIcon,
   BarChart3,
   Bike,
+  Plus,
 } from 'lucide-react';
 
 import { AdminOverviewTab } from './tabs/AdminOverviewTab';
@@ -89,6 +90,8 @@ export const AdminDashboard: React.FC = () => {
   >('company_products');
 
   const [isMasterModalOpen, setIsMasterModalOpen] = useState(false);
+  const [triggerAddBanner, setTriggerAddBanner] = useState(false);
+  const [triggerAddProduct, setTriggerAddProduct] = useState(false);
 
   const pendingSellers = sellers.filter(s => s.status === 'pending');
   const pendingProducts = products.filter(p => !p.approved);
@@ -124,16 +127,30 @@ export const AdminDashboard: React.FC = () => {
           <AdminOmniSearch setActiveTab={setActiveTab} />
         </div>
 
-        <div className="flex items-center gap-3 w-full lg:w-auto justify-between lg:justify-end">
-          <div className="bg-slate-800/90 px-4 py-2 rounded-2xl border border-slate-700 text-xs text-right">
-            <span className="text-slate-400 block text-[10px] uppercase font-bold">Marketplace Status</span>
-            <span className="text-emerald-400 font-black">
-              {websiteSettings.maintenanceModeEnabled ? '⚠️ MAINTENANCE' : '100% LIVE • PAN-INDIA'}
-            </span>
-          </div>
+        <div className="flex items-center gap-2 w-full lg:w-auto justify-between lg:justify-end flex-wrap sm:flex-nowrap">
+          <button
+            onClick={() => {
+              setActiveTab('banners');
+              setTriggerAddBanner(true);
+            }}
+            className="px-3 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs rounded-xl flex items-center gap-1.5 cursor-pointer shadow-xs transition-all hover:scale-102"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            <span>+ Add Hero Banner</span>
+          </button>
+          <button
+            onClick={() => {
+              setActiveTab('products');
+              setTriggerAddProduct(true);
+            }}
+            className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 font-black text-xs rounded-xl flex items-center gap-1.5 cursor-pointer shadow-xs transition-all hover:scale-102"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            <span>+ Add Product</span>
+          </button>
           <button
             onClick={adminLogout}
-            className="px-3.5 py-2.5 bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 text-xs font-bold rounded-xl flex items-center gap-1.5 cursor-pointer transition-colors"
+            className="px-3 py-2 bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 text-xs font-bold rounded-xl flex items-center gap-1.5 cursor-pointer transition-colors"
           >
             <LogOut className="w-4 h-4" />
             <span>Logout</span>
@@ -489,11 +506,21 @@ export const AdminDashboard: React.FC = () => {
           {activeTab === 'sellers' && <AdminSellersTab />}
           {activeTab === 'delivery_partners' && <AdminDeliveryPartnersTab />}
           {activeTab === 'customers' && <AdminCustomersTab />}
-          {activeTab === 'products' && <AdminProductsTab />}
+          {activeTab === 'products' && (
+            <AdminProductsTab
+              initialOpenAdd={triggerAddProduct}
+              onResetInitialOpenAdd={() => setTriggerAddProduct(false)}
+            />
+          )}
           {activeTab === 'product_approvals' && <AdminProductApprovalsTab />}
           {activeTab === 'categories' && <AdminCategoriesTab />}
           {activeTab === 'brands' && <AdminBrandsTab />}
-          {activeTab === 'banners' && <AdminBannersTab />}
+          {activeTab === 'banners' && (
+            <AdminBannersTab
+              initialOpenAdd={triggerAddBanner}
+              onResetInitialOpenAdd={() => setTriggerAddBanner(false)}
+            />
+          )}
           {activeTab === 'orders' && <AdminOrdersTab />}
           {activeTab === 'payments' && <AdminPaymentsTab />}
           {activeTab === 'pincodes' && <AdminPincodesTab />}

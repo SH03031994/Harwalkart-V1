@@ -64,6 +64,11 @@ export const HeroBannerCarousel: React.FC<HeroBannerCarouselProps> = () => {
     const link = banner.linkUrl || banner.buttonLink;
     if (!link) return;
 
+    if (link.startsWith('http://') || link.startsWith('https://')) {
+      window.open(link, '_blank', 'noopener,noreferrer');
+      return;
+    }
+
     if (link.startsWith('/brand/')) {
       const brandSlug = link.replace('/brand/', '');
       if (brandSlug === 'kitchen-shakti') {
@@ -101,13 +106,18 @@ export const HeroBannerCarousel: React.FC<HeroBannerCarouselProps> = () => {
         className={`w-full relative cursor-pointer overflow-hidden transition-all duration-300 flex items-center justify-center`}
         onClick={() => handleBannerClick(currentBanner)}
       >
-        <img
-          src={currentBanner.imageUrl}
-          alt={currentBanner.title || 'Harwalkart Hero Banner'}
-          className="w-full h-auto max-h-[580px] object-contain block mx-auto transition-opacity duration-300"
-          loading="eager"
-          decoding="async"
-        />
+        <picture className="w-full block">
+          {currentBanner.mobileImageUrl && (
+            <source media="(max-width: 640px)" srcSet={currentBanner.mobileImageUrl} />
+          )}
+          <img
+            src={currentBanner.imageUrl}
+            alt={currentBanner.title || 'Harwalkart Hero Banner'}
+            className="w-full h-auto max-h-[580px] object-contain block mx-auto transition-opacity duration-300"
+            loading="eager"
+            decoding="async"
+          />
+        </picture>
       </div>
 
       {/* ================= MINIMAL CAROUSEL NAVIGATION CONTROLS ================= */}
